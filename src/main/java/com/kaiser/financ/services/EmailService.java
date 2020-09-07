@@ -4,6 +4,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
 
+import com.kaiser.financ.domain.Usuario;
+
 public interface EmailService {
 	
 	//void sendOrderConfirmationEmail(Pedido obj);
@@ -14,6 +16,6 @@ public interface EmailService {
 	
 	void sendHtmlEmail(MimeMessage msg);
 	
-	//void sendNewPasswordEmail(Cliente cliente, String newPass);
+	void sendNewPasswordEmail(Usuario usuario, String newPass);
 
 }
