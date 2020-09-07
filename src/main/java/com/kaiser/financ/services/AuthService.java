@@ -25,16 +25,16 @@ public class AuthService {
 	private Random rand = new Random();
 	
 	public void sendNewPassword(String email) {
-		Usuario cliente = usuarioRepository.findByEmail(email);
-		if(cliente == null) {
+		Usuario usuario = usuarioRepository.findByEmail(email);
+		if(usuario == null) {
 			throw new ObjectNotFoundException("Email nao encontrado");
 		}
 		
 		String newPass= newPassword();
-		cliente.setSenha(pe.encode(newPass));
+		usuario.setSenha(pe.encode(newPass));
 		
-		usuarioRepository.save(cliente);
-		emailService.sendNewPasswordEmail(cliente, newPass);
+		usuarioRepository.save(usuario);
+		emailService.sendNewPasswordEmail(usuario, newPass);
 		
 	}
 

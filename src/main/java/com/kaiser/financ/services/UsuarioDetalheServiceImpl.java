@@ -11,7 +11,7 @@ import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.security.UserSS;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UsuarioDetalheServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository repo;

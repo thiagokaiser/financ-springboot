@@ -14,7 +14,7 @@ import com.kaiser.financ.dto.EmailDTO;
 import com.kaiser.financ.security.JWTUtil;
 import com.kaiser.financ.security.UserSS;
 import com.kaiser.financ.services.AuthService;
-import com.kaiser.financ.services.UserService;
+import com.kaiser.financ.services.UsuarioService;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -28,7 +28,7 @@ public class AuthResource {
 	
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
-		UserSS user = UserService.authenticated();
+		UserSS user = UsuarioService.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");
