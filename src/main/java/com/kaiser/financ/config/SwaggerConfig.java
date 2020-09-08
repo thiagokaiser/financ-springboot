@@ -43,15 +43,15 @@ public class SwaggerConfig {
 				.globalResponseMessage(RequestMethod.DELETE, Arrays.asList(m204del, m403, m404, m500))
 				
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.kaiser.cursomc.resources"))
+				.apis(RequestHandlerSelectors.basePackage("com.kaiser.financ.resources"))
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(apiInfo());
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("API do curso Spring Boot",
-				"Esta API é utilizada no curso de Spring Boot do prof. Nelio Alves", 
+		return new ApiInfo("API Financ SpringBoot",
+				"Esta API é utilizada no app Financ SpringBoot", 
 				"Versão 1.0", null, null, null, null, Collections.emptyList());
 	}
 	
