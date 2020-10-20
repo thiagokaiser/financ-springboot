@@ -50,6 +50,19 @@ public class Despesa implements Serializable{
 		this.categoria = categoria;
 		this.conta = conta;
 	}
+	
+	public Despesa(Integer id, String descricao, Double valor, Date dtVencimento, Boolean pago, Integer numParcelas,
+			Integer parcelaAtual, Integer identificador) {
+		super();
+		this.id = id;
+		this.descricao = descricao;
+		this.valor = valor;
+		this.dtVencimento = dtVencimento;
+		this.pago = pago;
+		this.numParcelas = numParcelas;
+		this.parcelaAtual = parcelaAtual;
+		this.identificador = identificador;		
+	}
 
 	public Integer getId() {
 		return id;
