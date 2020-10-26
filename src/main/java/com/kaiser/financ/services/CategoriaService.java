@@ -8,9 +8,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.kaiser.financ.domain.Categoria;
+import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.CategoriaDTO;
 import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
@@ -21,6 +24,9 @@ public class CategoriaService {
 
 	@Autowired
 	private CategoriaRepository repo;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
@@ -58,7 +64,10 @@ public class CategoriaService {
 	}	
 	
 	public Categoria fromDTO(CategoriaDTO objDto) {
-		return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor());
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		Usuario usuario = usuarioService.findByEmail(userDetails.getUsername());
+		
+		return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
 	}
 	
 	private void updateData(Categoria newObj, Categoria obj) {

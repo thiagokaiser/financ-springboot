@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.kaiser.financ.domain.Categoria;
+import com.kaiser.financ.domain.Usuario;
 
 public class CategoriaDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;
@@ -15,7 +16,9 @@ public class CategoriaDTO implements Serializable{
 	@NotEmpty(message = "Campo Obrigatário")	
 	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
 	private String descricao;
-	private String cor;	
+	private String cor;
+	
+	private Usuario usuario;
 	
 	public CategoriaDTO() {		
 	}
@@ -24,6 +27,7 @@ public class CategoriaDTO implements Serializable{
 		this.id = obj.getId();
 		this.descricao = obj.getDescricao();
 		this.cor = obj.getCor();
+		this.usuario = obj.getUsuario();
 	}
 
 	public Integer getId() {
@@ -48,5 +52,13 @@ public class CategoriaDTO implements Serializable{
 
 	public void setCor(String cor) {
 		this.cor = cor;
-	}		
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}	
 }

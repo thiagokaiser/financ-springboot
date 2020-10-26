@@ -30,11 +30,14 @@ public class DBService {
 	private UsuarioRepository usuarioRepo;
 	
 
-	public void instantiateTestDatabase() throws ParseException {	
+	public void instantiateTestDatabase() throws ParseException {
 		
-		Categoria cat1 = new Categoria(null, "Categ 01", "");
-		Categoria cat2 = new Categoria(null, "Categ 02", "");
-		Categoria cat3 = new Categoria(null, "Categ 03", "");				
+		Usuario user = new Usuario(null,"Thiago","kaiserdesenv@gmail.com",pe.encode("123"));		
+		user = usuarioRepo.save(user);		
+		
+		Categoria cat1 = new Categoria(null, "Categ 01", "", user);
+		Categoria cat2 = new Categoria(null, "Categ 02", "", user);
+		Categoria cat3 = new Categoria(null, "Categ 03", "", user);				
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1, cat2, cat3));		
 		
@@ -43,9 +46,7 @@ public class DBService {
 		
 		contaRepo.saveAll(Arrays.asList(conta1, conta2));
 		
-		Usuario user = new Usuario(null,"Thiago","kaiserdesenv@gmail.com",pe.encode("123"));
 		
-		usuarioRepo.save(user);
 	}
 	
 }
