@@ -22,6 +22,12 @@ public class DespesaService {
 	@Autowired
 	private DespesaRepository repo;
 	
+	@Autowired
+	private CategoriaService categoriaService;
+	
+	@Autowired
+	private ContaService contaService;
+	
 	public Despesa find(Integer id) {
 		Optional<Despesa> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -30,6 +36,8 @@ public class DespesaService {
 
 	public Despesa insert(Despesa obj) {
 		obj.setId(null);
+		obj.setCategoria(categoriaService.find(obj.getCategoria().getId()));
+		obj.setConta(contaService.find(obj.getConta().getId()));
 		return repo.save(obj);		
 	}
 	
@@ -65,7 +73,9 @@ public class DespesaService {
 						   objDto.getPago(), 
 						   objDto.getNumParcelas(), 
 						   objDto.getParcelaAtual(), 
-						   objDto.getIdentificador());						   
+						   objDto.getIdentificador(),
+						   objDto.getCategoria(),
+						   objDto.getConta());						   
 	}
 	
 	private void updateData(Despesa newObj, Despesa obj) {

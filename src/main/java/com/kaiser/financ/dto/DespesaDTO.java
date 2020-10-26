@@ -41,6 +41,8 @@ public class DespesaDTO implements Serializable{
 		this.numParcelas = obj.getNumParcelas();
 		this.parcelaAtual = obj.getParcelaAtual();
 		this.identificador = obj.getIdentificador();
+		this.categoria = obj.getCategoria();
+		this.conta = obj.getConta();
 	}
 
 	public Integer getId() {
