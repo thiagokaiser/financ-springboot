@@ -33,10 +33,11 @@ public class DBService {
 	public void instantiateTestDatabase() throws ParseException {
 		
 		Usuario user = new Usuario(null,"Thiago","kaiserdesenv@gmail.com",pe.encode("123"));		
-		user = usuarioRepo.save(user);		
+		Usuario user2 = new Usuario(null,"teste","teste@gmail.com",pe.encode("123"));		
+		usuarioRepo.saveAll(Arrays.asList(user,user2));
 		
 		Categoria cat1 = new Categoria(null, "Categ 01", "", user);
-		Categoria cat2 = new Categoria(null, "Categ 02", "", user);
+		Categoria cat2 = new Categoria(null, "Categ 02", "", user2);
 		Categoria cat3 = new Categoria(null, "Categ 03", "", user);				
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1, cat2, cat3));		

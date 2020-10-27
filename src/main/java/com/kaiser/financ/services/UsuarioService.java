@@ -57,6 +57,18 @@ public class UsuarioService {
 		}		
 	}
 	
+	public Usuario userLoggedIn() {
+		try {
+			UserSS userSS = (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Optional<Usuario> obj = repo.findById(userSS.getId());
+			return obj.orElseThrow(() -> new ObjectNotFoundException(
+			"Objeto não encontrado! Id: " + userSS.getId() + ", Tipo: " + Usuario.class.getName())); 
+		}
+		catch(Exception e) {
+			return null;
+		}		
+	}
+	
 	public Usuario find(Integer id) {
 		
 		UserSS user = UsuarioService.authenticated();

@@ -8,9 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Usuario;
@@ -26,10 +25,11 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 	
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioService usuarioService;	
 	
 	public Categoria find(Integer id) {
-		Optional<Categoria> obj = repo.findById(id);
+		Usuario usuario = usuarioService.userLoggedIn();	
+		Optional<Categoria> obj = repo.findByIdAndUsuario(id, usuario);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
@@ -40,13 +40,13 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		Categoria newObj = find(obj.getId());
-		updateData(newObj, obj);		
+		Categoria newObj = find(obj.getId());		
+		updateData(newObj, obj);	
 		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) {
-		find(id);
+		find(id);				
 		try {
 			repo.deleteById(id);			
 		} catch (DataIntegrityViolationException e) {
@@ -58,15 +58,19 @@ public class CategoriaService {
 		return repo.findAll();
 	}
 	
+	public List<Categoria> findByUsuario(){
+		Usuario usuario = usuarioService.userLoggedIn();
+		return repo.findByUsuario(usuario);
+	}
+	
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		Usuario usuario = usuarioService.userLoggedIn();
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		return repo.findByUsuario(usuario, pageRequest);
 	}	
 	
-	public Categoria fromDTO(CategoriaDTO objDto) {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
-		Usuario usuario = usuarioService.findByEmail(userDetails.getUsername());
-		
+	public Categoria fromDTO(CategoriaDTO objDto) {				
+		Usuario usuario = usuarioService.userLoggedIn();		
 		return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
 	}
 	
