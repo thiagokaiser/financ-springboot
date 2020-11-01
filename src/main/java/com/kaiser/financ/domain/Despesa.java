@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Despesa implements Serializable{	
@@ -26,6 +27,11 @@ public class Despesa implements Serializable{
 	private Integer identificador;
 	
 	@ManyToOne
+	@JoinColumn(name="usuario_id")
+	@NotNull(message = "Campo Obrigatário")
+	private Usuario usuario;	
+	
+	@ManyToOne
 	@JoinColumn(name="categoria_id")
 	private Categoria categoria;
 	
@@ -37,7 +43,7 @@ public class Despesa implements Serializable{
 	}
 
 	public Despesa(Integer id, String descricao, Double valor, Date dtVencimento, Boolean pago, Integer numParcelas,
-			Integer parcelaAtual, Integer identificador, Categoria categoria, Conta conta) {
+			Integer parcelaAtual, Integer identificador, Usuario usuario, Categoria categoria, Conta conta) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -47,6 +53,7 @@ public class Despesa implements Serializable{
 		this.numParcelas = numParcelas;
 		this.parcelaAtual = parcelaAtual;
 		this.identificador = identificador;
+		this.usuario = usuario;
 		this.categoria = categoria;
 		this.conta = conta;
 	}
@@ -126,6 +133,14 @@ public class Despesa implements Serializable{
 
 	public void setIdentificador(Integer identificador) {
 		this.identificador = identificador;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Categoria getCategoria() {

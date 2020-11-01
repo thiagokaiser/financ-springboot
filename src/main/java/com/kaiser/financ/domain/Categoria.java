@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Categoria implements Serializable{	
@@ -17,10 +18,11 @@ public class Categoria implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String descricao;
-	private String cor;
+	private String cor;	
 	
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
+	@NotNull(message = "Campo Obrigatário")
 	private Usuario usuario;	
 
 	public Categoria() {
@@ -33,7 +35,7 @@ public class Categoria implements Serializable{
 		this.descricao = descricao;
 		this.cor = cor;
 		this.usuario = usuario;
-	}
+	}	
 
 	public Integer getId() {
 		return id;

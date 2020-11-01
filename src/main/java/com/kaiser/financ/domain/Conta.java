@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Conta implements Serializable{	
@@ -16,13 +19,19 @@ public class Conta implements Serializable{
 	private Integer id;
 	private String descricao;	
 	
+	@ManyToOne
+	@JoinColumn(name="usuario_id")
+	@NotNull(message = "Campo Obrigatário")
+	private Usuario usuario;	
+	
 	public Conta() {		
 	}
 	
-	public Conta(Integer id, String descricao) {
+	public Conta(Integer id, String descricao, Usuario usuario) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
+		this.usuario = usuario;
 	}
 
 	public Integer getId() {
@@ -39,6 +48,14 @@ public class Conta implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override

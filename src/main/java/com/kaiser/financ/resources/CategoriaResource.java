@@ -34,6 +34,7 @@ public class CategoriaResource {
 	private CategoriaService service;	
 	
 	@ApiOperation(value = "Busca por id")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		
@@ -78,16 +79,18 @@ public class CategoriaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas categorias")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		
-		List<Categoria> list = service.findByUsuario();
+		List<Categoria> list = service.findAll();
 		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);		
 		
 	}
 	
 	@ApiOperation(value = "Retorna todas categorias com paginação")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 

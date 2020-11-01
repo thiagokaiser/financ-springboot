@@ -42,8 +42,8 @@ public class DBService {
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1, cat2, cat3));		
 		
-		Conta conta1 = new Conta(null, "Conta 01");
-		Conta conta2 = new Conta(null, "Conta 02");						
+		Conta conta1 = new Conta(null, "Conta 01", user2);
+		Conta conta2 = new Conta(null, "Conta 02", user2);						
 		
 		contaRepo.saveAll(Arrays.asList(conta1, conta2));
 		

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.kaiser.financ.domain.Despesa;
+import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.DespesaDTO;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
@@ -28,8 +29,12 @@ public class DespesaService {
 	@Autowired
 	private ContaService contaService;
 	
+	@Autowired
+	private UsuarioService usuarioService;	
+	
 	public Despesa find(Integer id) {
-		Optional<Despesa> obj = repo.findById(id);
+		Usuario usuario = usuarioService.userLoggedIn();	
+		Optional<Despesa> obj = repo.findByIdAndUsuario(id, usuario);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Despesa.class.getName()));
 	}
@@ -57,15 +62,18 @@ public class DespesaService {
 	}
 	
 	public List<Despesa> findAll(){
-		return repo.findAll();
+		Usuario usuario = usuarioService.userLoggedIn();	
+		return repo.findByUsuario(usuario);
 	}
 	
 	public Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		Usuario usuario = usuarioService.userLoggedIn();	
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		return repo.findByUsuario(usuario, pageRequest);		
 	}	
 	
 	public Despesa fromDTO(DespesaDTO objDto) {		
+		Usuario usuario = usuarioService.userLoggedIn();
 		return new Despesa(objDto.getId(), 
 						   objDto.getDescricao(), 
 						   objDto.getValor(), 
@@ -74,6 +82,7 @@ public class DespesaService {
 						   objDto.getNumParcelas(), 
 						   objDto.getParcelaAtual(), 
 						   objDto.getIdentificador(),
+						   usuario,
 						   objDto.getCategoria(),
 						   objDto.getConta());						   
 	}

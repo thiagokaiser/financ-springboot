@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
+import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.ContaDTO;
 import com.kaiser.financ.repositories.ContaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
@@ -23,8 +24,12 @@ public class ContaService {
 	@Autowired
 	private ContaRepository repo;
 	
+	@Autowired
+	private UsuarioService usuarioService;	
+	
 	public Conta find(Integer id) {
-		Optional<Conta> obj = repo.findById(id);
+		Usuario usuario = usuarioService.userLoggedIn();
+		Optional<Conta> obj = repo.findByIdAndUsuario(id, usuario);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
@@ -50,16 +55,19 @@ public class ContaService {
 	}
 	
 	public List<Conta> findAll(){
-		return repo.findAll();
+		Usuario usuario = usuarioService.userLoggedIn();
+		return repo.findByUsuario(usuario);
 	}
 	
 	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		Usuario usuario = usuarioService.userLoggedIn();
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);		
+		return repo.findByUsuario(usuario, pageRequest);		
 	}	
 	
 	public Conta fromDTO(ContaDTO objDto) {
-		return new Conta(objDto.getId(), objDto.getDescricao());
+		Usuario usuario = usuarioService.userLoggedIn();
+		return new Conta(objDto.getId(), objDto.getDescricao(), usuario);
 	}
 	
 	private void updateData(Conta newObj, Conta obj) {

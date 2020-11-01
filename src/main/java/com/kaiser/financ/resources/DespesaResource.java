@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +34,7 @@ public class DespesaResource {
 	private DespesaService service;	
 	
 	@ApiOperation(value = "Busca por id")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Despesa> find(@PathVariable Integer id) {
 		
@@ -47,11 +46,7 @@ public class DespesaResource {
 	@ApiOperation(value = "Insere Despesa")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaDTO objDto){
-		
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-		String username = userDetails.getUsername();
+	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaDTO objDto){		
 		
 		Despesa obj = service.fromDTO(objDto);		
 		obj = service.insert(obj);
@@ -85,6 +80,7 @@ public class DespesaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas Despesas")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<DespesaDTO>> findAll() {
 		
@@ -95,6 +91,7 @@ public class DespesaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas Despesas com paginação")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<DespesaDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 

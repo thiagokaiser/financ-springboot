@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.springframework.security.access.AccessDeniedException;
 
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Usuario;
@@ -55,13 +54,9 @@ public class CategoriaService {
 	}
 	
 	public List<Categoria> findAll(){
-		return repo.findAll();
-	}
-	
-	public List<Categoria> findByUsuario(){
 		Usuario usuario = usuarioService.userLoggedIn();
 		return repo.findByUsuario(usuario);
-	}
+	}	
 	
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		Usuario usuario = usuarioService.userLoggedIn();

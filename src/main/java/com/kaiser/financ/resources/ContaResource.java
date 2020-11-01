@@ -34,6 +34,7 @@ public class ContaResource {
 	private ContaService service;	
 	
 	@ApiOperation(value = "Busca por id")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Conta> find(@PathVariable Integer id) {
 		
@@ -78,6 +79,7 @@ public class ContaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas contas")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ContaDTO>> findAll() {
 		
@@ -88,6 +90,7 @@ public class ContaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas contas com paginação")
+	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<ContaDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 
