@@ -127,11 +127,11 @@ public class UsuarioService {
 	}	
 	
 	public Usuario fromDTO(UsuarioDTO objDto) {
-		return new Usuario(objDto.getId(), objDto.getNome(), objDto.getEmail(), null);
+		return new Usuario(objDto.getId(), objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), null);
 	}
 	
 	public Usuario fromDTO(UsuarioNewDTO objDto) {
-		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getEmail(), pe.encode(objDto.getSenha()));
+		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), pe.encode(objDto.getSenha()));
 		
 		cli.getTelefones().add(objDto.getTelefone1());
 		if( objDto.getTelefone2() != null ) {

@@ -25,6 +25,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private String sobrenome;
 	
 	@Column(unique = true)
 	private String email;	
@@ -44,10 +45,11 @@ public class Usuario implements Serializable {
 		addPerfil(Perfil.USER);
 	}
 	
-	public Usuario(Integer id, String nome, String email, String senha) {
+	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.sobrenome = sobrenome;
 		this.email = email;		
 		this.senha = senha;
 		addPerfil(Perfil.USER);
@@ -67,6 +69,14 @@ public class Usuario implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}	
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
 	}
 
 	public String getEmail() {

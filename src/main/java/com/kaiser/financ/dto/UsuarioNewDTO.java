@@ -16,6 +16,10 @@ public class UsuarioNewDTO implements Serializable{
 	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
 	private String nome;
 	
+	@NotEmpty(message = "Campo Obrigatário")	
+	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
+	private String sobrenome;
+	
 	@NotEmpty(message = "Campo Obrigatário")
 	@Email(message = "Email inválido")
 	private String email;		
@@ -38,6 +42,14 @@ public class UsuarioNewDTO implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}	
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
 	}
 
 	public String getEmail() {

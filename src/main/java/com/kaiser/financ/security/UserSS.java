@@ -15,18 +15,22 @@ public class UserSS implements UserDetails {
 	
 	private Integer id;
 	private String email;
-	private String senha;
+	private String senha;	
+	private String nome;
+	private String sobrenome;
 	private Collection<? extends GrantedAuthority> authorities;
 	
 	public UserSS() {
 	}
 	
-	public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
+	public UserSS(Integer id, String email, String senha, Set<Perfil> perfis, String nome, String sobrenome) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
-		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());		
 	}
 
 	public Integer getId() {
@@ -46,6 +50,14 @@ public class UserSS implements UserDetails {
 	@Override
 	public String getUsername() {
 		return email;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+	
+	public String getSobrenome() {
+		return sobrenome;
 	}
 
 	@Override
