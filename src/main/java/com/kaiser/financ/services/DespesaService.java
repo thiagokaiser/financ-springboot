@@ -10,9 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.kaiser.financ.domain.Categoria;
+import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.DespesaDTO;
+import com.kaiser.financ.dto.DespesaUpdateDTO;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
@@ -72,8 +74,12 @@ public class DespesaService {
 		return repo.findByUsuario(usuario, pageRequest);		
 	}	
 	
-	public Despesa fromDTO(DespesaDTO objDto) {		
+	public Despesa fromDTO(DespesaUpdateDTO objDto) {		
 		Usuario usuario = usuarioService.userLoggedIn();
+		Categoria categ = new Categoria();
+		categ.setId(objDto.getCategoriaId());
+		Conta conta = new Conta();
+		conta.setId(objDto.getContaId());
 		return new Despesa(objDto.getId(), 
 						   objDto.getDescricao(), 
 						   objDto.getValor(), 
@@ -83,9 +89,9 @@ public class DespesaService {
 						   objDto.getParcelaAtual(), 
 						   objDto.getIdentificador(),
 						   usuario,
-						   objDto.getCategoria(),
-						   objDto.getConta());						   
-	}
+						   categ,
+						   conta);						   
+	}	
 	
 	private void updateData(Despesa newObj, Despesa obj) {
 		newObj.setDescricao(obj.getDescricao());		

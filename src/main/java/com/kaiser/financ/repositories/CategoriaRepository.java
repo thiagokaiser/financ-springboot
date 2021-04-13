@@ -16,7 +16,7 @@ import com.kaiser.financ.domain.Usuario;
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 
 	@Transactional(readOnly = true)
-	Page<Categoria> findByUsuario(Usuario usuario, Pageable pageRequest);
+	Page<Categoria> findByUsuarioAndDescricaoContaining(Usuario usuario, String descricao, Pageable pageRequest);
 	
 	@Transactional(readOnly = true)
 	List<Categoria> findByUsuario(Usuario usuario);

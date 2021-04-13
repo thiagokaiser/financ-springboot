@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.dto.DespesaDTO;
+import com.kaiser.financ.dto.DespesaUpdateDTO;
 import com.kaiser.financ.services.DespesaService;
 
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +47,7 @@ public class DespesaResource {
 	@ApiOperation(value = "Insere Despesa")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaDTO objDto){		
+	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaUpdateDTO objDto){		
 		
 		Despesa obj = service.fromDTO(objDto);		
 		obj = service.insert(obj);
@@ -59,7 +60,7 @@ public class DespesaResource {
 	@ApiOperation(value = "Atualiza Despesa")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody DespesaDTO objDto, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer id){
 		Despesa obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);		

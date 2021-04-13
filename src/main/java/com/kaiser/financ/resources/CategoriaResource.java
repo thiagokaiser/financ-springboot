@@ -96,9 +96,10 @@ public class CategoriaResource {
 			@RequestParam(value="page", defaultValue = "0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue = "descricao") String orderBy, 
-			@RequestParam(value="direction", defaultValue = "DESC") String direction) {
+			@RequestParam(value="direction", defaultValue = "DESC") String direction,
+			@RequestParam(value="search") String search) {
 		
-		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
+		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction, search);
 		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listDto);		
 		

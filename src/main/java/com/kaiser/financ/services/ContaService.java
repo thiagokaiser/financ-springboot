@@ -59,10 +59,10 @@ public class ContaService {
 		return repo.findByUsuario(usuario);
 	}
 	
-	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, String search){
 		Usuario usuario = usuarioService.userLoggedIn();
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);		
-		return repo.findByUsuario(usuario, pageRequest);		
+		return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);		
 	}	
 	
 	public Conta fromDTO(ContaDTO objDto) {
