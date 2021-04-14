@@ -44,7 +44,10 @@ public class DespesaService {
 	public Despesa insert(Despesa obj) {
 		obj.setId(null);
 		obj.setCategoria(categoriaService.find(obj.getCategoria().getId()));
-		obj.setConta(contaService.find(obj.getConta().getId()));
+		if(obj.getConta() != null) {
+			obj.setConta(contaService.find(obj.getConta().getId()));
+		}
+		
 		return repo.save(obj);		
 	}
 	
@@ -79,7 +82,12 @@ public class DespesaService {
 		Categoria categ = new Categoria();
 		categ.setId(objDto.getCategoriaId());
 		Conta conta = new Conta();
-		conta.setId(objDto.getContaId());
+		if(objDto.getContaId() == null) {
+			conta = null;
+		}else {
+			conta.setId(objDto.getContaId());
+		}		
+		
 		return new Despesa(objDto.getId(), 
 						   objDto.getDescricao(), 
 						   objDto.getValor(), 
@@ -94,7 +102,12 @@ public class DespesaService {
 	}	
 	
 	private void updateData(Despesa newObj, Despesa obj) {
-		newObj.setDescricao(obj.getDescricao());		
+		newObj.setDescricao(obj.getDescricao());
+		newObj.setCategoria(obj.getCategoria());
+		newObj.setConta(obj.getConta());
+		newObj.setDtVencimento(obj.getDtVencimento());
+		newObj.setPago(obj.getPago());
+		newObj.setValor(obj.getValor());
 	}
 	
 }

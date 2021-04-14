@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.ContaDTO;
@@ -31,7 +30,7 @@ public class ContaService {
 		Usuario usuario = usuarioService.userLoggedIn();
 		Optional<Conta> obj = repo.findByIdAndUsuario(id, usuario);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-		"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+		"Objeto não encontrado! Id: " + id + ", Tipo: " + Conta.class.getName()));
 	}
 
 	public Conta insert(Conta obj) {

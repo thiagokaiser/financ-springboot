@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -18,12 +19,21 @@ public class Despesa implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@NotBlank(message = "Campo Obrigatário")	
 	private String descricao;
+	
 	private Double valor;
+	
+	@NotNull(message = "Campo Obrigatário")
 	private Date dtVencimento;
+	
 	private Boolean pago;
+	
 	private Integer numParcelas;
+	
 	private Integer parcelaAtual;
+	
 	private Integer identificador;
 	
 	@ManyToOne
@@ -33,9 +43,9 @@ public class Despesa implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="categoria_id")
-	private Categoria categoria;
+	private Categoria categoria;	
 	
-	@ManyToOne
+	@ManyToOne(optional=true)
 	@JoinColumn(name="conta_id")
 	private Conta conta;	
 	
