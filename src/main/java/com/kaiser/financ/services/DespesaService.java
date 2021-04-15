@@ -1,7 +1,11 @@
 package com.kaiser.financ.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -71,10 +75,23 @@ public class DespesaService {
 		return repo.findByUsuario(usuario);
 	}
 	
-	public Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+	public Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction,
+			                      String search, String stringDtInicial, String stringDtFinal){
 		Usuario usuario = usuarioService.userLoggedIn();	
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findByUsuario(usuario, pageRequest);		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));		
+		Date dtInicial = new Date();
+		Date dtFinal = new Date();
+		try {
+			dtInicial = sdf.parse(stringDtInicial);
+			dtFinal = sdf.parse(stringDtFinal);
+		} catch (ParseException e) {
+			// TODO
+		}		 	
+		
+		return repo.findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(usuario, search, dtInicial, dtFinal, pageRequest);		
 	}	
 	
 	public Despesa fromDTO(DespesaUpdateDTO objDto) {		

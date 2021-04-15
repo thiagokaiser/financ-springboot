@@ -1,5 +1,6 @@
 package com.kaiser.financ.repositories;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ import com.kaiser.financ.domain.Usuario;
 public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 
 	@Transactional(readOnly = true)
-	Page<Despesa> findByUsuario(Usuario usuario, Pageable pageRequest);
+	Page<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(Usuario usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
 	
 	@Transactional(readOnly = true)
 	List<Despesa> findByUsuario(Usuario usuario);
