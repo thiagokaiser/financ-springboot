@@ -25,4 +25,11 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 	@Transactional(readOnly = true)
 	Optional<Despesa> findByIdAndUsuario(Integer id,Usuario usuario);
 	
+	@Transactional(readOnly = true)
+	List<Despesa> findByUsuarioAndIdentificadorAndPago(Usuario usuario, Integer identificador, Boolean pago);
+	
+	@Transactional(readOnly = true)
+	List<Despesa> findByUsuarioAndIdentificador(Usuario usuario, Integer identificador);
+	
+	
 }

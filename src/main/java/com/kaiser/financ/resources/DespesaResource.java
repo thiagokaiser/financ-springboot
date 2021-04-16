@@ -1,6 +1,5 @@
 package com.kaiser.financ.resources;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.dto.DespesaDTO;
@@ -49,12 +47,10 @@ public class DespesaResource {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaUpdateDTO objDto){		
 		
-		Despesa obj = service.fromDTO(objDto);		
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		Despesa obj = service.fromDTO(objDto);
+		service.insert(obj);		
 		
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@ApiOperation(value = "Atualiza Despesa")
@@ -67,15 +63,46 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value = "Atualiza Despesa")
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value = "/all/{identificador}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateAllByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
+		Despesa obj = service.fromDTO(objDto);
+		obj.setIdentificador(identificador);
+		service.updateAllByIdentificador(obj);		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@ApiOperation(value = "Atualiza Despesa")
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value = "/unpaid/{identificador}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateUnpaidByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
+		Despesa obj = service.fromDTO(objDto);
+		obj.setIdentificador(identificador);
+		service.updateUnpaidByIdentificador(obj);		
+		return ResponseEntity.noContent().build();
+	}
+	
 	@ApiOperation(value = "Remove Despesa")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Não é possível excluir uma Despesa que possui produtos"),
+	@ApiResponses(value = {			
 			@ApiResponse(code = 404, message = "Código inexistente") })
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		
 		service.delete(id);		
+		return ResponseEntity.noContent().build();		
+		
+	}
+	
+	@ApiOperation(value = "Remove Despesa pelo identificador (despesa parcelada)")
+	@ApiResponses(value = {			
+			@ApiResponse(code = 404, message = "Código inexistente") })
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value="/identificador/{identificador}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteByIdentificador(@PathVariable Integer identificador) {
+		
+		service.deleteByIdentificador(identificador);		
 		return ResponseEntity.noContent().build();		
 		
 	}

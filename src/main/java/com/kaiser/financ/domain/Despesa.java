@@ -32,7 +32,7 @@ public class Despesa implements Serializable{
 	
 	private Integer numParcelas;
 	
-	private Integer parcelaAtual;
+	private Integer parcelaAtual;	
 	
 	private Integer identificador;
 	
