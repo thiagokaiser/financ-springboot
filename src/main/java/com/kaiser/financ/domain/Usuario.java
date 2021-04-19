@@ -1,6 +1,7 @@
 package com.kaiser.financ.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +27,10 @@ public class Usuario implements Serializable {
 	private Integer id;
 	private String nome;
 	private String sobrenome;
+	private Date dtNascimento;
+	private String cidade;
+	private String estado;	
+	private String descricao;
 	
 	@Column(unique = true)
 	private String email;	
@@ -43,8 +48,18 @@ public class Usuario implements Serializable {
 
 	public Usuario() {		
 		addPerfil(Perfil.USER);
-	}
+	}	
 	
+	public Usuario(String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao) {
+		super();		
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.dtNascimento = dtNascimento;
+		this.cidade = cidade;
+		this.estado = estado;	
+		this.descricao = descricao;
+	}
+
 	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
 		super();
 		this.id = id;
@@ -77,6 +92,38 @@ public class Usuario implements Serializable {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
+	}	
+
+	public Date getDtNascimento() {
+		return dtNascimento;
+	}
+
+	public void setDtNascimento(Date dtNascimento) {
+		this.dtNascimento = dtNascimento;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}	
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public String getEmail() {

@@ -21,6 +21,7 @@ import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.domain.enums.Perfil;
 import com.kaiser.financ.dto.UsuarioDTO;
 import com.kaiser.financ.dto.UsuarioNewDTO;
+import com.kaiser.financ.dto.UsuarioUpdateDTO;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.security.UserSS;
 import com.kaiser.financ.services.exceptions.AuthorizationException;
@@ -89,8 +90,8 @@ public class UsuarioService {
 	}
 	
 	public Usuario update(Usuario obj) {
-		Usuario newObj = find(obj.getId());
-		updateData(newObj, obj);		
+		Usuario newObj = findByEmail(obj.getEmail());
+		updateData(newObj, obj);        
 		return repo.save(newObj);
 	}
 	
@@ -130,6 +131,10 @@ public class UsuarioService {
 		return new Usuario(objDto.getId(), objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), null);
 	}
 	
+	public Usuario fromDTO(UsuarioUpdateDTO objDto) {
+		return new Usuario(objDto.getNome(), objDto.getSobrenome(), objDto.getDtNascimento(), objDto.getCidade(), objDto.getEstado(), objDto.getDescricao());
+	}
+	
 	public Usuario fromDTO(UsuarioNewDTO objDto) {
 		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), pe.encode(objDto.getSenha()));
 		
@@ -145,7 +150,11 @@ public class UsuarioService {
 
 	private void updateData(Usuario newObj, Usuario obj) {
 		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());		
+		newObj.setSobrenome(obj.getSobrenome());
+		newObj.setCidade(obj.getCidade());
+		newObj.setEstado(obj.getEstado());
+		newObj.setDtNascimento(obj.getDtNascimento());
+		newObj.setDescricao(obj.getDescricao());
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) {		

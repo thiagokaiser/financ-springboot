@@ -25,8 +25,8 @@ public class JWTUtil {
 				.setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.claim("email", user.getUsername())
-				.claim("firstName", user.getNome())
-				.claim("lastName", user.getSobrenome())
+				.claim("nome", user.getNome())
+				.claim("sobrenome", user.getSobrenome())
 				.compact();
 	}
 	

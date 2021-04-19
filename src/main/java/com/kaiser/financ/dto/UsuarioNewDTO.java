@@ -25,11 +25,9 @@ public class UsuarioNewDTO implements Serializable{
 	private String email;		
 		
 	@NotEmpty(message = "Campo Obrigatário")
-	private String senha;
-			
-	@NotEmpty(message = "Campo Obrigatário")
-	private String telefone1;
+	private String senha;			
 	
+	private String telefone1;	
 	private String telefone2;
 	private String telefone3;	
 	

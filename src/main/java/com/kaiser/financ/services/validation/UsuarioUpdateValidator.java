@@ -33,12 +33,12 @@ public class UsuarioUpdateValidator implements ConstraintValidator<UsuarioUpdate
 		
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-		Integer uriId = Integer.parseInt(map.get("id"));
+		String uriEmail = map.get("email");
 		
 		List<FieldMessage> list = new ArrayList<>();
 				
 		Usuario aux = repo.findByEmail(objDto.getEmail());
-		if (aux != null && !aux.getId().equals(uriId)) {
+		if (aux != null && !aux.getEmail().equals(uriEmail)) {
 			list.add(new FieldMessage("email", "Email já cadastrado"));			
 		}
 

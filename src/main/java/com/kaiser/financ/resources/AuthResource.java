@@ -27,12 +27,13 @@ public class AuthResource {
 	private AuthService service;
 	
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
-	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
+	public ResponseEntity<String> refreshToken(HttpServletResponse response) {
 		UserSS user = UsuarioService.authenticated();
 		String token = jwtUtil.generateToken(user);
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");
-		return ResponseEntity.noContent().build();
+		String body = "{\"email\":\"" + user.getUsername() + "\",\"accessToken\":\"" + token + "\"}";
+		return ResponseEntity.ok().body(body);
 	}
 	
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)

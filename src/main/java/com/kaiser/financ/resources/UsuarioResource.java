@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.UsuarioDTO;
 import com.kaiser.financ.dto.UsuarioNewDTO;
+import com.kaiser.financ.dto.UsuarioUpdateDTO;
 import com.kaiser.financ.services.UsuarioService;
 
 @RestController
@@ -38,7 +39,7 @@ public class UsuarioResource {
 	}
 	
 	@RequestMapping(value="/email", method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@RequestParam(value="value") String email) {		
+	public ResponseEntity<Usuario> find(@RequestParam(value="email") String email) {		
 		Usuario obj = service.findByEmail(email);		
 		return ResponseEntity.ok().body(obj);		
 	}		
@@ -53,10 +54,10 @@ public class UsuarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioDTO objDto, @PathVariable Integer id){
+	@RequestMapping(value = "/{email}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable String email){
 		Usuario obj = service.fromDTO(objDto);
-		obj.setId(id);
+		obj.setEmail(email);
 		obj = service.update(obj);		
 		return ResponseEntity.noContent().build();
 	}
