@@ -5,12 +5,14 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaiser.financ.dto.EmailDTO;
+import com.kaiser.financ.dto.ResetPasswordDTO;
 import com.kaiser.financ.security.JWTUtil;
 import com.kaiser.financ.security.UserSS;
 import com.kaiser.financ.services.AuthService;
@@ -38,7 +40,14 @@ public class AuthResource {
 	
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
 	public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
-		service.sendNewPassword(objDto.getEmail());
+		service.sendResetPassword(objDto.getEmail());
+		return ResponseEntity.noContent().build();
+	}	
+	
+	@RequestMapping(value = "/reset_password/{token}", method = RequestMethod.POST)
+	public ResponseEntity<Void> forgot(@Valid @RequestBody ResetPasswordDTO objDto, @PathVariable String token) {
+		objDto.setToken(token);	
+		service.changePassword(objDto);
 		return ResponseEntity.noContent().build();
 	}
 }

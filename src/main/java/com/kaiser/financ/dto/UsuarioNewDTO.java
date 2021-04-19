@@ -25,6 +25,7 @@ public class UsuarioNewDTO implements Serializable{
 	private String email;		
 		
 	@NotEmpty(message = "Campo Obrigatário")
+	@Size(min=6, max=20, message = "Campo deve estar entre 6 e 20 caracteres")
 	private String senha;			
 	
 	private String telefone1;	

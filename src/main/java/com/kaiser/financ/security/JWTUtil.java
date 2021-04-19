@@ -30,6 +30,15 @@ public class JWTUtil {
 				.compact();
 	}
 	
+	public String generateTokenResetPassword(String email) {		
+		
+		return Jwts.builder()
+				.setSubject(email)
+				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.signWith(SignatureAlgorithm.HS512, secret.getBytes())				
+				.compact();
+	}
+	
 	public boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
 		if (claims != null) {

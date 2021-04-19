@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.kaiser.financ.services.DBService;
 import com.kaiser.financ.services.EmailService;
-import com.kaiser.financ.services.SmtpEmailService;
+import com.kaiser.financ.services.MockEmailService;
 
 @Configuration
 @Profile("postgre")
@@ -34,7 +34,7 @@ public class PostgreConfig {
 	
 	@Bean
 	public EmailService emailService() {		
-		return new SmtpEmailService();
+		return new MockEmailService();
 	}
 
 }
