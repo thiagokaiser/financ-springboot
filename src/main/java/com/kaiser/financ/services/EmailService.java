@@ -6,13 +6,9 @@ import org.springframework.mail.SimpleMailMessage;
 
 import com.kaiser.financ.domain.Usuario;
 
-public interface EmailService {
+public interface EmailService {	
 	
-	//void sendOrderConfirmationEmail(Pedido obj);
-	
-	void sendEmail(SimpleMailMessage msg);
-	
-	//void sendOrderConfirmationHtmlEmail(Pedido obj);
+	void sendEmail(SimpleMailMessage msg);	
 	
 	void sendHtmlEmail(MimeMessage msg);
 	

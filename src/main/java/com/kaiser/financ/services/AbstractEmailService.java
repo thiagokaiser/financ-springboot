@@ -2,11 +2,15 @@ package com.kaiser.financ.services;
 
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.kaiser.financ.domain.Usuario;
 
@@ -19,69 +23,33 @@ public abstract class AbstractEmailService implements EmailService{
 	private TemplateEngine templateEngine;
 	
 	@Autowired
-	private JavaMailSender javaMailSender;
+	private JavaMailSender javaMailSender;	
 	
-	/*
-	@Override
-	public void sendOrderConfirmationEmail(Pedido obj) {		
-		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
-		sendEmail(sm);		
-	}
-
-	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {		
-		SimpleMailMessage sm = new SimpleMailMessage();
-		
-		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(sender);
-		sm.setSubject("Pedido confirmado! Código: " + obj.getId());
-		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText(obj.toString());
-		
-		return sm;
-	}
-	
-	protected String htmlFromTemplatePedido(Pedido obj) {		
-		Context context = new Context();
-		context.setVariable("pedido", obj);
-		return templateEngine.process("email/confirmacaoPedido", context);		
-	}
-	
-	@Override
-	public void sendOrderConfirmationHtmlEmail(Pedido obj) {		
+	public void sendResetPasswordEmail(Usuario usuario, String linkResetPassword) {		
 		try {
-			MimeMessage mm = prepareMimeMessageFromPedido(obj);
+			MimeMessage mm = prepareResetPasswordEmail(usuario, linkResetPassword);
 			sendHtmlEmail(mm);
 		} catch (MessagingException e) {
-			sendOrderConfirmationEmail(obj);
+			// TODO
 		}		
 	}
 
-	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException {
+	protected MimeMessage prepareResetPasswordEmail(Usuario usuario, String linkResetPassword) throws MessagingException {
+		String link = "http://localhost:4200/security/resetPassword/" + linkResetPassword;
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
-		mmh.setTo(obj.getCliente().getEmail());
+		
+		mmh.setTo(usuario.getEmail());
 		mmh.setFrom(sender);
-		mmh.setSubject("Pedido confirmado! Código: " + obj.getId());
+		mmh.setSubject("Reset Password - Financ");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
-		mmh.setText(htmlFromTemplatePedido(obj), true);
+		mmh.setText(htmlFromTemplatePedido(link), true);
 		return mimeMessage;
-	}*/	
+	}	
 	
-	public void sendResetPasswordEmail(Usuario usuario, String linkResetPassword) {
-		SimpleMailMessage sm = prepareResetPasswordEmail(usuario, linkResetPassword);
-		sendEmail(sm);	
+	protected String htmlFromTemplatePedido(String link) {		
+		Context context = new Context();
+		context.setVariable("link", link);
+		return templateEngine.process("email/resetPassword", context);		
 	}
-
-	protected SimpleMailMessage prepareResetPasswordEmail(Usuario usuario, String linkResetPassword) {
-		SimpleMailMessage sm = new SimpleMailMessage();
-		
-		sm.setTo(usuario.getEmail());
-		sm.setFrom(sender);
-		sm.setSubject("Reset Password");
-		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText("Link: http://localhost:4200/security/resetPassword/" + linkResetPassword);
-		
-		return sm;
-	}
-	
 }
