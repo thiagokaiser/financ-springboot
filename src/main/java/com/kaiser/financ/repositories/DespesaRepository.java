@@ -20,6 +20,12 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 	Page<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(Usuario usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
 	
 	@Transactional(readOnly = true)
+	Page<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqualAndPago(Usuario usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest, Boolean pago);
+	
+	@Transactional(readOnly = true)
+	List<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(Usuario usuario, String search, Date dtInicial, Date dtFinal);
+	
+	@Transactional(readOnly = true)
 	List<Despesa> findByUsuario(Usuario usuario);
 	
 	@Transactional(readOnly = true)

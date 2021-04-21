@@ -21,6 +21,7 @@ import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.DespesaUpdateDTO;
+import com.kaiser.financ.dto.TotaisDTO;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
@@ -162,23 +163,43 @@ public class DespesaService {
 	}
 	
 	public Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction,
-			                      String search, String stringDtInicial, String stringDtFinal){
+			                      String search, String stringDtInicial, String stringDtFinal, Boolean pago){
 		Usuario usuario = usuarioService.userLoggedIn();	
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);		
+				
+		Date dtInicial = stringToDate(stringDtInicial);
+		Date dtFinal = stringToDate(stringDtFinal);				
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));		
-		Date dtInicial = new Date();
-		Date dtFinal = new Date();
-		try {
-			dtInicial = sdf.parse(stringDtInicial);
-			dtFinal = sdf.parse(stringDtFinal);
-		} catch (ParseException e) {
-			// TODO
-		}		 	
+		if(pago != null) {
+			return repo.findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqualAndPago(usuario, search, dtInicial, dtFinal, pageRequest, pago);			
+		}
 		
 		return repo.findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(usuario, search, dtInicial, dtFinal, pageRequest);		
 	}	
+	
+	public TotaisDTO totalsByPeriod(String stringDtInicial, String stringDtFinal, String search) {
+		Double total = 0.0;
+		Double totalPago = 0.0;
+		Double totalPendente = 0.0;
+		
+		Usuario usuario = usuarioService.userLoggedIn();
+		
+		Date dtInicial = stringToDate(stringDtInicial);
+		Date dtFinal = stringToDate(stringDtFinal);
+		
+		List<Despesa> list = repo.findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(usuario, search, dtInicial, dtFinal);
+		
+		for (Despesa despesa : list) {
+			total += despesa.getValor();
+			if(despesa.getPago() == true) {
+				totalPago += despesa.getValor();
+			}else {
+				totalPendente += despesa.getValor();
+			}
+		}	
+		
+		return new TotaisDTO(dtInicial,dtFinal,total,totalPago,totalPendente);		
+	}
 	
 	public Despesa fromDTO(DespesaUpdateDTO objDto) {		
 		Usuario usuario = usuarioService.userLoggedIn();
@@ -215,6 +236,20 @@ public class DespesaService {
 	
 	public boolean isNullorZero(Integer i){
 	    return 0 == ( i == null ? 0 : i);
+	}
+	
+	public Date stringToDate(String stringDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));		
+		
+		Date date;
+		try {
+			date = sdf.parse(stringDate);
+		} catch (ParseException e) {
+			throw new DataIntegrityException("Data inválida");
+		}
+		
+		return date;		
 	}
 	
 }

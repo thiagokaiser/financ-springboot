@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.dto.DespesaDTO;
 import com.kaiser.financ.dto.DespesaUpdateDTO;
+import com.kaiser.financ.dto.TotaisDTO;
 import com.kaiser.financ.services.DespesaService;
 
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +64,7 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa")
+	@ApiOperation(value = "Atualiza Despesa todas despesas pelo identificador")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value = "/all/{identificador}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateAllByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
@@ -73,7 +74,7 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa")
+	@ApiOperation(value = "Atualiza Despesa todas despesas nao pagas pelo identificador")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value = "/unpaid/{identificador}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateUnpaidByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
@@ -128,12 +129,24 @@ public class DespesaResource {
 			@RequestParam(value="direction", defaultValue = "DESC") String direction,
 			@RequestParam(value="search") String search,
 			@RequestParam(value="dtInicial") String dtInicial,
-			@RequestParam(value="dtFinal") String dtFinal) {
+			@RequestParam(value="dtFinal") String dtFinal,
+			@RequestParam(value="pago", required=false) Boolean pago) {		
 		
-		
-		Page<Despesa> list = service.findPage(page, linesPerPage, orderBy, direction, search, dtInicial, dtFinal);
+		Page<Despesa> list = service.findPage(page, linesPerPage, orderBy, direction, search, dtInicial, dtFinal, pago);
 		Page<DespesaDTO> listDto = list.map(obj -> new DespesaDTO(obj));
 		return ResponseEntity.ok().body(listDto);				
 		
 	}	
+	
+	@ApiOperation(value = "Retorna Totais por periodo")
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value="/totals", method=RequestMethod.GET)
+	public ResponseEntity<TotaisDTO> totalsByPeriod(
+			@RequestParam(value="search") String search,
+			@RequestParam(value="dtInicial") String dtInicial,
+			@RequestParam(value="dtFinal") String dtFinal) {		
+		
+		TotaisDTO totais = service.totalsByPeriod(dtInicial, dtFinal, search);		
+		return ResponseEntity.ok().body(totais);		
+	}
 }
