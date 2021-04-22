@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.dto.DespesaDTO;
 import com.kaiser.financ.dto.DespesaUpdateDTO;
+import com.kaiser.financ.dto.TotaisByCategDTO;
+import com.kaiser.financ.dto.TotaisByMonthDTO;
 import com.kaiser.financ.dto.TotaisDTO;
 import com.kaiser.financ.services.DespesaService;
 
@@ -147,6 +149,30 @@ public class DespesaResource {
 			@RequestParam(value="dtFinal") String dtFinal) {		
 		
 		TotaisDTO totais = service.totalsByPeriod(dtInicial, dtFinal, search);		
+		return ResponseEntity.ok().body(totais);		
+	}
+	
+	@ApiOperation(value = "Retorna Totais por Categoria")
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value="/totalsByCateg", method=RequestMethod.GET)
+	public ResponseEntity<List<TotaisByCategDTO>> totalsByPeriodByCategoria(
+			@RequestParam(value="search") String search,
+			@RequestParam(value="dtInicial") String dtInicial,
+			@RequestParam(value="dtFinal") String dtFinal) {		
+		
+		List<TotaisByCategDTO> totais = service.totalsByPeriodByCategoria(dtInicial, dtFinal, search);		
+		return ResponseEntity.ok().body(totais);		
+	}
+	
+	@ApiOperation(value = "Retorna Totais por Mes")
+	@PreAuthorize("hasAnyRole('USER')")
+	@RequestMapping(value="/totalsByMonth", method=RequestMethod.GET)
+	public ResponseEntity<List<TotaisByMonthDTO>> totalsByPeriodByMonth(
+			@RequestParam(value="search") String search,
+			@RequestParam(value="dtInicial") String dtInicial,
+			@RequestParam(value="dtFinal") String dtFinal) {		
+		
+		List<TotaisByMonthDTO> totais = service.totalsByPeriodByMonth(dtInicial, dtFinal, search);		
 		return ResponseEntity.ok().body(totais);		
 	}
 }

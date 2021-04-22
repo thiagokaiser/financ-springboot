@@ -7,11 +7,14 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.dto.TotaisByCategDTO;
+import com.kaiser.financ.dto.TotaisByMonthDTO;
 
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
@@ -35,7 +38,23 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 	List<Despesa> findByUsuarioAndIdentificadorAndPago(Usuario usuario, Integer identificador, Boolean pago);
 	
 	@Transactional(readOnly = true)
-	List<Despesa> findByUsuarioAndIdentificador(Usuario usuario, Integer identificador);
+	List<Despesa> findByUsuarioAndIdentificador(Usuario usuario, Integer identificador);	
+		
+	@Transactional(readOnly = true)
+	@Query(value = 
+		"SELECT new com.kaiser.financ.dto.TotaisByCategDTO(categ.descricao, categ.cor, sum(desp.valor)) FROM Despesa desp" +
+		" INNER JOIN desp.categoria categ" +
+		" WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3" +
+		" GROUP BY categ.descricao, categ.cor")			
+	List<TotaisByCategDTO> totalsByPeriodByCategoria(Usuario usuario, Date dtInicial, Date dtFinal);
 	
+	@Transactional(readOnly = true)
+	@Query(value = 
+		"SELECT new com.kaiser.financ.dto.TotaisByMonthDTO(month(desp.dtVencimento), year(desp.dtVencimento), sum(desp.valor)) FROM Despesa desp" +
+		" INNER JOIN desp.categoria categ" +
+		" WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3 AND desp.pago = true" +
+		" GROUP BY month(desp.dtVencimento), year(desp.dtVencimento)" +
+		" ORDER BY year(desp.dtVencimento) DESC, month(desp.dtVencimento) DESC")			
+	List<TotaisByMonthDTO> totalsByPeriodByMonth(Usuario usuario, Date dtInicial, Date dtFinal);
 	
 }

@@ -21,6 +21,8 @@ import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.DespesaUpdateDTO;
+import com.kaiser.financ.dto.TotaisByCategDTO;
+import com.kaiser.financ.dto.TotaisByMonthDTO;
 import com.kaiser.financ.dto.TotaisDTO;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
@@ -79,6 +81,7 @@ public class DespesaService {
 				despesa.setParcelaAtual(parcela);
 				despesa.setNumParcelas(obj.getNumParcelas());
 				despesa.setUsuario(obj.getUsuario());
+				despesa.setPago(false);
 				
 				Date dtVencimento = obj.getDtVencimento();				
 				Calendar cal = Calendar.getInstance();
@@ -201,6 +204,32 @@ public class DespesaService {
 		return new TotaisDTO(dtInicial,dtFinal,total,totalPago,totalPendente);		
 	}
 	
+	public List<TotaisByCategDTO> totalsByPeriodByCategoria(String stringDtInicial, String stringDtFinal, String search) {
+				
+		Usuario usuario = usuarioService.userLoggedIn();		
+		Date dtInicial = stringToDate(stringDtInicial);
+		Date dtFinal = stringToDate(stringDtFinal);
+		
+		List<TotaisByCategDTO> list = repo.totalsByPeriodByCategoria(usuario, dtInicial, dtFinal);		
+		
+		return list;		
+	}
+	
+	public List<TotaisByMonthDTO> totalsByPeriodByMonth(String stringDtInicial, String stringDtFinal, String search) {
+		
+		Usuario usuario = usuarioService.userLoggedIn();		
+		Date dtInicial = stringToDate(stringDtInicial + "-01");
+		Date dtFinal = stringToDate(stringDtFinal + "-" + lastDayOfMonth(stringDtFinal));		
+		
+		if(monthsBetween(dtInicial, dtFinal) > 12) {
+			throw new DataIntegrityException("Filtro deve ter no máximo 12 meses de intervalo");
+		}
+		
+		List<TotaisByMonthDTO> list = repo.totalsByPeriodByMonth(usuario, dtInicial, dtFinal);		
+		
+		return list;		
+	}
+	
 	public Despesa fromDTO(DespesaUpdateDTO objDto) {		
 		Usuario usuario = usuarioService.userLoggedIn();
 		Categoria categ = new Categoria();
@@ -234,11 +263,11 @@ public class DespesaService {
 		newObj.setValor(obj.getValor());
 	}
 	
-	public boolean isNullorZero(Integer i){
+	private boolean isNullorZero(Integer i){
 	    return 0 == ( i == null ? 0 : i);
 	}
 	
-	public Date stringToDate(String stringDate) {
+	private Date stringToDate(String stringDate) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));		
 		
@@ -250,6 +279,25 @@ public class DespesaService {
 		}
 		
 		return date;		
+	}
+	
+	private Integer monthsBetween(Date dtInicial, Date dtFinal) {
+		Calendar dtInicialCalendar = Calendar.getInstance();
+		dtInicialCalendar.setTime(dtInicial);
+		Calendar dtFinalCalendar = Calendar.getInstance();
+		dtFinalCalendar.setTime(dtFinal);		
+		
+		Integer meses = (dtFinalCalendar.get(Calendar.YEAR) * 12 + dtFinalCalendar.get(Calendar.MONTH))
+		        - (dtInicialCalendar.get(Calendar.YEAR) * 12 + dtInicialCalendar.get(Calendar.MONTH));
+		
+		return meses;
+	}
+	
+	private Integer lastDayOfMonth(String month) {
+		Date data = stringToDate(month + "-01");		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);		
+		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
 }
