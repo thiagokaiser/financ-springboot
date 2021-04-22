@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -227,6 +229,12 @@ public class DespesaService {
 		
 		List<TotaisByMonthDTO> list = repo.totalsByPeriodByMonth(usuario, dtInicial, dtFinal);		
 		
+		try {
+			fixListByMonth(list, stringDtInicial, stringDtFinal);
+		}catch (Exception e) {
+			throw new DataIntegrityException("Erro ao ajustar lista");
+		}		
+		
 		return list;		
 	}
 	
@@ -298,6 +306,33 @@ public class DespesaService {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(data);		
 		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	private void fixListByMonth(List<TotaisByMonthDTO> list, String stringDtInicial, String stringDtFinal) throws Exception{		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar dtInicialCalendar = Calendar.getInstance();
+        Calendar dtFinalCalendar = Calendar.getInstance();
+        
+        dtInicialCalendar.setTime(sdf.parse(stringDtInicial));
+        dtFinalCalendar.setTime(sdf.parse(stringDtFinal));
+        dtFinalCalendar.add(Calendar.MONTH, 1);
+        
+        while(dtInicialCalendar.before(dtFinalCalendar)){            
+        	TotaisByMonthDTO mes = new TotaisByMonthDTO(dtInicialCalendar.get(Calendar.MONTH) + 1,dtInicialCalendar.get(Calendar.YEAR),0.0);
+            if(!list.contains(mes)) {
+            	list.add(mes);
+            };            
+            dtInicialCalendar.add(Calendar.MONTH, 1);
+        };
+        
+        Collections.sort(list, new Comparator<TotaisByMonthDTO>() {        	
+            public int compare(TotaisByMonthDTO b, TotaisByMonthDTO a) {            	
+                int res = a.getAno().compareTo(b.getAno());
+                if (res != 0) {
+                   return res;
+                }                
+                return a.getMes().compareTo(b.getMes());
+        }});
 	}
 	
 }
