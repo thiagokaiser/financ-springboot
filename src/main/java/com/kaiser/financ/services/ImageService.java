@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
@@ -20,14 +19,15 @@ import com.kaiser.financ.services.exceptions.FileException;
 public class ImageService {
 	
 	public BufferedImage getJpgImageFromFile(MultipartFile uploadedFile) {
-		String ext = FilenameUtils.getExtension(uploadedFile.getOriginalFilename());
-		if (!"png".equals(ext) && !"jpg".equals(ext)) {
+		String ext = uploadedFile.getContentType();
+		
+		if (!"image/png".equals(ext) && !"image/jpg".equals(ext)) {
 			throw new FileException("Somente imagens PNG e JPG são permitidas");
 		}
 		
 		try {
 			BufferedImage img = ImageIO.read(uploadedFile.getInputStream());
-			if ("png".equals(ext)) {
+			if ("image/png".equals(ext)) {
 				img = pngToJpg(img);
 			}
 			return img;
