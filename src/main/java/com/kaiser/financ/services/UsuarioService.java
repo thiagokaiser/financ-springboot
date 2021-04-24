@@ -77,7 +77,7 @@ public class UsuarioService {
 			throw new AuthorizationException("Acesso negado");
 		}
 		
-		Optional<Usuario> obj = repo.findById(id);
+		Optional<Usuario> obj = repo.findById(id);		
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
 	}		
@@ -94,6 +94,14 @@ public class UsuarioService {
 		updateData(newObj, obj);        
 		return repo.save(newObj);
 	}
+	
+	public Usuario updateImagemPerfil(Integer id, String imagemPerfil) {
+		Usuario obj = find(id);
+		obj.setImagemPerfil(imagemPerfil);		        
+		return repo.save(obj);
+	}
+	
+	
 	
 	public void delete(Integer id) {
 		find(id);
@@ -167,9 +175,12 @@ public class UsuarioService {
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
 		
-		String fileName = prefix + user.getId() + ".jpg";
+		String fileName = prefix + user.getId() + ".jpg";				
+		URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+		
+		updateImagemPerfil(user.getId(), uri.toString());		
 				
-		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+		return uri;
 	}
 	
 }

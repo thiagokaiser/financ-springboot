@@ -1,10 +1,7 @@
 package com.kaiser.financ.dto;
 
 import java.io.Serializable;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.Date;
 
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.services.validation.UsuarioUpdate;
@@ -14,29 +11,42 @@ public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	
-	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
 	private String nome;
-	
-	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
 	private String sobrenome;
-	
-	@NotEmpty(message = "Campo Obrigatário")
-	@Email(message = "Email inválido")
+	private Date dtNascimento;
+	private String cidade;
+	private String estado;	
+	private String descricao;
+	private String imagemPerfil;	
 	private String email;
 	
-	public UsuarioDTO() {		
-	}
-
-	public UsuarioDTO(Usuario obj) {
-		id = obj.getId();
-		nome = obj.getNome();
-		sobrenome = obj.getSobrenome();
-		email = obj.getEmail();
+	public UsuarioDTO(Integer id, String nome, String sobrenome, Date dtNascimento, String cidade, String estado,
+			String descricao, String imagemPerfil, String email) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.dtNascimento = dtNascimento;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.descricao = descricao;
+		this.imagemPerfil = imagemPerfil;
+		this.email = email;
 	}
 	
+	public UsuarioDTO(Usuario obj) {
+		
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.sobrenome = obj.getSobrenome();
+		this.dtNascimento = obj.getDtNascimento();
+		this.cidade = obj.getCidade();
+		this.estado = obj.getEstado();
+		this.descricao = obj.getDescricao();
+		this.imagemPerfil = obj.getImagemPerfil();
+		this.email = obj.getEmail();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -51,7 +61,7 @@ public class UsuarioDTO implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}	
+	}
 
 	public String getSobrenome() {
 		return sobrenome;
@@ -61,6 +71,46 @@ public class UsuarioDTO implements Serializable{
 		this.sobrenome = sobrenome;
 	}
 
+	public Date getDtNascimento() {
+		return dtNascimento;
+	}
+
+	public void setDtNascimento(Date dtNascimento) {
+		this.dtNascimento = dtNascimento;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getImagemPerfil() {
+		return imagemPerfil;
+	}
+
+	public void setImagemPerfil(String imagemPerfil) {
+		this.imagemPerfil = imagemPerfil;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -68,4 +118,8 @@ public class UsuarioDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}	
 }

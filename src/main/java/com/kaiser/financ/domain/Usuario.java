@@ -31,6 +31,7 @@ public class Usuario implements Serializable {
 	private String cidade;
 	private String estado;	
 	private String descricao;
+	private String imagemPerfil;
 	
 	@Column(unique = true)
 	private String email;	
@@ -157,6 +158,14 @@ public class Usuario implements Serializable {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}	
+
+	public String getImagemPerfil() {
+		return imagemPerfil;
+	}
+
+	public void setImagemPerfil(String imagemPerfil) {
+		this.imagemPerfil = imagemPerfil;
+	}
 
 	@Override
 	public int hashCode() {

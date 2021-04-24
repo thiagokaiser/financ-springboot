@@ -34,15 +34,17 @@ public class UsuarioResource {
 	private UsuarioService service;	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@PathVariable Integer id) {		
-		Usuario obj = service.find(id);		
-		return ResponseEntity.ok().body(obj);		
+	public ResponseEntity<UsuarioDTO> find(@PathVariable Integer id) {		
+		Usuario obj = service.find(id);
+		UsuarioDTO objDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(objDto);		
 	}
 	
 	@RequestMapping(value="/email", method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@RequestParam(value="email") String email) {		
-		Usuario obj = service.findByEmail(email);		
-		return ResponseEntity.ok().body(obj);		
+	public ResponseEntity<UsuarioDTO> find(@RequestParam(value="email") String email) {		
+		Usuario obj = service.findByEmail(email);
+		UsuarioDTO objDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(objDto);
 	}		
 	
 	@RequestMapping(method=RequestMethod.POST)
