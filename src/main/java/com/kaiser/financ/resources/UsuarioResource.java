@@ -96,8 +96,8 @@ public class UsuarioResource {
 	}
 	
 	@RequestMapping(value="/picture", method=RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@ModelAttribute FileUploadDTO objDto){		
-		URI uri = service.uploadProfilePicture(objDto.getFile());		
-		return ResponseEntity.created(uri).build();
+	public ResponseEntity<UsuarioDTO> uploadProfilePicture(@ModelAttribute FileUploadDTO objDto){		
+		UsuarioDTO usuarioDto = service.uploadProfilePicture(objDto.getFile());		
+		return ResponseEntity.ok().body(usuarioDto);
 	}	
 }

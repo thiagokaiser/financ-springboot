@@ -13,11 +13,11 @@ public class UsuarioNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
+	@Size(min=1, max=80, message = "Campo deve estar entre 1 e 80 caracteres")
 	private String nome;
 	
 	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
+	@Size(min=1, max=80, message = "Campo deve estar entre 1 e 80 caracteres")
 	private String sobrenome;
 	
 	@NotEmpty(message = "Campo Obrigatário")

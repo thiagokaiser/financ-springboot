@@ -165,7 +165,7 @@ public class UsuarioService {
 		newObj.setDescricao(obj.getDescricao());
 	}
 	
-	public URI uploadProfilePicture(MultipartFile multipartFile) {		
+	public UsuarioDTO uploadProfilePicture(MultipartFile multipartFile) {		
 		UserSS user = UsuarioService.authenticated();
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
@@ -178,9 +178,9 @@ public class UsuarioService {
 		String fileName = prefix + user.getId() + ".jpg";				
 		URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 		
-		updateImagemPerfil(user.getId(), uri.toString());		
+		UsuarioDTO objDto = new UsuarioDTO(updateImagemPerfil(user.getId(), uri.toString()));		
 				
-		return uri;
+		return objDto;
 	}
 	
 }
