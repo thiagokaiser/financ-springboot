@@ -34,7 +34,7 @@ public class Despesa implements Serializable{
 	
 	private Integer parcelaAtual;	
 	
-	private Integer identificador;
+	private Integer idParcela;
 	
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
@@ -53,7 +53,7 @@ public class Despesa implements Serializable{
 	}
 
 	public Despesa(Integer id, String descricao, Double valor, Date dtVencimento, Boolean pago, Integer numParcelas,
-			Integer parcelaAtual, Integer identificador, Usuario usuario, Categoria categoria, Conta conta) {
+			Integer parcelaAtual, Integer idParcela, Usuario usuario, Categoria categoria, Conta conta) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -62,14 +62,14 @@ public class Despesa implements Serializable{
 		this.pago = pago;
 		this.numParcelas = numParcelas;
 		this.parcelaAtual = parcelaAtual;
-		this.identificador = identificador;
+		this.idParcela = idParcela;
 		this.usuario = usuario;
 		this.categoria = categoria;
 		this.conta = conta;
 	}
 	
 	public Despesa(Integer id, String descricao, Double valor, Date dtVencimento, Boolean pago, Integer numParcelas,
-			Integer parcelaAtual, Integer identificador) {
+			Integer parcelaAtual, Integer idParcela) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -78,7 +78,7 @@ public class Despesa implements Serializable{
 		this.pago = pago;
 		this.numParcelas = numParcelas;
 		this.parcelaAtual = parcelaAtual;
-		this.identificador = identificador;		
+		this.idParcela = idParcela;		
 	}
 
 	public Integer getId() {
@@ -137,12 +137,12 @@ public class Despesa implements Serializable{
 		this.parcelaAtual = parcelaAtual;
 	}
 
-	public Integer getIdentificador() {
-		return identificador;
+	public Integer getIdParcela() {
+		return idParcela;
 	}
 
-	public void setIdentificador(Integer identificador) {
-		this.identificador = identificador;
+	public void setIdParcela(Integer idParcela) {
+		this.idParcela = idParcela;
 	}
 	
 	public Usuario getUsuario() {

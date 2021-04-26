@@ -24,7 +24,7 @@ public class DespesaDTO implements Serializable{
 	private Boolean pago;
 	private Integer numParcelas;
 	private Integer parcelaAtual;
-	private Integer identificador;	
+	private Integer idParcela;	
 	
 	private Categoria categoria;	
 	private Conta conta;		
@@ -40,7 +40,7 @@ public class DespesaDTO implements Serializable{
 		this.pago = obj.getPago();
 		this.numParcelas = obj.getNumParcelas();
 		this.parcelaAtual = obj.getParcelaAtual();
-		this.identificador = obj.getIdentificador();
+		this.idParcela = obj.getIdParcela();
 		this.categoria = obj.getCategoria();
 		this.conta = obj.getConta();
 	}
@@ -101,12 +101,12 @@ public class DespesaDTO implements Serializable{
 		this.parcelaAtual = parcelaAtual;
 	}
 
-	public Integer getIdentificador() {
-		return identificador;
+	public Integer getIdParcela() {
+		return idParcela;
 	}
 
-	public void setIdentificador(Integer identificador) {
-		this.identificador = identificador;
+	public void setIdParcela(Integer idParcela) {
+		this.idParcela = idParcela;
 	}
 
 	public Categoria getCategoria() {

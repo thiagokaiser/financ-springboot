@@ -35,10 +35,10 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 	Optional<Despesa> findByIdAndUsuario(Integer id,Usuario usuario);
 	
 	@Transactional(readOnly = true)
-	List<Despesa> findByUsuarioAndIdentificadorAndPago(Usuario usuario, Integer identificador, Boolean pago);
+	List<Despesa> findByUsuarioAndIdParcelaAndPago(Usuario usuario, Integer idParcela, Boolean pago);
 	
 	@Transactional(readOnly = true)
-	List<Despesa> findByUsuarioAndIdentificador(Usuario usuario, Integer identificador);	
+	List<Despesa> findByUsuarioAndIdParcela(Usuario usuario, Integer idParcela);	
 		
 	@Transactional(readOnly = true)
 	@Query(value = 

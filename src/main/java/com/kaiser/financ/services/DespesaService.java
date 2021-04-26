@@ -70,7 +70,7 @@ public class DespesaService {
 				obj.setNumParcelas(99);
 			}							
 			
-			obj.setIdentificador(obj.getId());
+			obj.setIdParcela(obj.getId());
 			obj = repo.save(obj);
 			
 			List<Despesa> listDespesas = new ArrayList<Despesa>();
@@ -79,7 +79,7 @@ public class DespesaService {
 				mes += 1;
 				Despesa despesa = new Despesa();
 				updateData(despesa, obj);
-				despesa.setIdentificador(obj.getId());
+				despesa.setIdParcela(obj.getId());
 				despesa.setParcelaAtual(parcela);
 				despesa.setNumParcelas(obj.getNumParcelas());
 				despesa.setUsuario(obj.getUsuario());
@@ -105,13 +105,13 @@ public class DespesaService {
 		return repo.save(newObj);
 	}
 	
-	public void updateUnpaidByIdentificador(Despesa despesa) {
-		if(isNullorZero(despesa.getIdentificador())) {
-			throw new DataIntegrityException("Identificador inválido");
+	public void updateUnpaidByIdParcela(Despesa despesa) {
+		if(isNullorZero(despesa.getIdParcela())) {
+			throw new DataIntegrityException("IdParcela inválido");
 		}
 		
 		Usuario usuario = usuarioService.userLoggedIn();
-		List<Despesa> despesas = repo.findByUsuarioAndIdentificadorAndPago(usuario, despesa.getIdentificador(), false);
+		List<Despesa> despesas = repo.findByUsuarioAndIdParcelaAndPago(usuario, despesa.getIdParcela(), false);
 		
 		for (Despesa newDespesa : despesas) {			
 			newDespesa.setDescricao(despesa.getDescricao());			
@@ -122,13 +122,13 @@ public class DespesaService {
 		repo.saveAll(despesas);
 	}
 	
-	public void updateAllByIdentificador(Despesa despesa) {
-		if(isNullorZero(despesa.getIdentificador())) {
-			throw new DataIntegrityException("Identificador inválido");
+	public void updateAllByIdParcela(Despesa despesa) {
+		if(isNullorZero(despesa.getIdParcela())) {
+			throw new DataIntegrityException("IdParcela inválido");
 		}
 		
 		Usuario usuario = usuarioService.userLoggedIn();
-		List<Despesa> despesas = repo.findByUsuarioAndIdentificador(usuario, despesa.getIdentificador());
+		List<Despesa> despesas = repo.findByUsuarioAndIdParcela(usuario, despesa.getIdParcela());
 		
 		for (Despesa newDespesa : despesas) {			
 			newDespesa.setDescricao(despesa.getDescricao());			
@@ -146,14 +146,14 @@ public class DespesaService {
 		}		
 	}
 	
-	public void deleteByIdentificador(Integer identificador) {
+	public void deleteByIdParcela(Integer idParcela) {
 			
-		if(isNullorZero(identificador)) {
-			throw new DataIntegrityException("Identificador inválido");
+		if(isNullorZero(idParcela)) {
+			throw new DataIntegrityException("IdParcela inválido");
 		}
 		
 		Usuario usuario = usuarioService.userLoggedIn();		
-		List<Despesa> despesas = repo.findByUsuarioAndIdentificadorAndPago(usuario, identificador, false);
+		List<Despesa> despesas = repo.findByUsuarioAndIdParcelaAndPago(usuario, idParcela, false);
 		
 		try {
 			repo.deleteAll(despesas);			
@@ -256,7 +256,7 @@ public class DespesaService {
 						   objDto.getPago(), 
 						   !this.isNullorZero(objDto.getNumParcelas()) ? objDto.getNumParcelas() : 1, 
 						   objDto.getParcelaAtual(), 
-						   objDto.getIdentificador(),
+						   objDto.getIdParcela(),
 						   usuario,
 						   categ,
 						   conta);						   

@@ -22,7 +22,7 @@ public class DespesaUpdateDTO implements Serializable{
 	private Boolean pago;
 	private Integer numParcelas;
 	private Integer parcelaAtual;
-	private Integer identificador;	
+	private Integer idParcela;	
 	
 	private Integer categoriaId;	
 	private Integer contaId;		
@@ -38,7 +38,7 @@ public class DespesaUpdateDTO implements Serializable{
 		this.pago = obj.getPago();
 		this.numParcelas = obj.getNumParcelas();
 		this.parcelaAtual = obj.getParcelaAtual();
-		this.identificador = obj.getIdentificador();
+		this.idParcela = obj.getIdParcela();
 		this.categoriaId = obj.getCategoria().getId();
 		this.contaId = obj.getConta().getId();
 	}
@@ -99,12 +99,12 @@ public class DespesaUpdateDTO implements Serializable{
 		this.parcelaAtual = parcelaAtual;
 	}
 
-	public Integer getIdentificador() {
-		return identificador;
+	public Integer getIdParcela() {
+		return idParcela;
 	}
 
-	public void setIdentificador(Integer identificador) {
-		this.identificador = identificador;
+	public void setIdParcela(Integer idParcela) {
+		this.idParcela = idParcela;
 	}
 
 	public Integer getCategoriaId() {

@@ -66,23 +66,23 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa todas despesas pelo identificador")
+	@ApiOperation(value = "Atualiza Despesa todas despesas pelo idParcela")
 	@PreAuthorize("hasAnyRole('USER')")
-	@RequestMapping(value = "/all/{identificador}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateAllByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
+	@RequestMapping(value = "/all/{idParcela}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateAllByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
 		Despesa obj = service.fromDTO(objDto);
-		obj.setIdentificador(identificador);
-		service.updateAllByIdentificador(obj);		
+		obj.setIdParcela(idParcela);
+		service.updateAllByIdParcela(obj);		
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa todas despesas nao pagas pelo identificador")
+	@ApiOperation(value = "Atualiza Despesa todas despesas nao pagas pelo idParcela")
 	@PreAuthorize("hasAnyRole('USER')")
-	@RequestMapping(value = "/unpaid/{identificador}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateUnpaidByIdentificador(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer identificador){
+	@RequestMapping(value = "/unpaid/{idParcela}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateUnpaidByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
 		Despesa obj = service.fromDTO(objDto);
-		obj.setIdentificador(identificador);
-		service.updateUnpaidByIdentificador(obj);		
+		obj.setIdParcela(idParcela);
+		service.updateUnpaidByIdParcela(obj);		
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -98,14 +98,14 @@ public class DespesaResource {
 		
 	}
 	
-	@ApiOperation(value = "Remove Despesa pelo identificador (despesa parcelada)")
+	@ApiOperation(value = "Remove Despesa pelo idParcela (despesa parcelada)")
 	@ApiResponses(value = {			
 			@ApiResponse(code = 404, message = "Código inexistente") })
 	@PreAuthorize("hasAnyRole('USER')")
-	@RequestMapping(value="/identificador/{identificador}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteByIdentificador(@PathVariable Integer identificador) {
+	@RequestMapping(value="/idParcela/{idParcela}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteByIdParcela(@PathVariable Integer idParcela) {
 		
-		service.deleteByIdentificador(identificador);		
+		service.deleteByIdParcela(idParcela);		
 		return ResponseEntity.noContent().build();		
 		
 	}
