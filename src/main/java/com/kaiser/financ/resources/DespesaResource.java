@@ -66,7 +66,7 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa todas despesas pelo idParcela")
+	@ApiOperation(value = "Atualiza todas despesas pelo idParcela")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value = "/all/{idParcela}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateAllByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
@@ -76,7 +76,7 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa todas despesas nao pagas pelo idParcela")
+	@ApiOperation(value = "Atualiza todas despesas nao pagas pelo idParcela")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value = "/unpaid/{idParcela}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateUnpaidByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
@@ -98,7 +98,7 @@ public class DespesaResource {
 		
 	}
 	
-	@ApiOperation(value = "Remove Despesa pelo idParcela (despesa parcelada)")
+	@ApiOperation(value = "Remove todas despesas pelo idParcela")
 	@ApiResponses(value = {			
 			@ApiResponse(code = 404, message = "Código inexistente") })
 	@PreAuthorize("hasAnyRole('USER')")
@@ -110,7 +110,7 @@ public class DespesaResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas Despesas")
+	@ApiOperation(value = "Retorna todas despesas")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<DespesaDTO>> findAll() {
@@ -121,7 +121,7 @@ public class DespesaResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas Despesas com paginação")
+	@ApiOperation(value = "Retorna todas despesas com paginação")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<DespesaDTO>> findPage(
@@ -140,7 +140,7 @@ public class DespesaResource {
 		
 	}	
 	
-	@ApiOperation(value = "Retorna Totais por periodo")
+	@ApiOperation(value = "Retorna totais por periodo")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/totals", method=RequestMethod.GET)
 	public ResponseEntity<TotaisDTO> totalsByPeriod(
@@ -152,7 +152,7 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(totais);		
 	}
 	
-	@ApiOperation(value = "Retorna Totais por Categoria")
+	@ApiOperation(value = "Retorna totais por categoria")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/totalsByCateg", method=RequestMethod.GET)
 	public ResponseEntity<List<TotaisByCategDTO>> totalsByPeriodByCategoria(
@@ -164,7 +164,7 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(totais);		
 	}
 	
-	@ApiOperation(value = "Retorna Totais por Mes")
+	@ApiOperation(value = "Retorna totais por mes")
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/totalsByMonth", method=RequestMethod.GET)
 	public ResponseEntity<List<TotaisByMonthDTO>> totalsByPeriodByMonth(

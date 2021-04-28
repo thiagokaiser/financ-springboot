@@ -16,7 +16,7 @@ public class DespesaDTO implements Serializable{
 	private Integer id;
 		
 	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=5, max=80, message = "Campo deve estar entre 5 e 80 caracteres")
+	@Size(min=3, max=80, message = "Campo deve estar entre 3 e 80 caracteres")
 	private String descricao;
 	
 	private Double valor;

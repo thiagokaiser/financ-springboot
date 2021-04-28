@@ -67,7 +67,7 @@ public class CategoriaResource {
 	
 	@ApiOperation(value = "Remove categoria")
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
+			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui despesas"),
 			@ApiResponse(code = 404, message = "Código inexistente") })
 	@PreAuthorize("hasAnyRole('USER')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
