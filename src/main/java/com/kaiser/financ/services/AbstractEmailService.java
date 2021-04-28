@@ -19,6 +19,9 @@ public abstract class AbstractEmailService implements EmailService{
 	@Value("${default.sender}")
 	private String sender;
 	
+	@Value("${default.frontend_url}")
+	private String frontEndUrl;
+	
 	@Autowired
 	private TemplateEngine templateEngine;
 	
@@ -35,7 +38,7 @@ public abstract class AbstractEmailService implements EmailService{
 	}
 
 	protected MimeMessage prepareResetPasswordEmail(Usuario usuario, String linkResetPassword) throws MessagingException {
-		String link = "http://localhost:4200/security/resetPassword/" + linkResetPassword;
+		String link = frontEndUrl + "security/resetPassword/" + linkResetPassword;
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		

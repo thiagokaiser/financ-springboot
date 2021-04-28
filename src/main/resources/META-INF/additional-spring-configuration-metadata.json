@@ -10,6 +10,11 @@
     "description": "A description for 'default.recipient'"
   },
   {
+    "name": "default.frontend_url",
+    "type": "java.lang.String",
+    "description": "A description for 'default.frontend_url'"
+  },
+  {
     "name": "jwt.secret",
     "type": "java.lang.String",
     "description": "A description for 'jwt.secret'"

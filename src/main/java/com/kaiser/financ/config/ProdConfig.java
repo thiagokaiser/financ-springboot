@@ -9,7 +9,7 @@ import com.kaiser.financ.services.SmtpEmailService;
 
 @Configuration
 @Profile("prod")
-public class ProdConfig {
+public class ProdConfig {	
 	
 	@Bean
 	public EmailService emailService() {		
