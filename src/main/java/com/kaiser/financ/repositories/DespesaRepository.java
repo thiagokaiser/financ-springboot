@@ -42,7 +42,7 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 		
 	@Transactional(readOnly = true)
 	@Query(value = 
-		"SELECT new com.kaiser.financ.dto.TotaisByCategDTO(categ.descricao, categ.cor, sum(desp.valor)) FROM Despesa desp" +
+		"SELECT new com.kaiser.financ.dto.TotaisByCategDTO(categ.descricao, categ.cor, SUM(desp.valor)) FROM Despesa desp" +
 		" INNER JOIN desp.categoria categ" +
 		" WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3" +
 		" GROUP BY categ.descricao, categ.cor")			

@@ -1,6 +1,8 @@
 package com.kaiser.financ.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class TotaisByMonthDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;
@@ -16,7 +18,7 @@ public class TotaisByMonthDTO implements Serializable{
 		super();
 		this.mes = mes;
 		this.ano = ano;
-		this.total = total;
+		this.setTotal(total);
 	}
 
 	public Integer getMes() {
@@ -40,7 +42,8 @@ public class TotaisByMonthDTO implements Serializable{
 	}
 
 	public void setTotal(Double total) {
-		this.total = total;
+		BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+		this.total = bd.doubleValue();
 	}
 
 	@Override
