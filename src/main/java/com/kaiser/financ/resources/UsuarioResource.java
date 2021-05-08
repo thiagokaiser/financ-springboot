@@ -23,6 +23,7 @@ import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.FileUploadDTO;
 import com.kaiser.financ.dto.UsuarioDTO;
 import com.kaiser.financ.dto.UsuarioNewDTO;
+import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.dto.UsuarioUpdateDTO;
 import com.kaiser.financ.services.UsuarioService;
 
@@ -40,8 +41,8 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(objDto);		
 	}
 	
-	@RequestMapping(value="/email", method=RequestMethod.GET)
-	public ResponseEntity<UsuarioDTO> find(@RequestParam(value="email") String email) {		
+	@RequestMapping(value="/email/{email}", method=RequestMethod.GET)
+	public ResponseEntity<UsuarioDTO> find(@PathVariable String email) {		
 		Usuario obj = service.findByEmail(email);
 		UsuarioDTO objDto = new UsuarioDTO(obj);
 		return ResponseEntity.ok().body(objDto);
@@ -57,13 +58,19 @@ public class UsuarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value = "/{email}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable String email){
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id){
 		Usuario obj = service.fromDTO(objDto);
-		obj.setEmail(email);
+		obj.setId(id);
 		obj = service.update(obj);		
 		return ResponseEntity.noContent().build();
-	}
+	}	
+	
+	@RequestMapping(value="/picture", method=RequestMethod.POST)
+	public ResponseEntity<UsuarioDTO> uploadProfilePicture(@ModelAttribute FileUploadDTO objDto){		
+		UsuarioDTO usuarioDto = service.uploadProfilePicture(objDto.getFile());		
+		return ResponseEntity.ok().body(usuarioDto);
+	}	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
@@ -93,11 +100,14 @@ public class UsuarioResource {
 		Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
 		return ResponseEntity.ok().body(listDto);				
-	}
-	
-	@RequestMapping(value="/picture", method=RequestMethod.POST)
-	public ResponseEntity<UsuarioDTO> uploadProfilePicture(@ModelAttribute FileUploadDTO objDto){		
-		UsuarioDTO usuarioDto = service.uploadProfilePicture(objDto.getFile());		
-		return ResponseEntity.ok().body(usuarioDto);
 	}	
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/admin/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateAdmin(@Valid @RequestBody UsuarioUpdateAdminDTO objDto, @PathVariable Integer id){
+		Usuario obj = service.fromDTO(objDto);
+		obj.setId(id);		
+		obj = service.updateAdmin(obj);		
+		return ResponseEntity.noContent().build();
+	}
 }

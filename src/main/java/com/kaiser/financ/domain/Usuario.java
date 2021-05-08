@@ -49,7 +49,17 @@ public class Usuario implements Serializable {
 
 	public Usuario() {		
 		addPerfil(Perfil.USER);
-	}	
+	}
+	
+	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.email = email;		
+		this.senha = senha;
+		addPerfil(Perfil.USER);
+	}
 	
 	public Usuario(String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao) {
 		super();		
@@ -60,16 +70,18 @@ public class Usuario implements Serializable {
 		this.estado = estado;	
 		this.descricao = descricao;
 	}
-
-	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
-		super();
-		this.id = id;
+	
+	public Usuario(String email, String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao, String imagemPerfil) {
+		super();		
+		this.email = email;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.email = email;		
-		this.senha = senha;
-		addPerfil(Perfil.USER);
-	}
+		this.dtNascimento = dtNascimento;
+		this.cidade = cidade;
+		this.estado = estado;	
+		this.descricao = descricao;
+		this.imagemPerfil = imagemPerfil;
+	}	
 
 	public Integer getId() {
 		return id;

@@ -21,6 +21,7 @@ import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.domain.enums.Perfil;
 import com.kaiser.financ.dto.UsuarioDTO;
 import com.kaiser.financ.dto.UsuarioNewDTO;
+import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.dto.UsuarioUpdateDTO;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.security.UserSS;
@@ -90,8 +91,14 @@ public class UsuarioService {
 	}
 	
 	public Usuario update(Usuario obj) {
-		Usuario newObj = findByEmail(obj.getEmail());
+		Usuario newObj = find(obj.getId());
 		updateData(newObj, obj);        
+		return repo.save(newObj);
+	}
+	
+	public Usuario updateAdmin(Usuario obj) {
+		Usuario newObj = find(obj.getId());
+		updateDataAdmin(newObj, obj);        
 		return repo.save(newObj);
 	}
 	
@@ -99,9 +106,7 @@ public class UsuarioService {
 		Usuario obj = find(id);
 		obj.setImagemPerfil(imagemPerfil);		        
 		return repo.save(obj);
-	}
-	
-	
+	}	
 	
 	public void delete(Integer id) {
 		find(id);
@@ -143,6 +148,10 @@ public class UsuarioService {
 		return new Usuario(objDto.getNome(), objDto.getSobrenome(), objDto.getDtNascimento(), objDto.getCidade(), objDto.getEstado(), objDto.getDescricao());
 	}
 	
+	public Usuario fromDTO(UsuarioUpdateAdminDTO objDto) {
+		return new Usuario(objDto.getEmail(), objDto.getNome(), objDto.getSobrenome(), objDto.getDtNascimento(), objDto.getCidade(), objDto.getEstado(), objDto.getDescricao(), objDto.getImagemPerfil());
+	}
+	
 	public Usuario fromDTO(UsuarioNewDTO objDto) {
 		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), pe.encode(objDto.getSenha()));
 		
@@ -163,6 +172,17 @@ public class UsuarioService {
 		newObj.setEstado(obj.getEstado());
 		newObj.setDtNascimento(obj.getDtNascimento());
 		newObj.setDescricao(obj.getDescricao());
+	}
+	
+	private void updateDataAdmin(Usuario newObj, Usuario obj) {
+		newObj.setEmail(obj.getEmail());
+		newObj.setNome(obj.getNome());
+		newObj.setSobrenome(obj.getSobrenome());
+		newObj.setCidade(obj.getCidade());
+		newObj.setEstado(obj.getEstado());
+		newObj.setDtNascimento(obj.getDtNascimento());
+		newObj.setDescricao(obj.getDescricao());
+		newObj.setImagemPerfil(obj.getImagemPerfil());
 	}
 	
 	public UsuarioDTO uploadProfilePicture(MultipartFile multipartFile) {		

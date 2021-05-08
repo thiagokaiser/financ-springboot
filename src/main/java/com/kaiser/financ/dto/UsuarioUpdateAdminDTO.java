@@ -3,12 +3,17 @@ package com.kaiser.financ.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class UsuarioUpdateDTO implements Serializable{	
+public class UsuarioUpdateAdminDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "Campo Obrigatário")
+	@Email(message = "Email inválido")
+	private String email;
+	
 	@NotEmpty(message = "Campo Obrigatário")	
 	@Size(min=1, max=80, message = "Campo deve estar entre 1 e 80 caracteres")
 	private String nome;
@@ -28,20 +33,30 @@ public class UsuarioUpdateDTO implements Serializable{
 	@Size(max=80, message = "Campo deve ter no máximo 80 caracteres")
 	private String descricao;
 	
-	public UsuarioUpdateDTO() {		
+	private String imagemPerfil;
+	
+	public UsuarioUpdateAdminDTO() {		
 	}
 	
-	public UsuarioUpdateDTO(String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao) {
+	public UsuarioUpdateAdminDTO(String email, String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao, String imagemPerfil) {
 		super();
+		this.email = email;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.dtNascimento = dtNascimento;
 		this.cidade = cidade;
 		this.estado = estado;
 		this.descricao = descricao;
+		this.imagemPerfil = imagemPerfil;
+	}	
+
+	public String getEmail() {
+		return email;
 	}
 
-
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getNome() {
 		return nome;
@@ -89,5 +104,13 @@ public class UsuarioUpdateDTO implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}	
+	}
+
+	public String getImagemPerfil() {
+		return imagemPerfil;
+	}
+
+	public void setImagemPerfil(String imagemPerfil) {
+		this.imagemPerfil = imagemPerfil;
+	}		
 }
