@@ -2,8 +2,11 @@ package com.kaiser.financ.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.domain.enums.Perfil;
 import com.kaiser.financ.services.validation.UsuarioUpdate;
 
 @UsuarioUpdate
@@ -19,6 +22,7 @@ public class UsuarioDTO implements Serializable{
 	private String descricao;
 	private String imagemPerfil;	
 	private String email;
+	private Set<Perfil> perfis = new HashSet<>();
 	
 	public UsuarioDTO(Integer id, String nome, String sobrenome, Date dtNascimento, String cidade, String estado,
 			String descricao, String imagemPerfil, String email) {
@@ -34,8 +38,7 @@ public class UsuarioDTO implements Serializable{
 		this.email = email;
 	}
 	
-	public UsuarioDTO(Usuario obj) {
-		
+	public UsuarioDTO(Usuario obj) {		
 		this.id = obj.getId();
 		this.nome = obj.getNome();
 		this.sobrenome = obj.getSobrenome();
@@ -45,6 +48,7 @@ public class UsuarioDTO implements Serializable{
 		this.descricao = obj.getDescricao();
 		this.imagemPerfil = obj.getImagemPerfil();
 		this.email = obj.getEmail();
+		this.perfis = obj.getPerfis();
 	}
 
 	public Integer getId() {
@@ -119,7 +123,11 @@ public class UsuarioDTO implements Serializable{
 		this.email = email;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Set<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(Set<Perfil> perfis) {
+		this.perfis = perfis;
 	}	
 }

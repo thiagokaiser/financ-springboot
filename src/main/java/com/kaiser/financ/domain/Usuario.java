@@ -17,6 +17,8 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kaiser.financ.domain.enums.Perfil;
+import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
+import com.kaiser.financ.dto.UsuarioUpdateDTO;
 
 @Entity
 public class Usuario implements Serializable {	
@@ -61,26 +63,26 @@ public class Usuario implements Serializable {
 		addPerfil(Perfil.USER);
 	}
 	
-	public Usuario(String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao) {
+	public Usuario(UsuarioUpdateDTO objDto) {
 		super();		
-		this.nome = nome;
-		this.sobrenome = sobrenome;
-		this.dtNascimento = dtNascimento;
-		this.cidade = cidade;
-		this.estado = estado;	
-		this.descricao = descricao;
+		this.nome = objDto.getNome();
+		this.sobrenome = objDto.getSobrenome();
+		this.dtNascimento = objDto.getDtNascimento();
+		this.cidade = objDto.getCidade();
+		this.estado = objDto.getEstado();	
+		this.descricao = objDto.getDescricao();
 	}
 	
-	public Usuario(String email, String nome, String sobrenome, Date dtNascimento, String cidade, String estado, String descricao, String imagemPerfil) {
+	public Usuario(UsuarioUpdateAdminDTO objDto) {
 		super();		
-		this.email = email;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
-		this.dtNascimento = dtNascimento;
-		this.cidade = cidade;
-		this.estado = estado;	
-		this.descricao = descricao;
-		this.imagemPerfil = imagemPerfil;
+		this.email = objDto.getEmail();
+		this.nome = objDto.getNome();
+		this.sobrenome = objDto.getSobrenome();
+		this.dtNascimento = objDto.getDtNascimento();
+		this.cidade = objDto.getCidade();
+		this.estado = objDto.getEstado();	
+		this.descricao = objDto.getDescricao();
+		this.imagemPerfil = objDto.getImagemPerfil();
 	}	
 
 	public Integer getId() {

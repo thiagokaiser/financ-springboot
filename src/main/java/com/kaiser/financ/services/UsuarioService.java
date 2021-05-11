@@ -140,16 +140,12 @@ public class UsuarioService {
 		return repo.findAll(pageRequest);		
 	}	
 	
-	public Usuario fromDTO(UsuarioDTO objDto) {
-		return new Usuario(objDto.getId(), objDto.getNome(), objDto.getSobrenome(), objDto.getEmail(), null);
-	}
-	
 	public Usuario fromDTO(UsuarioUpdateDTO objDto) {
-		return new Usuario(objDto.getNome(), objDto.getSobrenome(), objDto.getDtNascimento(), objDto.getCidade(), objDto.getEstado(), objDto.getDescricao());
+		return new Usuario(objDto);
 	}
 	
 	public Usuario fromDTO(UsuarioUpdateAdminDTO objDto) {
-		return new Usuario(objDto.getEmail(), objDto.getNome(), objDto.getSobrenome(), objDto.getDtNascimento(), objDto.getCidade(), objDto.getEstado(), objDto.getDescricao(), objDto.getImagemPerfil());
+		return new Usuario(objDto);
 	}
 	
 	public Usuario fromDTO(UsuarioNewDTO objDto) {
