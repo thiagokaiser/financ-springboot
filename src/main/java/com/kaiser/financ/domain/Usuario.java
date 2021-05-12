@@ -164,6 +164,10 @@ public class Usuario implements Serializable {
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}	
+	
+	public void removePerfil(Perfil perfil) {
+		perfis.remove(perfil.getCod());
+	}
 
 	public Set<String> getTelefones() {
 		return telefones;

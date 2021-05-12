@@ -117,6 +117,20 @@ public class UsuarioService {
 		}		
 	}
 	
+	public void removePerfil(Integer usuarioId, String perfil) {
+		Usuario obj = find(usuarioId);
+		Perfil perfilAux = Perfil.valueOf(perfil);
+		obj.removePerfil(perfilAux);
+		repo.save(obj);
+	}
+	
+	public void addPerfil(Integer usuarioId, String perfil) {
+		Usuario obj = find(usuarioId);
+		Perfil perfilAux = Perfil.valueOf(perfil);
+		obj.addPerfil(perfilAux);
+		repo.save(obj);
+	}
+	
 	public List<Usuario> findAll(){
 		return repo.findAll();
 	}

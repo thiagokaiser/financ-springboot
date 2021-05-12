@@ -110,4 +110,18 @@ public class UsuarioResource {
 		obj = service.updateAdmin(obj);		
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/removePerfil/{usuarioId}/{perfil}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removePerfil(@PathVariable Integer usuarioId, @PathVariable String perfil){
+		service.removePerfil(usuarioId, perfil);		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/addPerfil/{usuarioId}/{perfil}", method = RequestMethod.POST)
+	public ResponseEntity<Void> addPerfil(@PathVariable Integer usuarioId, @PathVariable String perfil){
+		service.addPerfil(usuarioId, perfil);		
+		return ResponseEntity.noContent().build();
+	}
 }
