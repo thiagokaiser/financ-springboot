@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +32,7 @@ public class ContaResource {
 	@Autowired
 	private ContaService service;	
 	
-	@ApiOperation(value = "Busca por id")
-	@PreAuthorize("hasAnyRole('USER')")
+	@ApiOperation(value = "Busca por id")	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Conta> find(@PathVariable Integer id) {
 		
@@ -43,8 +41,7 @@ public class ContaResource {
 		
 	}
 	
-	@ApiOperation(value = "Insere conta")
-	@PreAuthorize("hasAnyRole('USER')")
+	@ApiOperation(value = "Insere conta")	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ContaDTO objDto){		
 		Conta obj = service.fromDTO(objDto);		
@@ -55,8 +52,7 @@ public class ContaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@ApiOperation(value = "Atualiza conta")
-	@PreAuthorize("hasAnyRole('USER')")
+	@ApiOperation(value = "Atualiza conta")	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ContaDTO objDto, @PathVariable Integer id){
 		Conta obj = service.fromDTO(objDto);
@@ -68,8 +64,7 @@ public class ContaResource {
 	@ApiOperation(value = "Remove conta")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
-			@ApiResponse(code = 404, message = "Código inexistente") })
-	@PreAuthorize("hasAnyRole('USER')")
+			@ApiResponse(code = 404, message = "Código inexistente") })	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		
@@ -78,8 +73,7 @@ public class ContaResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas contas")
-	@PreAuthorize("hasAnyRole('USER')")
+	@ApiOperation(value = "Retorna todas contas")	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ContaDTO>> findAll() {
 		
@@ -89,8 +83,7 @@ public class ContaResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas contas com paginação")
-	@PreAuthorize("hasAnyRole('USER')")
+	@ApiOperation(value = "Retorna todas contas com paginação")	
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<ContaDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 

@@ -50,7 +50,6 @@ public class Usuario implements Serializable {
 	private Set<Integer> perfis = new HashSet<>();	
 
 	public Usuario() {		
-		addPerfil(Perfil.USER);
 	}
 	
 	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
@@ -59,8 +58,7 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;		
-		this.senha = senha;
-		addPerfil(Perfil.USER);
+		this.senha = senha;		
 	}
 	
 	public Usuario(UsuarioUpdateDTO objDto) {
