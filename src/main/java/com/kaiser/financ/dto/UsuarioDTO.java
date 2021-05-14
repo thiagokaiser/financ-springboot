@@ -7,9 +7,7 @@ import java.util.Set;
 
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.domain.enums.Perfil;
-import com.kaiser.financ.services.validation.UsuarioUpdate;
 
-@UsuarioUpdate
 public class UsuarioDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;
 	

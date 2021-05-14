@@ -7,6 +7,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.kaiser.financ.services.validation.UsuarioUpdate;
+
+@UsuarioUpdate
 public class UsuarioUpdateAdminDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;
 
