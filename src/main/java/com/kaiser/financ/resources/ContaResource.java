@@ -9,10 +9,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +36,7 @@ public class ContaResource {
 	private ContaService service;	
 	
 	@ApiOperation(value = "Busca por id")	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@GetMapping(value="/{id}")
 	public ResponseEntity<Conta> find(@PathVariable Integer id) {
 		
 		Conta obj = service.find(id);		
@@ -42,7 +45,7 @@ public class ContaResource {
 	}
 	
 	@ApiOperation(value = "Insere conta")	
-	@RequestMapping(method=RequestMethod.POST)
+	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody ContaDTO objDto){		
 		Conta obj = service.fromDTO(objDto);		
 		obj = service.insert(obj);
@@ -53,11 +56,11 @@ public class ContaResource {
 	}
 	
 	@ApiOperation(value = "Atualiza conta")	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ContaDTO objDto, @PathVariable Integer id){
 		Conta obj = service.fromDTO(objDto);
 		obj.setId(id);
-		obj = service.update(obj);		
+		service.update(obj);		
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -65,7 +68,7 @@ public class ContaResource {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
 			@ApiResponse(code = 404, message = "Código inexistente") })	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		
 		service.delete(id);		
@@ -74,17 +77,17 @@ public class ContaResource {
 	}
 	
 	@ApiOperation(value = "Retorna todas contas")	
-	@RequestMapping(method=RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<List<ContaDTO>> findAll() {
 		
 		List<Conta> list = service.findAll();
-		List<ContaDTO> listDto = list.stream().map(obj -> new ContaDTO(obj)).collect(Collectors.toList());
+		List<ContaDTO> listDto = list.stream().map(ContaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);		
 		
 	}
 	
 	@ApiOperation(value = "Retorna todas contas com paginação")	
-	@RequestMapping(value="/page", method=RequestMethod.GET)
+	@GetMapping(value="/page")
 	public ResponseEntity<Page<ContaDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage, 
@@ -93,7 +96,7 @@ public class ContaResource {
 			@RequestParam(value="search") String search) {
 		
 		Page<Conta> list = service.findPage(page, linesPerPage, orderBy, direction, search);
-		Page<ContaDTO> listDto = list.map(obj -> new ContaDTO(obj));
+		Page<ContaDTO> listDto = list.map(ContaDTO::new);
 		return ResponseEntity.ok().body(listDto);		
 		
 	}

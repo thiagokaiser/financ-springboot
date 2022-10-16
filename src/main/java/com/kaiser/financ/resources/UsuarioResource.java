@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,21 +37,21 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService service;	
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@GetMapping(value="/{id}")
 	public ResponseEntity<UsuarioDTO> find(@PathVariable Integer id) {		
 		Usuario obj = service.find(id);
 		UsuarioDTO objDto = new UsuarioDTO(obj);
 		return ResponseEntity.ok().body(objDto);		
 	}
 	
-	@RequestMapping(value="/email/{email}", method=RequestMethod.GET)
+	@GetMapping(value="/email/{email}")
 	public ResponseEntity<UsuarioDTO> find(@PathVariable String email) {		
 		Usuario obj = service.findByEmail(email);
 		UsuarioDTO objDto = new UsuarioDTO(obj);
 		return ResponseEntity.ok().body(objDto);
 	}		
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNewDTO objDto){		
 		Usuario obj = service.fromDTO(objDto);		
 		obj = service.insert(obj);
@@ -58,22 +61,22 @@ public class UsuarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id){
 		Usuario obj = service.fromDTO(objDto);
 		obj.setId(id);
-		obj = service.update(obj);		
+		service.update(obj);		
 		return ResponseEntity.noContent().build();
 	}	
 	
-	@RequestMapping(value="/picture", method=RequestMethod.POST)
+	@PostMapping(value="/picture")
 	public ResponseEntity<UsuarioDTO> uploadProfilePicture(@ModelAttribute FileUploadDTO objDto){		
 		UsuarioDTO usuarioDto = service.uploadProfilePicture(objDto.getFile());		
 		return ResponseEntity.ok().body(usuarioDto);
 	}	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		
 		service.delete(id);		
@@ -82,15 +85,15 @@ public class UsuarioResource {
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(method=RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<List<UsuarioDTO>> findAll() {		
 		List<Usuario> list = service.findAll();
-		List<UsuarioDTO> listDto = list.stream().map(obj -> new UsuarioDTO(obj)).collect(Collectors.toList());
+		List<UsuarioDTO> listDto = list.stream().map(UsuarioDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);		
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value="/page", method=RequestMethod.GET)
+	@GetMapping(value="/page")
 	public ResponseEntity<Page<UsuarioDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage, 
@@ -98,28 +101,28 @@ public class UsuarioResource {
 			@RequestParam(value="direction", defaultValue = "DESC") String direction) {
 		
 		Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
+		Page<UsuarioDTO> listDto = list.map(UsuarioDTO::new);
 		return ResponseEntity.ok().body(listDto);				
 	}	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/admin/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/admin/{id}")
 	public ResponseEntity<Void> updateAdmin(@Valid @RequestBody UsuarioUpdateAdminDTO objDto, @PathVariable Integer id){
 		Usuario obj = service.fromDTO(objDto);
 		obj.setId(id);		
-		obj = service.updateAdmin(obj);		
+		service.updateAdmin(obj);		
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/removePerfil/{usuarioId}/{perfil}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/removePerfil/{usuarioId}/{perfil}")
 	public ResponseEntity<Void> removePerfil(@PathVariable Integer usuarioId, @PathVariable String perfil){
 		service.removePerfil(usuarioId, perfil);		
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/addPerfil/{usuarioId}/{perfil}", method = RequestMethod.POST)
+	@PostMapping(value = "/addPerfil/{usuarioId}/{perfil}")
 	public ResponseEntity<Void> addPerfil(@PathVariable Integer usuarioId, @PathVariable String perfil){
 		service.addPerfil(usuarioId, perfil);		
 		return ResponseEntity.noContent().build();

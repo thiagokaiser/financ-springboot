@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.domain.enums.Perfil;
 import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.repositories.ContaRepository;
 import com.kaiser.financ.repositories.UsuarioRepository;
@@ -32,8 +33,10 @@ public class DBService {
 
 	public void instantiateTestDatabase() throws ParseException {
 		
-		Usuario user = new Usuario(null,"teste1","sobrenome","teste@teste.com",pe.encode("123"));		
-		Usuario user2 = new Usuario(null,"teste2","sobrenome","teste2@teste.com",pe.encode("123"));		
+		Usuario user = new Usuario(null,"user","sobrenome","user@teste.com",pe.encode("123"));
+		user.addPerfil(Perfil.USER);
+		Usuario user2 = new Usuario(null,"admin","sobrenome","admin@teste.com",pe.encode("123"));
+		user2.addPerfil(Perfil.ADMIN);
 		usuarioRepo.saveAll(Arrays.asList(user,user2));
 		
 		Categoria cat1 = new Categoria(null,  "Categ 01", "#5eaeff", user);	

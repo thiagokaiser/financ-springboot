@@ -6,9 +6,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaiser.financ.dto.EmailDTO;
@@ -28,7 +28,7 @@ public class AuthResource {
 	@Autowired
 	private AuthService service;
 	
-	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
+	@PostMapping(value = "/refresh_token")
 	public ResponseEntity<String> refreshToken(HttpServletResponse response) {
 		UserSS user = UsuarioService.authenticated();
 		String token = jwtUtil.generateToken(user);
@@ -38,13 +38,13 @@ public class AuthResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
-	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
+	@PostMapping(value = "/forgot")
 	public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
 		service.sendResetPassword(objDto.getEmail());
 		return ResponseEntity.noContent().build();
 	}	
 	
-	@RequestMapping(value = "/reset_password/{token}", method = RequestMethod.POST)
+	@PostMapping(value = "/reset_password/{token}")
 	public ResponseEntity<Void> forgot(@Valid @RequestBody ResetPasswordDTO objDto, @PathVariable String token) {
 		objDto.setToken(token);	
 		service.changePassword(objDto);
