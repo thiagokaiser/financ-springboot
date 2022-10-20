@@ -1,4 +1,4 @@
-package com.kaiser.financ.services;
+package com.kaiser.financ.services.impl;
 
 import java.util.Date;
 
@@ -13,8 +13,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.services.EmailService;
 
-public abstract class AbstractEmailService implements EmailService{
+public abstract class EmailServiceAbstract implements EmailService{
 	
 	@Value("${default.sender}")
 	private String sender;

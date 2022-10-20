@@ -1,4 +1,4 @@
-package com.kaiser.financ.services;
+package com.kaiser.financ.services.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.kaiser.financ.services.AmazonS3Service;
 import com.kaiser.financ.services.exceptions.FileException;
 
 @Service
-public class S3Service {
+public class AmazonS3ServiceImpl implements AmazonS3Service{
 	
-	private Logger LOG = LoggerFactory.getLogger(S3Service.class);
+	private Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
 	
 	@Autowired
 	private AmazonS3 s3client;
@@ -27,6 +28,7 @@ public class S3Service {
 	@Value("${s3.bucket}")
 	private String bucketName;
 	
+	@Override
 	public URI uploadFile(MultipartFile multipartFile) {					
 		try {
 			String fileName = multipartFile.getOriginalFilename();
@@ -38,13 +40,14 @@ public class S3Service {
 		}					
 	}
 	
+	@Override
 	public URI uploadFile(InputStream is, String fileName, String contentType) {
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);		
-			LOG.info("Iniciando Upload");
+			logger.info("Iniciando Upload");
 			s3client.putObject(bucketName, fileName, is, meta);
-			LOG.info("Upload finalizado");
+			logger.info("Upload finalizado");
 			
 			return s3client.getUrl(bucketName, fileName).toURI();
 		} catch (URISyntaxException e) {

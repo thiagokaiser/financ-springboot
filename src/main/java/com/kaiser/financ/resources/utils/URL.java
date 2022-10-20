@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class URL {
+    
+    private URL() {        
+    }
 	
 	public static String decodeParam(String s) {
 		try {

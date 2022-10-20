@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 public class CategoriaResource {
 
 	@Autowired
-	private CategoriaService service;	
+	private CategoriaService service;
 	
 	@ApiOperation(value = "Busca por id")	
 	@GetMapping(value="/{id}")
@@ -79,7 +79,7 @@ public class CategoriaResource {
 	@ApiOperation(value = "Retorna todas categorias")	
 	@GetMapping
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		
+	    
 		List<Categoria> list = service.findAll();
 		List<CategoriaDTO> listDto = list.stream().map(CategoriaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);		

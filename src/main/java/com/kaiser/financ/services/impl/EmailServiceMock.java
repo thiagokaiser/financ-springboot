@@ -1,4 +1,4 @@
-package com.kaiser.financ.services;
+package com.kaiser.financ.services.impl;
 
 import javax.mail.internet.MimeMessage;
 
@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 
-public class MockEmailService extends AbstractEmailService{
+public class EmailServiceMock extends EmailServiceAbstract{
 
-	private static final Logger LOG = LoggerFactory.getLogger(MockEmailService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(EmailServiceMock.class);
 		
 	@Override
 	public void sendEmail(SimpleMailMessage msg) {

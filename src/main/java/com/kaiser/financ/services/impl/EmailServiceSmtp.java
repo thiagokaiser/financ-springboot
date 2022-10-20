@@ -1,4 +1,4 @@
-package com.kaiser.financ.services;
+package com.kaiser.financ.services.impl;
 
 import javax.mail.internet.MimeMessage;
 
@@ -9,7 +9,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-public class SmtpEmailService extends AbstractEmailService{
+public class EmailServiceSmtp extends EmailServiceAbstract{
 
 	@Autowired
 	private MailSender mailSender;
@@ -17,7 +17,7 @@ public class SmtpEmailService extends AbstractEmailService{
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(EmailServiceSmtp.class);
 	
 	@Override
 	public void sendEmail(SimpleMailMessage msg) {
