@@ -66,7 +66,7 @@ public class ContaResource {
 	
 	@ApiOperation(value = "Remove conta")
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
+			@ApiResponse(code = 400, message = "Não é possível excluir uma conta que possui despesas"),
 			@ApiResponse(code = 404, message = "Código inexistente") })	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {

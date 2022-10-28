@@ -44,9 +44,9 @@ public class NotificacaoResource {
 		
 	}
 	
-	@ApiOperation(value = "Insere notificacao")	
+	@ApiOperation(value = "Insere notificação")
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody NotificacaoDTO objDto){		
+	public ResponseEntity<Void> insert(@Valid @RequestBody NotificacaoDTO objDto){
 		Notificacao obj = service.fromDTO(objDto);		
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -55,7 +55,7 @@ public class NotificacaoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@ApiOperation(value = "Atualiza notificacao")	
+	@ApiOperation(value = "Atualiza notificação")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody NotificacaoDTO objDto, @PathVariable Integer id){
 		Notificacao obj = service.fromDTO(objDto);
@@ -64,9 +64,8 @@ public class NotificacaoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Remove notificacao")
+	@ApiOperation(value = "Remove notificação")
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
 			@ApiResponse(code = 404, message = "Código inexistente") })	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -76,7 +75,7 @@ public class NotificacaoResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas notificacoes")	
+	@ApiOperation(value = "Retorna todas notificações")
 	@GetMapping
 	public ResponseEntity<List<NotificacaoDTO>> findAll() {
 		
@@ -86,7 +85,7 @@ public class NotificacaoResource {
 		
 	}
 	
-	@ApiOperation(value = "Retorna todas notificacoes com paginação")	
+	@ApiOperation(value = "Retorna todas notificações com paginação")
 	@GetMapping(value="/page")
 	public ResponseEntity<Page<NotificacaoDTO>> findPage(
 			@RequestParam(value="page", defaultValue = "0") Integer page, 

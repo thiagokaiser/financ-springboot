@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 
 import com.kaiser.financ.domain.Notificacao;
-import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.NotificacaoDTO;
 
 public interface NotificacaoService {
