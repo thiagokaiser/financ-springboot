@@ -15,7 +15,6 @@ import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.CategoriaDTO;
 import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.services.CategoriaService;
-import com.kaiser.financ.services.NotificacaoService;
 import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
@@ -27,10 +26,7 @@ public class CategoriaServiceImpl implements CategoriaService{
 	private CategoriaRepository repo;
 	
 	@Autowired
-	private UsuarioService usuarioService;	
-	
-	@Autowired
-    private NotificacaoService notificacaoService;
+	private UsuarioService usuarioService;
 	
 	@Override
 	public Categoria find(Integer id) {
@@ -66,7 +62,6 @@ public class CategoriaServiceImpl implements CategoriaService{
 	@Override
 	public List<Categoria> findAll(){
 	    Usuario usuario = usuarioService.userLoggedIn();
-	    notificacaoService.insert(usuario);
 		return repo.findByUsuario(usuario);
 	}	
 	
