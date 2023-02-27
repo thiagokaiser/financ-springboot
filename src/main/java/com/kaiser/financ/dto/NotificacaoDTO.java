@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 
 import com.kaiser.financ.domain.Notificacao;
 
-@Entity
 public class NotificacaoDTO implements Serializable{
     private static final long serialVersionUID = 1L;
         
