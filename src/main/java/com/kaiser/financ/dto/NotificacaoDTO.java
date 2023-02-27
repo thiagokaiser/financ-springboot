@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-
 import com.kaiser.financ.domain.Notificacao;
 
 public class NotificacaoDTO implements Serializable{
@@ -21,7 +19,7 @@ public class NotificacaoDTO implements Serializable{
     public NotificacaoDTO() {
     }
     
-    public NotificacaoDTO(Notificacao notificacao) {    
+    public NotificacaoDTO(Notificacao notificacao) {
         this.id = notificacao.getId();
         this.descricao = notificacao.getDescricao();
         this.dtCriacao = notificacao.getDtCriacao();
