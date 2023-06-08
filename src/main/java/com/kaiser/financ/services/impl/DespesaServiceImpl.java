@@ -4,7 +4,7 @@ import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.DespesaUpdateDTO;
+import com.kaiser.financ.dto.DespesaDTO;
 import com.kaiser.financ.dto.TotaisByCategDTO;
 import com.kaiser.financ.dto.TotaisByMonthDTO;
 import com.kaiser.financ.dto.TotaisDTO;
@@ -12,9 +12,7 @@ import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.ContaService;
 import com.kaiser.financ.services.DespesaService;
-import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
-import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -33,30 +30,15 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DespesaServiceImpl implements DespesaService{
+public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaRepository, DespesaDTO> implements DespesaService{
 
-	@Autowired
-	private DespesaRepository repo;
-	
 	@Autowired
 	private CategoriaService categoriaService;
-	
 	@Autowired
 	private ContaService contaService;
-	
-	@Autowired
-	private UsuarioService usuarioService;	
-	
-	@Override
-	public Despesa find(Integer id) {
-		Usuario usuario = usuarioService.userLoggedIn();	
-		Optional<Despesa> obj = repo.findByIdAndUsuario(id, usuario);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-		"Objeto não encontrado! Id: " + id + ", Tipo: " + Despesa.class.getName()));
-	}
 
 	@Override
-	public void insert(Despesa obj) {
+	public Despesa insert(Despesa obj) {
 		obj.setId(null);
 		obj.setCategoria(categoriaService.find(obj.getCategoria().getId()));
 		if(obj.getConta() != null) {
@@ -100,16 +82,10 @@ public class DespesaServiceImpl implements DespesaService{
 			}while(parcela < obj.getNumParcelas());
 			
 			repo.saveAll(listDespesas);			
-		}				
-	}	
-	
-	@Override
-	public Despesa update(Despesa obj) {
-		Despesa newObj = find(obj.getId());
-		updateData(newObj, obj);		
-		return repo.save(newObj);
+		}
+		return null;
 	}
-	
+
 	@Override
 	public void updateUnpaidByIdParcela(Despesa despesa) {
 		if(isNullorZero(despesa.getIdParcela())) {
@@ -145,16 +121,6 @@ public class DespesaServiceImpl implements DespesaService{
 	}
 	
 	@Override
-	public void delete(Integer id) {
-		find(id);
-		try {
-			repo.deleteById(id);			
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir uma Despesa que possui Despesas.");			
-		}		
-	}
-	
-	@Override
 	public void deleteByIdParcela(Integer idParcela) {
 			
 		if(isNullorZero(idParcela)) {
@@ -170,13 +136,7 @@ public class DespesaServiceImpl implements DespesaService{
 			throw new DataIntegrityException("Não é possivel excluir uma Despesa que possui Despesas.");			
 		}		
 	}
-	
-	@Override
-	public List<Despesa> findAll(){
-		Usuario usuario = usuarioService.userLoggedIn();	
-		return repo.findByUsuario(usuario);
-	}
-	
+
 	@Override
 	public Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction,
 			                      String search, String stringDtInicial, String stringDtFinal, Boolean pago){
@@ -251,9 +211,9 @@ public class DespesaServiceImpl implements DespesaService{
 		
 		return list;		
 	}
-	
+
 	@Override
-	public Despesa fromDTO(DespesaUpdateDTO objDto) {		
+	public Despesa fromDTO(DespesaDTO objDto) {		
 		Usuario usuario = usuarioService.userLoggedIn();
 		Categoria categ = new Categoria();
 		categ.setId(objDto.getCategoriaId());
@@ -275,9 +235,15 @@ public class DespesaServiceImpl implements DespesaService{
 						   usuario,
 						   categ,
 						   conta);						   
-	}	
-	
-	private void updateData(Despesa newObj, Despesa obj) {
+	}
+
+	@Override
+	public DespesaDTO toDTO(Despesa obj) {
+    return new DespesaDTO(obj);
+	}
+
+	@Override
+	protected void updateData(Despesa newObj, Despesa obj) {
 		newObj.setDescricao(obj.getDescricao());
 		newObj.setCategoria(obj.getCategoria());
 		newObj.setConta(obj.getConta());

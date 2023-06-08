@@ -6,18 +6,16 @@ import com.kaiser.financ.dto.TotaisByCategDTO;
 import com.kaiser.financ.dto.TotaisByMonthDTO;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
+public interface DespesaRepository extends CrudRepository<Despesa>{
 
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true) 
 	Page<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(Usuario usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
 	
 	@Transactional(readOnly = true)
@@ -25,13 +23,7 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer>{
 	
 	@Transactional(readOnly = true)
 	List<Despesa> findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(Usuario usuario, String search, Date dtInicial, Date dtFinal);
-	
-	@Transactional(readOnly = true)
-	List<Despesa> findByUsuario(Usuario usuario);
-	
-	@Transactional(readOnly = true)
-	Optional<Despesa> findByIdAndUsuario(Integer id,Usuario usuario);
-	
+
 	@Transactional(readOnly = true)
 	List<Despesa> findByUsuarioAndIdParcelaAndPago(Usuario usuario, Integer idParcela, Boolean pago);
 	
