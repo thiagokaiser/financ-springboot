@@ -1,40 +1,37 @@
 package com.kaiser.financ.domain.enums;
 
 public enum Perfil {
-	
-	ADMIN(1, "ROLE_ADMIN"),
-	USER(2, "ROLE_USER");	
-	
-	private final int cod;
-	private final String descricao;
-	
-	Perfil(int cod, String descricao) {
-		this.cod = cod;
-		this.descricao = descricao;
-	}
+  ADMIN(1, "ROLE_ADMIN"),
+  USER(2, "ROLE_USER");
 
-	public static Perfil toEnum(Integer cod) {
+  private final int cod;
+  private final String descricao;
 
-		if(cod == null) {
-			return null;
-		}
+  Perfil(int cod, String descricao) {
+    this.cod = cod;
+    this.descricao = descricao;
+  }
 
-		for (Perfil x : Perfil.values()) {
-			if (cod.equals(x.getCod())) {
-				return x;
-			}
-		}
+  public static Perfil toEnum(Integer cod) {
 
-		throw new IllegalArgumentException("Id inválido: " + cod);
+    if (cod == null) {
+      return null;
+    }
 
-	}
+    for (Perfil x : Perfil.values()) {
+      if (cod.equals(x.getCod())) {
+        return x;
+      }
+    }
 
-	public int getCod() {
-		return cod;
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
+    throw new IllegalArgumentException("Id inválido: " + cod);
+  }
 
+  public int getCod() {
+    return cod;
+  }
+
+  public String getDescricao() {
+    return descricao;
+  }
 }

@@ -11,36 +11,35 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UsuarioService {
 
-    Usuario userLoggedIn();
+  Usuario userLoggedIn();
 
-    Usuario find(Integer id);
+  Usuario find(Integer id);
 
-    Usuario insert(Usuario obj);
+  Usuario insert(Usuario obj);
 
-    Usuario update(Usuario obj);
+  Usuario update(Usuario obj);
 
-    Usuario updateAdmin(Usuario obj);
+  Usuario updateAdmin(Usuario obj);
 
-    void delete(Integer id);
+  void delete(Integer id);
 
-    void removePerfil(Integer usuarioId, String perfil);
+  void removePerfil(Integer usuarioId, String perfil);
 
-    Usuario updateImagemPerfil(Integer id, String imagemPerfil);
+  Usuario updateImagemPerfil(Integer id, String imagemPerfil);
 
-    void addPerfil(Integer usuarioId, String perfil);
+  void addPerfil(Integer usuarioId, String perfil);
 
-    List<Usuario> findAll();
+  List<Usuario> findAll();
 
-    Usuario findByEmail(String email);
+  Usuario findByEmail(String email);
 
-    Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
+  Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
 
-    Usuario fromDTO(UsuarioUpdateDTO objDto);
+  Usuario fromDTO(UsuarioUpdateDTO objDto);
 
-    Usuario fromDTO(UsuarioUpdateAdminDTO objDto);
+  Usuario fromDTO(UsuarioUpdateAdminDTO objDto);
 
-    Usuario fromDTO(UsuarioNewDTO objDto);
+  Usuario fromDTO(UsuarioNewDTO objDto);
 
-    UsuarioDTO uploadProfilePicture(MultipartFile multipartFile);
-
+  UsuarioDTO uploadProfilePicture(MultipartFile multipartFile);
 }

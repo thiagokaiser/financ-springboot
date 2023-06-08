@@ -14,50 +14,50 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository, T> implements CrudService<D, T> {
+public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository, T>
+    implements CrudService<D, T> {
 
-	@Autowired
-	protected R repo;
-	@Autowired
-	protected UsuarioService usuarioService;
-	
-	@Override
-	public D find(Integer id) {
-		Usuario usuario = usuarioService.userLoggedIn();
-		Optional<D> obj = (Optional<D>) repo.findByIdAndUsuario(id, usuario);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-		"Objeto não encontrado! Id: " + id + ", Tipo: ")); //TODO tipo
-	}
+  @Autowired protected R repo;
+  @Autowired protected UsuarioService usuarioService;
 
-	@Override
-	public D insert(D obj) {
-		obj.setId(null);
-		return (D) repo.save(obj);
-	}
-	
-	@Override
-	public D update(D obj) {
-		D newObj = find(obj.getId());
-		updateData(newObj, obj);		
-		return (D) repo.save(newObj);
-	}
-	
-	@Override
-	public void delete(Integer id) {
-		find(id);
-		try {
-			repo.deleteById(id);			
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir.");
-		}		
-	}
-	
-	@Override
-	public List<D> findAll(){
-		Usuario usuario = usuarioService.userLoggedIn();
-		return (List<D>) repo.findByUsuario(usuario);
-	}
-	
-	protected abstract void updateData(D newObj, D obj);
+  @Override
+  public D find(Integer id) {
+    Usuario usuario = usuarioService.userLoggedIn();
+    Optional<D> obj = (Optional<D>) repo.findByIdAndUsuario(id, usuario);
+    return obj.orElseThrow(
+        () ->
+            new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: ")); // TODO tipo
+  }
 
+  @Override
+  public D insert(D obj) {
+    obj.setId(null);
+    return (D) repo.save(obj);
+  }
+
+  @Override
+  public D update(D obj) {
+    D newObj = find(obj.getId());
+    updateData(newObj, obj);
+    return (D) repo.save(newObj);
+  }
+
+  @Override
+  public void delete(Integer id) {
+    find(id);
+    try {
+      repo.deleteById(id);
+    } catch (DataIntegrityViolationException e) {
+      throw new DataIntegrityException("Não é possivel excluir.");
+    }
+  }
+
+  @Override
+  public List<D> findAll() {
+    Usuario usuario = usuarioService.userLoggedIn();
+    return (List<D>) repo.findByUsuario(usuario);
+  }
+
+  protected abstract void updateData(D newObj, D obj);
 }

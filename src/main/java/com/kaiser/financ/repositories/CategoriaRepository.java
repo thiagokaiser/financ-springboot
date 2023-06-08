@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface CategoriaRepository extends CrudRepository<Categoria>{
+public interface CategoriaRepository extends CrudRepository<Categoria> {
 
-	@Transactional(readOnly = true) 
-	Page<Categoria> findByUsuarioAndDescricaoContaining(Usuario usuario, String descricao, Pageable pageRequest);
-	
+  @Transactional(readOnly = true)
+  Page<Categoria> findByUsuarioAndDescricaoContaining(
+      Usuario usuario, String descricao, Pageable pageRequest);
 }

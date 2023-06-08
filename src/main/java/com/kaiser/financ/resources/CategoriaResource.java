@@ -12,22 +12,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/categorias") 
-public class CategoriaResource extends CrudResource<CategoriaService, Categoria, CategoriaDTO>{
+@RequestMapping(value = "/categorias")
+public class CategoriaResource extends CrudResource<CategoriaService, Categoria, CategoriaDTO> {
 
   @ApiOperation(value = "Find all paginated")
-  @GetMapping(value="/page")
+  @GetMapping(value = "/page")
   public ResponseEntity<Page<CategoriaDTO>> findPage(
-      @RequestParam(value="page", defaultValue = "0") Integer page,
-      @RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage,
-      @RequestParam(value="orderBy", defaultValue = "descricao") String orderBy,
-      @RequestParam(value="direction", defaultValue = "DESC") String direction,
-      @RequestParam(value="search") String search) {
+      @RequestParam(value = "page", defaultValue = "0") Integer page,
+      @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+      @RequestParam(value = "orderBy", defaultValue = "descricao") String orderBy,
+      @RequestParam(value = "direction", defaultValue = "DESC") String direction,
+      @RequestParam(value = "search") String search) {
 
     Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction, search);
     Page<CategoriaDTO> listDto = list.map(service::toDTO);
     return ResponseEntity.ok().body(listDto);
-
   }
-
 }

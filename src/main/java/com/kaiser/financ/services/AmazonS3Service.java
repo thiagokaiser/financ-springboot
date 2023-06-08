@@ -6,8 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface AmazonS3Service {
 
-    URI uploadFile(MultipartFile multipartFile);
+  URI uploadFile(MultipartFile multipartFile);
 
-    URI uploadFile(InputStream is, String fileName, String contentType);
-
+  URI uploadFile(InputStream is, String fileName, String contentType);
 }

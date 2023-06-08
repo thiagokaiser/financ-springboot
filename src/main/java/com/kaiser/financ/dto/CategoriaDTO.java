@@ -6,57 +6,57 @@ import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class CategoriaDTO implements Serializable{	
-	private static final long serialVersionUID = 1L;
+public class CategoriaDTO implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-	private Integer id;
-		
-	@NotEmpty(message = "Campo Obrigatário")	
-	@Size(min=3, max=80, message = "Campo deve estar entre 3 e 80 caracteres")
-	private String descricao;
-	private String cor;	
-	
-	private Usuario usuario;
-	
-	public CategoriaDTO() {		
-	}
+  private Integer id;
 
-	public CategoriaDTO(Categoria obj) {		
-		this.id = obj.getId();
-		this.descricao = obj.getDescricao();
-		this.cor = obj.getCor();
-		this.usuario = obj.getUsuario();
-	}
+  @NotEmpty(message = "Campo Obrigatário")
+  @Size(min = 3, max = 80, message = "Campo deve estar entre 3 e 80 caracteres")
+  private String descricao;
 
-	public Integer getId() {
-		return id;
-	}
+  private String cor;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+  private Usuario usuario;
 
-	public String getDescricao() {
-		return descricao;
-	}
+  public CategoriaDTO() {}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+  public CategoriaDTO(Categoria obj) {
+    this.id = obj.getId();
+    this.descricao = obj.getDescricao();
+    this.cor = obj.getCor();
+    this.usuario = obj.getUsuario();
+  }
 
-	public String getCor() {
-		return cor;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+  public String getDescricao() {
+    return descricao;
+  }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}	
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
+  }
+
+  public String getCor() {
+    return cor;
+  }
+
+  public void setCor(String cor) {
+    this.cor = cor;
+  }
+
+  public Usuario getUsuario() {
+    return usuario;
+  }
+
+  public void setUsuario(Usuario usuario) {
+    this.usuario = usuario;
+  }
 }

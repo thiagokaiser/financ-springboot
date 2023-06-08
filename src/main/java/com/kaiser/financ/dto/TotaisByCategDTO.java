@@ -4,44 +4,43 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class TotaisByCategDTO implements Serializable{	
-	private static final long serialVersionUID = 1L;
-	
-	private String descricao;
-	private String cor;	
-	private Double total;		
-	
-	public TotaisByCategDTO() {		
-	}
+public class TotaisByCategDTO implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-	public TotaisByCategDTO(String descricao, String cor, Double total) {		
-		this.descricao = descricao;
-		this.cor = cor;		
-		this.setTotal(total);
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
+  private String descricao;
+  private String cor;
+  private Double total;
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+  public TotaisByCategDTO() {}
 
-	public String getCor() {
-		return cor;
-	}
+  public TotaisByCategDTO(String descricao, String cor, Double total) {
+    this.descricao = descricao;
+    this.cor = cor;
+    this.setTotal(total);
+  }
 
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
+  public String getDescricao() {
+    return descricao;
+  }
 
-	public Double getTotal() {
-		return total;
-	}
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
+  }
 
-	public void setTotal(Double total) {
-		BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
-		this.total = bd.doubleValue();
-	}		
+  public String getCor() {
+    return cor;
+  }
+
+  public void setCor(String cor) {
+    this.cor = cor;
+  }
+
+  public Double getTotal() {
+    return total;
+  }
+
+  public void setTotal(Double total) {
+    BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+    this.total = bd.doubleValue();
+  }
 }
