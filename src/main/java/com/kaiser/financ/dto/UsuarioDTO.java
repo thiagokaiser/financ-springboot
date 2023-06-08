@@ -7,124 +7,132 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UsuarioDTO implements Serializable{	
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
-	private String nome;
-	private String sobrenome;
-	private Date dtNascimento;
-	private String cidade;
-	private String estado;	
-	private String descricao;
-	private String imagemPerfil;	
-	private String email;
-	private Set<Perfil> perfis = new HashSet<>();
-	
-	public UsuarioDTO(Integer id, String nome, String sobrenome, Date dtNascimento, String cidade, String estado,
-			String descricao, String imagemPerfil, String email) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
-		this.dtNascimento = dtNascimento;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.descricao = descricao;
-		this.imagemPerfil = imagemPerfil;
-		this.email = email;
-	}
-	
-	public UsuarioDTO(Usuario obj) {		
-		this.id = obj.getId();
-		this.nome = obj.getNome();
-		this.sobrenome = obj.getSobrenome();
-		this.dtNascimento = obj.getDtNascimento();
-		this.cidade = obj.getCidade();
-		this.estado = obj.getEstado();
-		this.descricao = obj.getDescricao();
-		this.imagemPerfil = obj.getImagemPerfil();
-		this.email = obj.getEmail();
-		this.perfis = obj.getPerfis();
-	}
+public class UsuarioDTO implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-	public Integer getId() {
-		return id;
-	}
+  private Integer id;
+  private String nome;
+  private String sobrenome;
+  private Date dtNascimento;
+  private String cidade;
+  private String estado;
+  private String descricao;
+  private String imagemPerfil;
+  private String email;
+  private Set<Perfil> perfis = new HashSet<>();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+  public UsuarioDTO(
+      Integer id,
+      String nome,
+      String sobrenome,
+      Date dtNascimento,
+      String cidade,
+      String estado,
+      String descricao,
+      String imagemPerfil,
+      String email) {
+    super();
+    this.id = id;
+    this.nome = nome;
+    this.sobrenome = sobrenome;
+    this.dtNascimento = dtNascimento;
+    this.cidade = cidade;
+    this.estado = estado;
+    this.descricao = descricao;
+    this.imagemPerfil = imagemPerfil;
+    this.email = email;
+  }
 
-	public String getNome() {
-		return nome;
-	}
+  public UsuarioDTO(Usuario obj) {
+    this.id = obj.getId();
+    this.nome = obj.getNome();
+    this.sobrenome = obj.getSobrenome();
+    this.dtNascimento = obj.getDtNascimento();
+    this.cidade = obj.getCidade();
+    this.estado = obj.getEstado();
+    this.descricao = obj.getDescricao();
+    this.imagemPerfil = obj.getImagemPerfil();
+    this.email = obj.getEmail();
+    this.perfis = obj.getPerfis();
+  }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public String getSobrenome() {
-		return sobrenome;
-	}
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
-	}
+  public String getNome() {
+    return nome;
+  }
 
-	public Date getDtNascimento() {
-		return dtNascimento;
-	}
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-	public void setDtNascimento(Date dtNascimento) {
-		this.dtNascimento = dtNascimento;
-	}
+  public String getSobrenome() {
+    return sobrenome;
+  }
 
-	public String getCidade() {
-		return cidade;
-	}
+  public void setSobrenome(String sobrenome) {
+    this.sobrenome = sobrenome;
+  }
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
+  public Date getDtNascimento() {
+    return dtNascimento;
+  }
 
-	public String getEstado() {
-		return estado;
-	}
+  public void setDtNascimento(Date dtNascimento) {
+    this.dtNascimento = dtNascimento;
+  }
 
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
+  public String getCidade() {
+    return cidade;
+  }
 
-	public String getDescricao() {
-		return descricao;
-	}
+  public void setCidade(String cidade) {
+    this.cidade = cidade;
+  }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+  public String getEstado() {
+    return estado;
+  }
 
-	public String getImagemPerfil() {
-		return imagemPerfil;
-	}
+  public void setEstado(String estado) {
+    this.estado = estado;
+  }
 
-	public void setImagemPerfil(String imagemPerfil) {
-		this.imagemPerfil = imagemPerfil;
-	}
+  public String getDescricao() {
+    return descricao;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getImagemPerfil() {
+    return imagemPerfil;
+  }
 
-	public Set<Perfil> getPerfis() {
-		return perfis;
-	}
+  public void setImagemPerfil(String imagemPerfil) {
+    this.imagemPerfil = imagemPerfil;
+  }
 
-	public void setPerfis(Set<Perfil> perfis) {
-		this.perfis = perfis;
-	}	
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public Set<Perfil> getPerfis() {
+    return perfis;
+  }
+
+  public void setPerfis(Set<Perfil> perfis) {
+    this.perfis = perfis;
+  }
 }

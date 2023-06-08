@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ContaRepository extends CrudRepository<Conta> {
-	
-	@Transactional(readOnly = true) 
-	Page<Conta> findByUsuarioAndDescricaoContaining(Usuario usuario, String search, Pageable pageRequest);
 
+  @Transactional(readOnly = true)
+  Page<Conta> findByUsuarioAndDescricaoContaining(
+      Usuario usuario, String search, Pageable pageRequest);
 }

@@ -8,12 +8,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Constraint(validatedBy = UsuarioInsertValidator.class)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UsuarioInsert {
-	String message() default "Erro de validação";
+  String message() default "Erro de validação";
 
-	Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 }

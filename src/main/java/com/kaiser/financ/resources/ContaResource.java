@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/contas") 
+@RequestMapping(value = "/contas")
 public class ContaResource extends CrudResource<ContaService, Conta, ContaDTO> {
 
   @ApiOperation(value = "Find all paginated")
@@ -28,5 +28,4 @@ public class ContaResource extends CrudResource<ContaService, Conta, ContaDTO> {
     Page<ContaDTO> listDto = list.map(service::toDTO);
     return ResponseEntity.ok().body(listDto);
   }
-
 }

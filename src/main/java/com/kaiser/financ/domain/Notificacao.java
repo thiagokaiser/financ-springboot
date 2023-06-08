@@ -6,53 +6,53 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Notificacao extends Domain {
-    @NotBlank(message = "Campo Obrigatário")
-    private String descricao;
-    private Date dtCriacao;
-    private Date dtLeitura;
-    private boolean lido;
+  @NotBlank(message = "Campo Obrigatário")
+  private String descricao;
 
-    public Notificacao() {
-    }
-    
-    public Notificacao(Integer id, String descricao, Date dtCriacao, Date dtLeitura, Usuario usuario, boolean lido) {
-        super(id, usuario);
-        this.descricao = descricao;
-        this.dtCriacao = dtCriacao;
-        this.dtLeitura = dtLeitura;
-        this.lido = lido;
-    }
+  private Date dtCriacao;
+  private Date dtLeitura;
+  private boolean lido;
 
-    public String getDescricao() {
-        return descricao;
-    }
+  public Notificacao() {}
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+  public Notificacao(
+      Integer id, String descricao, Date dtCriacao, Date dtLeitura, Usuario usuario, boolean lido) {
+    super(id, usuario);
+    this.descricao = descricao;
+    this.dtCriacao = dtCriacao;
+    this.dtLeitura = dtLeitura;
+    this.lido = lido;
+  }
 
-    public Date getDtCriacao() {
-        return dtCriacao;
-    } 
+  public String getDescricao() {
+    return descricao;
+  }
 
-    public void setDtCriacao(Date dtCriacao) {
-        this.dtCriacao = dtCriacao;
-    }
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
+  }
 
-    public Date getDtLeitura() {
-        return dtLeitura;
-    }
+  public Date getDtCriacao() {
+    return dtCriacao;
+  }
 
-    public void setDtLeitura(Date dtLeitura) {
-        this.dtLeitura = dtLeitura;
-    }
+  public void setDtCriacao(Date dtCriacao) {
+    this.dtCriacao = dtCriacao;
+  }
 
-    public boolean isLido() {
-        return lido;
-    }
+  public Date getDtLeitura() {
+    return dtLeitura;
+  }
 
-    public void setLido(boolean lido) {
-        this.lido = lido;
-    }
+  public void setDtLeitura(Date dtLeitura) {
+    this.dtLeitura = dtLeitura;
+  }
 
+  public boolean isLido() {
+    return lido;
+  }
+
+  public void setLido(boolean lido) {
+    this.lido = lido;
+  }
 }

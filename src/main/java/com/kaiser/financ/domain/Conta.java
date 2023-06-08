@@ -4,23 +4,22 @@ import javax.persistence.Entity;
 
 @Entity
 public class Conta extends Domain {
-	private String descricao;	 
+  private String descricao;
 
-	public Conta() {
-		super();
-	}
-	
-	public Conta(Integer id, String descricao, Usuario usuario) {
-		super(id, usuario);
-		this.descricao = descricao;
-	}
+  public Conta() {
+    super();
+  }
 
-	public String getDescricao() {
-		return descricao;
-	}
+  public Conta(Integer id, String descricao, Usuario usuario) {
+    super(id, usuario);
+    this.descricao = descricao;
+  }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+  public String getDescricao() {
+    return descricao;
+  }
 
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
+  }
 }

@@ -11,30 +11,33 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategoriaServiceImpl extends CrudServiceImpl<Categoria, CategoriaRepository, CategoriaDTO> implements CategoriaService{
+public class CategoriaServiceImpl
+    extends CrudServiceImpl<Categoria, CategoriaRepository, CategoriaDTO>
+    implements CategoriaService {
 
-	@Override
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, String search){
-		Usuario usuario = usuarioService.userLoggedIn();
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);
-	}	
-	
-	@Override
-	public Categoria fromDTO(CategoriaDTO objDto) {				
-		Usuario usuario = usuarioService.userLoggedIn();		
-		return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
-	}
+  @Override
+  public Page<Categoria> findPage(
+      Integer page, Integer linesPerPage, String orderBy, String direction, String search) {
+    Usuario usuario = usuarioService.userLoggedIn();
+    PageRequest pageRequest =
+        PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+    return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);
+  }
 
-	@Override
-	public CategoriaDTO toDTO(Categoria obj) {
-		return new CategoriaDTO(obj);
-	}
+  @Override
+  public Categoria fromDTO(CategoriaDTO objDto) {
+    Usuario usuario = usuarioService.userLoggedIn();
+    return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
+  }
 
-	@Override
-	protected void updateData(Categoria newObj, Categoria obj) {
-		newObj.setDescricao(obj.getDescricao());
-		newObj.setCor(obj.getCor());
-	}
-	
+  @Override
+  public CategoriaDTO toDTO(Categoria obj) {
+    return new CategoriaDTO(obj);
+  }
+
+  @Override
+  protected void updateData(Categoria newObj, Categoria obj) {
+    newObj.setDescricao(obj.getDescricao());
+    newObj.setCor(obj.getCor());
+  }
 }

@@ -8,20 +8,29 @@ import com.kaiser.financ.dto.TotaisDTO;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public interface DespesaService extends CrudService<Despesa, DespesaDTO>{
+public interface DespesaService extends CrudService<Despesa, DespesaDTO> {
 
-    void updateUnpaidByIdParcela(Despesa despesa);
+  void updateUnpaidByIdParcela(Despesa despesa);
 
-    void updateAllByIdParcela(Despesa despesa);
+  void updateAllByIdParcela(Despesa despesa);
 
-    void deleteByIdParcela(Integer idParcela); 
+  void deleteByIdParcela(Integer idParcela);
 
-    Page<Despesa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, String search, String stringDtInicial, String stringDtFinal, Boolean pago);
+  Page<Despesa> findPage(
+      Integer page,
+      Integer linesPerPage,
+      String orderBy,
+      String direction,
+      String search,
+      String stringDtInicial,
+      String stringDtFinal,
+      Boolean pago);
 
-    TotaisDTO totalsByPeriod(String stringDtInicial, String stringDtFinal, String search);
+  TotaisDTO totalsByPeriod(String stringDtInicial, String stringDtFinal, String search);
 
-    List<TotaisByCategDTO> totalsByPeriodByCategoria(String stringDtInicial, String stringDtFinal, String search);
+  List<TotaisByCategDTO> totalsByPeriodByCategoria(
+      String stringDtInicial, String stringDtFinal, String search);
 
-    List<TotaisByMonthDTO> totalsByPeriodByMonth(String stringDtInicial, String stringDtFinal, String search);
-
+  List<TotaisByMonthDTO> totalsByPeriodByMonth(
+      String stringDtInicial, String stringDtFinal, String search);
 }

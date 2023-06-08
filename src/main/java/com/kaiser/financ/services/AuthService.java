@@ -4,8 +4,7 @@ import com.kaiser.financ.dto.ResetPasswordDTO;
 
 public interface AuthService {
 
-    void sendResetPassword(String email);
+  void sendResetPassword(String email);
 
-    void changePassword(ResetPasswordDTO objDto);
-
+  void changePassword(ResetPasswordDTO objDto);
 }

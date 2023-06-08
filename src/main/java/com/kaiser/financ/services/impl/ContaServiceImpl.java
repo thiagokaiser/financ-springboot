@@ -11,29 +11,31 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ContaServiceImpl extends CrudServiceImpl<Conta, ContaRepository, ContaDTO> implements ContaService{
+public class ContaServiceImpl extends CrudServiceImpl<Conta, ContaRepository, ContaDTO>
+    implements ContaService {
 
-	@Override
-	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, String search){
-		Usuario usuario = usuarioService.userLoggedIn();
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);		
-		return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);		
-	}	
-	
-	@Override
-	public Conta fromDTO(ContaDTO objDto) {
-		Usuario usuario = usuarioService.userLoggedIn();
-		return new Conta(objDto.getId(), objDto.getDescricao(), usuario);
-	}
+  @Override
+  public Page<Conta> findPage(
+      Integer page, Integer linesPerPage, String orderBy, String direction, String search) {
+    Usuario usuario = usuarioService.userLoggedIn();
+    PageRequest pageRequest =
+        PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+    return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);
+  }
 
-	@Override
-	public ContaDTO toDTO(Conta obj) {
-		return new ContaDTO(obj);
-	}
+  @Override
+  public Conta fromDTO(ContaDTO objDto) {
+    Usuario usuario = usuarioService.userLoggedIn();
+    return new Conta(objDto.getId(), objDto.getDescricao(), usuario);
+  }
 
-	@Override
-	protected void updateData(Conta newObj, Conta obj) {
-		newObj.setDescricao(obj.getDescricao());
-	}
-	
+  @Override
+  public ContaDTO toDTO(Conta obj) {
+    return new ContaDTO(obj);
+  }
+
+  @Override
+  protected void updateData(Conta newObj, Conta obj) {
+    newObj.setDescricao(obj.getDescricao());
+  }
 }

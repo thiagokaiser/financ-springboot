@@ -7,20 +7,22 @@ import com.kaiser.financ.services.NotificacaoService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotificacaoServiceImpl extends CrudServiceImpl<Notificacao, NotificacaoRepository, NotificacaoDTO> implements NotificacaoService {
+public class NotificacaoServiceImpl
+    extends CrudServiceImpl<Notificacao, NotificacaoRepository, NotificacaoDTO>
+    implements NotificacaoService {
 
-	@Override
-	protected void updateData(Notificacao newObj, Notificacao obj) {
-		//TODO
-	}
+  @Override
+  protected void updateData(Notificacao newObj, Notificacao obj) {
+    // TODO
+  }
 
-	@Override
-	public Notificacao fromDTO(NotificacaoDTO objDto) {
-		return null;//TODO
-	}
+  @Override
+  public Notificacao fromDTO(NotificacaoDTO objDto) {
+    return null; // TODO
+  }
 
-	@Override
-	public NotificacaoDTO toDTO(Notificacao obj) {
-		return null;//TODO
-	}
+  @Override
+  public NotificacaoDTO toDTO(Notificacao obj) {
+    return null; // TODO
+  }
 }

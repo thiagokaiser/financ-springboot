@@ -16,40 +16,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class AmazonS3ServiceImpl implements AmazonS3Service{
-	
-	private final Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
-	
-	@Autowired
-	private AmazonS3 s3client;
-	
-	@Value("${s3.bucket}")
-	private String bucketName;
-	
-	@Override
-	public URI uploadFile(MultipartFile multipartFile) {					
-		try {
-			String fileName = multipartFile.getOriginalFilename();
-			InputStream is = multipartFile.getInputStream();
-			String contentType = multipartFile.getContentType();
-			return uploadFile(is, fileName, contentType);
-		} catch (IOException e) {
-			throw new FileException("Erro de ID: " + e.getMessage());
-		}					
-	}
-	
-	@Override
-	public URI uploadFile(InputStream is, String fileName, String contentType) {
-		try {
-			ObjectMetadata meta = new ObjectMetadata();
-			meta.setContentType(contentType);		
-			logger.info("Iniciando Upload");
-			s3client.putObject(bucketName, fileName, is, meta);
-			logger.info("Upload finalizado");
-			
-			return s3client.getUrl(bucketName, fileName).toURI();
-		} catch (URISyntaxException e) {
-			throw new FileException("Erro ao converter URL para URI");
-		}		
-	}
+public class AmazonS3ServiceImpl implements AmazonS3Service {
+
+  private final Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
+
+  @Autowired private AmazonS3 s3client;
+
+  @Value("${s3.bucket}")
+  private String bucketName;
+
+  @Override
+  public URI uploadFile(MultipartFile multipartFile) {
+    try {
+      String fileName = multipartFile.getOriginalFilename();
+      InputStream is = multipartFile.getInputStream();
+      String contentType = multipartFile.getContentType();
+      return uploadFile(is, fileName, contentType);
+    } catch (IOException e) {
+      throw new FileException("Erro de ID: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public URI uploadFile(InputStream is, String fileName, String contentType) {
+    try {
+      ObjectMetadata meta = new ObjectMetadata();
+      meta.setContentType(contentType);
+      logger.info("Iniciando Upload");
+      s3client.putObject(bucketName, fileName, is, meta);
+      logger.info("Upload finalizado");
+
+      return s3client.getUrl(bucketName, fileName).toURI();
+    } catch (URISyntaxException e) {
+      throw new FileException("Erro ao converter URL para URI");
+    }
+  }
 }

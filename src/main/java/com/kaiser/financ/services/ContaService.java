@@ -5,7 +5,7 @@ import com.kaiser.financ.dto.ContaDTO;
 import org.springframework.data.domain.Page;
 
 public interface ContaService extends CrudService<Conta, ContaDTO> {
-  
-  Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, String search);
 
+  Page<Conta> findPage(
+      Integer page, Integer linesPerPage, String orderBy, String direction, String search);
 }

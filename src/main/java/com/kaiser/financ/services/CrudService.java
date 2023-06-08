@@ -5,18 +5,17 @@ import java.util.List;
 
 public interface CrudService<T extends Domain, D> {
 
-    T find(Integer id);
+  T find(Integer id);
 
-    T insert(T obj);
+  T insert(T obj);
 
-    T update(T obj);
+  T update(T obj);
 
-    void delete(Integer id);
+  void delete(Integer id);
 
-    List<T> findAll();
+  List<T> findAll();
 
-    T fromDTO(D objDto);
+  T fromDTO(D objDto);
 
-    D toDTO(T obj);
-
+  D toDTO(T obj);
 }

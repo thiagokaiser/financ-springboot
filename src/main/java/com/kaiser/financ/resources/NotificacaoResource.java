@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/notificacoes")
-public class NotificacaoResource extends CrudResource<NotificacaoService, Notificacao, NotificacaoDTO> {
-	
-}
+@RequestMapping(value = "/notificacoes")
+public class NotificacaoResource
+    extends CrudResource<NotificacaoService, Notificacao, NotificacaoDTO> {}
