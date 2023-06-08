@@ -1,11 +1,9 @@
 package com.kaiser.financ.services;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.dto.CategoriaDTO;
+import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface CategoriaService {
 

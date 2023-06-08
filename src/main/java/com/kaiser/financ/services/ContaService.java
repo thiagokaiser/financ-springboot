@@ -1,11 +1,9 @@
 package com.kaiser.financ.services;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.dto.ContaDTO;
+import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ContaService {
 

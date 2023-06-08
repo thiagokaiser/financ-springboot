@@ -1,17 +1,14 @@
 package com.kaiser.financ.services.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.UsuarioNewDTO;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.resources.exceptions.FieldMessage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewDTO> {
 	

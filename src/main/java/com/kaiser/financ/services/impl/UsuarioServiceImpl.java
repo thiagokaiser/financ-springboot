@@ -1,25 +1,5 @@
 package com.kaiser.financ.services.impl;
 
-import java.awt.image.BufferedImage;
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.domain.enums.Perfil;
 import com.kaiser.financ.dto.UsuarioDTO;
@@ -34,6 +14,24 @@ import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.AuthorizationException;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
+import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {	
@@ -56,6 +54,15 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 	@Value("${img.profile.size}")
 	private Integer size;
 	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch(Exception e) {
+			return null;
+		}
+	}
+
 	@Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = repo.findByEmail(email);
@@ -64,15 +71,6 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
         }
         return new UserSS(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getPerfis(), usuario.getNome(), usuario.getSobrenome());
     }
-
-	public static UserSS authenticated() {
-		try {
-			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		}
-		catch(Exception e) {
-			return null;
-		}		
-	}
 	
 	@Override
 	public Usuario userLoggedIn() {

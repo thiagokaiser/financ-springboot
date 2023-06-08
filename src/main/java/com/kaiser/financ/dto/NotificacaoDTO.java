@@ -1,10 +1,9 @@
 package com.kaiser.financ.dto;
 
+import com.kaiser.financ.domain.Notificacao;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
-import com.kaiser.financ.domain.Notificacao;
 
 public class NotificacaoDTO implements Serializable{
     private static final long serialVersionUID = 1L;

@@ -1,23 +1,5 @@
 package com.kaiser.financ.services.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Service;
-
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
@@ -33,6 +15,22 @@ import com.kaiser.financ.services.DespesaService;
 import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.TimeZone;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DespesaServiceImpl implements DespesaService{
@@ -210,7 +208,7 @@ public class DespesaServiceImpl implements DespesaService{
 		
 		for (Despesa despesa : list) {
 			total += despesa.getValor();
-			if(despesa.getPago() == true) {
+			if(despesa.getPago()) {
 				totalPago += despesa.getValor();
 			}else {
 				totalPendente += despesa.getValor();

@@ -1,11 +1,5 @@
 package com.kaiser.financ.services.impl;
 
-import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Usuario;
@@ -14,6 +8,10 @@ import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.repositories.ContaRepository;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.services.DBService;
+import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DBServiceImpl implements DBService{

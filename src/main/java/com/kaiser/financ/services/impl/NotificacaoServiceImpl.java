@@ -1,17 +1,14 @@
 package com.kaiser.financ.services.impl;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
 import com.kaiser.financ.domain.Notificacao;
 import com.kaiser.financ.dto.NotificacaoDTO;
 import com.kaiser.financ.repositories.NotificacaoRepository;
 import com.kaiser.financ.services.NotificacaoService;
+import java.util.List;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NotificacaoServiceImpl implements NotificacaoService {

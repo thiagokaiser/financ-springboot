@@ -70,10 +70,8 @@ public class TotaisByMonthDTO implements Serializable{
 		} else if (!ano.equals(other.ano))
 			return false;
 		if (mes == null) {
-			if (other.mes != null)
-				return false;
-		} else if (!mes.equals(other.mes))
-			return false;
-		return true;
-	}	
+      return other.mes == null;
+		} else
+      return mes.equals(other.mes);
+  }
 }

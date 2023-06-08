@@ -1,15 +1,5 @@
 package com.kaiser.financ.services.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Service;
-
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.CategoriaDTO;
@@ -18,6 +8,14 @@ import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService{
