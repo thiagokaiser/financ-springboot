@@ -1,12 +1,10 @@
 package com.kaiser.financ.dto;
 
+import com.kaiser.financ.domain.Despesa;
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import com.kaiser.financ.domain.Despesa;
 
 public class DespesaUpdateDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;

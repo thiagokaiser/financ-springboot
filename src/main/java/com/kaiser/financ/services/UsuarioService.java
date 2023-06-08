@@ -1,15 +1,13 @@
 package com.kaiser.financ.services;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.kaiser.financ.domain.Usuario;
 import com.kaiser.financ.dto.UsuarioDTO;
 import com.kaiser.financ.dto.UsuarioNewDTO;
 import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.dto.UsuarioUpdateDTO;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UsuarioService {
 

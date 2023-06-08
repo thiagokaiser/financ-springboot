@@ -1,10 +1,13 @@
 package com.kaiser.financ.services.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.kaiser.financ.services.AmazonS3Service;
+import com.kaiser.financ.services.exceptions.FileException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.kaiser.financ.services.AmazonS3Service;
-import com.kaiser.financ.services.exceptions.FileException;
-
 @Service
 public class AmazonS3ServiceImpl implements AmazonS3Service{
 	
-	private Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
 	
 	@Autowired
 	private AmazonS3 s3client;

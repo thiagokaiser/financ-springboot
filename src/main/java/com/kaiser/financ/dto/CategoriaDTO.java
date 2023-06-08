@@ -1,12 +1,10 @@
 package com.kaiser.financ.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Usuario;
+import java.io.Serializable;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class CategoriaDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;

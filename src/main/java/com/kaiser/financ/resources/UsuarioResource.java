@@ -1,11 +1,16 @@
 package com.kaiser.financ.resources;
 
+import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.dto.FileUploadDTO;
+import com.kaiser.financ.dto.UsuarioDTO;
+import com.kaiser.financ.dto.UsuarioNewDTO;
+import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
+import com.kaiser.financ.dto.UsuarioUpdateDTO;
+import com.kaiser.financ.services.UsuarioService;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.FileUploadDTO;
-import com.kaiser.financ.dto.UsuarioDTO;
-import com.kaiser.financ.dto.UsuarioNewDTO;
-import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
-import com.kaiser.financ.dto.UsuarioUpdateDTO;
-import com.kaiser.financ.services.UsuarioService;
 
 @RestController
 @RequestMapping(value="/usuarios")

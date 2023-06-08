@@ -1,20 +1,17 @@
 package com.kaiser.financ.services.impl;
 
+import com.kaiser.financ.services.ImageService;
+import com.kaiser.financ.services.exceptions.FileException;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.kaiser.financ.services.ImageService;
-import com.kaiser.financ.services.exceptions.FileException;
 
 @Service
 public class ImageServiceImpl implements ImageService{

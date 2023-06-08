@@ -1,13 +1,11 @@
 package com.kaiser.financ.dto;
 
+import com.kaiser.financ.services.validation.UsuarioUpdate;
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import com.kaiser.financ.services.validation.UsuarioUpdate;
 
 @UsuarioUpdate
 public class UsuarioUpdateAdminDTO implements Serializable{	

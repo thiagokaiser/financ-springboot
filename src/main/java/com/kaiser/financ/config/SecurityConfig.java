@@ -1,7 +1,9 @@
 package com.kaiser.financ.config;
 
+import com.kaiser.financ.security.JWTAuthenticationFilter;
+import com.kaiser.financ.security.JWTAuthorizationFilter;
+import com.kaiser.financ.security.JWTUtil;
 import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,35 +22,26 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.kaiser.financ.security.JWTAuthenticationFilter;
-import com.kaiser.financ.security.JWTAuthorizationFilter;
-import com.kaiser.financ.security.JWTUtil;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-	@Autowired
-    private Environment env;
-	
-	@Autowired
-	private JWTUtil jwtUtil;
-	
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**"
 	};
-
 	private static final String[] PUBLIC_MATCHERS_GET = {};
-
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/usuarios/",			
+			"/usuarios/",
 			"/auth/forgot/**",
-			"/auth/reset_password/**"			
+			"/auth/reset_password/**"
 	};
+	@Autowired
+	private UserDetailsService userDetailsService;
+	@Autowired
+    private Environment env;
+	@Autowired
+	private JWTUtil jwtUtil;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {

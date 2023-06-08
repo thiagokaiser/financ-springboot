@@ -1,11 +1,14 @@
 package com.kaiser.financ.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kaiser.financ.domain.enums.Perfil;
+import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
+import com.kaiser.financ.dto.UsuarioUpdateDTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,11 +17,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kaiser.financ.domain.enums.Perfil;
-import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
-import com.kaiser.financ.dto.UsuarioUpdateDTO;
 
 @Entity
 public class Usuario implements Serializable {	
@@ -47,7 +45,7 @@ public class Usuario implements Serializable {
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
-	private Set<Integer> perfis = new HashSet<>();	
+	private final Set<Integer> perfis = new HashSet<>();
 
 	public Usuario() {		
 	}
@@ -201,10 +199,8 @@ public class Usuario implements Serializable {
 			return false;
 		Usuario other = (Usuario) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}		
+      return other.id == null;
+		} else
+      return id.equals(other.id);
+  }
 }

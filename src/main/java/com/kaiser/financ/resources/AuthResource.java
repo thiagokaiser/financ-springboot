@@ -1,8 +1,13 @@
 package com.kaiser.financ.resources;
 
+import com.kaiser.financ.dto.EmailDTO;
+import com.kaiser.financ.dto.ResetPasswordDTO;
+import com.kaiser.financ.security.JWTUtil;
+import com.kaiser.financ.security.UserSS;
+import com.kaiser.financ.services.AuthService;
+import com.kaiser.financ.services.impl.UsuarioServiceImpl;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,13 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.kaiser.financ.dto.EmailDTO;
-import com.kaiser.financ.dto.ResetPasswordDTO;
-import com.kaiser.financ.security.JWTUtil;
-import com.kaiser.financ.security.UserSS;
-import com.kaiser.financ.services.AuthService;
-import com.kaiser.financ.services.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping(value = "/auth")

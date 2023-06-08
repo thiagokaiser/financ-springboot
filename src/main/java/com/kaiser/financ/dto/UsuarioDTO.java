@@ -1,12 +1,11 @@
 package com.kaiser.financ.dto;
 
+import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.domain.enums.Perfil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.domain.enums.Perfil;
 
 public class UsuarioDTO implements Serializable{	
 	private static final long serialVersionUID = 1L;

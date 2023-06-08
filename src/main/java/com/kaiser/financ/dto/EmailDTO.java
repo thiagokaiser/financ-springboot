@@ -1,7 +1,6 @@
 package com.kaiser.financ.dto;
 
 import java.io.Serializable;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 

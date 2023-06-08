@@ -1,20 +1,18 @@
 package com.kaiser.financ.repositories;
 
+import com.kaiser.financ.domain.Despesa;
+import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.dto.TotaisByCategDTO;
+import com.kaiser.financ.dto.TotaisByMonthDTO;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.kaiser.financ.domain.Despesa;
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.TotaisByCategDTO;
-import com.kaiser.financ.dto.TotaisByMonthDTO;
 
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, Integer>{

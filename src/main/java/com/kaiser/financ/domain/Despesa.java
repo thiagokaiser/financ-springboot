@@ -2,7 +2,6 @@ package com.kaiser.financ.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -187,10 +186,8 @@ public class Despesa implements Serializable{
 			return false;
 		Despesa other = (Despesa) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+      return other.id == null;
+		} else
+      return id.equals(other.id);
+  }
 }
