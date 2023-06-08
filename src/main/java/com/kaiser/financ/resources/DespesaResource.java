@@ -2,7 +2,6 @@ package com.kaiser.financ.resources;
 
 import com.kaiser.financ.domain.Despesa;
 import com.kaiser.financ.dto.DespesaDTO;
-import com.kaiser.financ.dto.DespesaUpdateDTO;
 import com.kaiser.financ.dto.TotaisByCategDTO;
 import com.kaiser.financ.dto.TotaisByMonthDTO;
 import com.kaiser.financ.dto.TotaisDTO;
@@ -11,9 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,23 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="/despesas")
-public class DespesaResource {
-
-	@Autowired
-	private DespesaService service;	
-	
-	@ApiOperation(value = "Busca por id")	
-	@GetMapping(value="/{id}")
-	public ResponseEntity<Despesa> find(@PathVariable Integer id) {
-		
-		Despesa obj = service.find(id);		
-		return ResponseEntity.ok().body(obj);		
-		
-	}
+public class DespesaResource extends CrudResource<DespesaService, Despesa, DespesaDTO> {
 	
 	@ApiOperation(value = "Insere Despesa")	
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaUpdateDTO objDto){		
+	@Override
+	public ResponseEntity<Void> insert(@Valid @RequestBody DespesaDTO objDto){		
 		
 		Despesa obj = service.fromDTO(objDto);
 		service.insert(obj);		
@@ -52,18 +38,9 @@ public class DespesaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation(value = "Atualiza Despesa")	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer id){
-		Despesa obj = service.fromDTO(objDto);
-		obj.setId(id);
-		service.update(obj);		
-		return ResponseEntity.noContent().build();
-	}
-	
 	@ApiOperation(value = "Atualiza todas despesas pelo idParcela")
 	@PutMapping(value = "/all/{idParcela}")
-	public ResponseEntity<Void> updateAllByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
+	public ResponseEntity<Void> updateAllByIdParcela(@Valid @RequestBody DespesaDTO objDto, @PathVariable Integer idParcela){
 		Despesa obj = service.fromDTO(objDto);
 		obj.setIdParcela(idParcela);
 		service.updateAllByIdParcela(obj);		
@@ -72,22 +49,11 @@ public class DespesaResource {
 	
 	@ApiOperation(value = "Atualiza todas despesas nao pagas pelo idParcela")	
 	@PutMapping(value = "/unpaid/{idParcela}")
-	public ResponseEntity<Void> updateUnpaidByIdParcela(@Valid @RequestBody DespesaUpdateDTO objDto, @PathVariable Integer idParcela){
+	public ResponseEntity<Void> updateUnpaidByIdParcela(@Valid @RequestBody DespesaDTO objDto, @PathVariable Integer idParcela){
 		Despesa obj = service.fromDTO(objDto);
 		obj.setIdParcela(idParcela);
 		service.updateUnpaidByIdParcela(obj);		
 		return ResponseEntity.noContent().build();
-	}
-	
-	@ApiOperation(value = "Remove Despesa")
-	@ApiResponses(value = {			
-			@ApiResponse(code = 404, message = "Código inexistente") })	
-	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		
-		service.delete(id);		
-		return ResponseEntity.noContent().build();		
-		
 	}
 	
 	@ApiOperation(value = "Remove todas despesas pelo idParcela")
@@ -98,16 +64,6 @@ public class DespesaResource {
 		
 		service.deleteByIdParcela(idParcela);		
 		return ResponseEntity.noContent().build();		
-		
-	}
-	
-	@ApiOperation(value = "Retorna todas despesas")	
-	@GetMapping
-	public ResponseEntity<List<DespesaDTO>> findAll() {
-		
-		List<Despesa> list = service.findAll();
-		List<DespesaDTO> listDto = list.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);		
 		
 	}
 	

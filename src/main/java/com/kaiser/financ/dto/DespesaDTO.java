@@ -22,10 +22,11 @@ public class DespesaDTO implements Serializable{
 	private Boolean pago;
 	private Integer numParcelas;
 	private Integer parcelaAtual;
-	private Integer idParcela;	
-	
-	private Categoria categoria;	
-	private Conta conta;		
+	private Integer idParcela;
+	private Integer categoriaId;
+	private Categoria categoria;
+	private Integer contaId;
+	private Conta conta;
 	
 	public DespesaDTO() {		
 	}	
@@ -40,7 +41,9 @@ public class DespesaDTO implements Serializable{
 		this.parcelaAtual = obj.getParcelaAtual();
 		this.idParcela = obj.getIdParcela();
 		this.categoria = obj.getCategoria();
+		this.categoriaId = obj.getCategoria().getId();
 		this.conta = obj.getConta();
+		this.contaId = obj.getConta().getId();
 	}
 
 	public Integer getId() {
@@ -107,12 +110,28 @@ public class DespesaDTO implements Serializable{
 		this.idParcela = idParcela;
 	}
 
+	public Integer getCategoriaId() {
+		return categoriaId;
+	}
+
+	public void setCategoriaId(Integer categoriaId) {
+		this.categoriaId = categoriaId;
+	}
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Integer getContaId() {
+		return contaId;
+	}
+
+	public void setContaId(Integer contaId) {
+		this.contaId = contaId;
 	}
 
 	public Conta getConta() {

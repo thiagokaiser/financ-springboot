@@ -20,8 +20,7 @@ public class DespesaUpdateDTO implements Serializable{
 	private Boolean pago;
 	private Integer numParcelas;
 	private Integer parcelaAtual;
-	private Integer idParcela;	
-	
+	private Integer idParcela;
 	private Integer categoriaId;	
 	private Integer contaId;		
 	

@@ -5,23 +5,23 @@ import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class ContaDTO implements Serializable{	
+public class ContaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 		
 	@NotEmpty(message = "Campo Obrigatário")	
 	@Size(min=3, max=80, message = "Campo deve estar entre 3 e 80 caracteres")
-	private String descricao;		
-	
-	public ContaDTO() {		
+	private String descricao;
+
+	public ContaDTO(){
 	}
 
 	public ContaDTO(Conta obj) {		
 		this.id = obj.getId();
 		this.descricao = obj.getDescricao();		
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
