@@ -1,5 +1,7 @@
 package com.kaiser.financ.dto;
 
+import static java.util.Objects.nonNull;
+
 import com.kaiser.financ.domain.Categoria;
 import com.kaiser.financ.domain.Conta;
 import com.kaiser.financ.domain.Despesa;
@@ -40,9 +42,9 @@ public class DespesaDTO implements Serializable {
     this.parcelaAtual = obj.getParcelaAtual();
     this.idParcela = obj.getIdParcela();
     this.categoria = obj.getCategoria();
-    this.categoriaId = obj.getCategoria().getId();
+    this.categoriaId = nonNull(obj.getCategoria()) ? obj.getCategoria().getId() : null;
     this.conta = obj.getConta();
-    this.contaId = obj.getConta().getId();
+    this.contaId = nonNull(obj.getConta()) ? obj.getConta().getId() : null;
   }
 
   public Integer getId() {
