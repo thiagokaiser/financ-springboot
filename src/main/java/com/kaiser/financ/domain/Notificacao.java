@@ -3,8 +3,12 @@ package com.kaiser.financ.domain;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Notificacao extends Domain {
   @NotBlank(message = "Campo Obrigatário")
   private String descricao;
@@ -23,36 +27,5 @@ public class Notificacao extends Domain {
     this.dtLeitura = dtLeitura;
     this.lido = lido;
   }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
-
-  public Date getDtCriacao() {
-    return dtCriacao;
-  }
-
-  public void setDtCriacao(Date dtCriacao) {
-    this.dtCriacao = dtCriacao;
-  }
-
-  public Date getDtLeitura() {
-    return dtLeitura;
-  }
-
-  public void setDtLeitura(Date dtLeitura) {
-    this.dtLeitura = dtLeitura;
-  }
-
-  public boolean isLido() {
-    return lido;
-  }
-
-  public void setLido(boolean lido) {
-    this.lido = lido;
-  }
+  
 }

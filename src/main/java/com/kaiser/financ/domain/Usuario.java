@@ -17,8 +17,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Usuario implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -80,78 +84,6 @@ public class Usuario implements Serializable {
     this.imagemPerfil = objDto.getImagemPerfil();
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public String getSobrenome() {
-    return sobrenome;
-  }
-
-  public void setSobrenome(String sobrenome) {
-    this.sobrenome = sobrenome;
-  }
-
-  public Date getDtNascimento() {
-    return dtNascimento;
-  }
-
-  public void setDtNascimento(Date dtNascimento) {
-    this.dtNascimento = dtNascimento;
-  }
-
-  public String getCidade() {
-    return cidade;
-  }
-
-  public void setCidade(String cidade) {
-    this.cidade = cidade;
-  }
-
-  public String getEstado() {
-    return estado;
-  }
-
-  public void setEstado(String estado) {
-    this.estado = estado;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getSenha() {
-    return senha;
-  }
-
-  public void setSenha(String senha) {
-    this.senha = senha;
-  }
-
   public Set<Perfil> getPerfis() {
     return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
   }
@@ -162,22 +94,6 @@ public class Usuario implements Serializable {
 
   public void removePerfil(Perfil perfil) {
     perfis.remove(perfil.getCod());
-  }
-
-  public Set<String> getTelefones() {
-    return telefones;
-  }
-
-  public void setTelefones(Set<String> telefones) {
-    this.telefones = telefones;
-  }
-
-  public String getImagemPerfil() {
-    return imagemPerfil;
-  }
-
-  public void setImagemPerfil(String imagemPerfil) {
-    this.imagemPerfil = imagemPerfil;
   }
 
   @Override

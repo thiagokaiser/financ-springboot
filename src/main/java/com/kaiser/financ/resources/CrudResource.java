@@ -21,7 +21,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 public abstract class CrudResource<S extends CrudService, D extends Domain, DTO> {
 
-  @Autowired protected S service;
+  @Autowired
+  protected S service;
 
   @ApiOperation(value = "Find by id")
   @GetMapping(value = "/{id}")

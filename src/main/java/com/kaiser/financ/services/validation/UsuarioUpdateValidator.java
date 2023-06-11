@@ -16,9 +16,11 @@ import org.springframework.web.servlet.HandlerMapping;
 public class UsuarioUpdateValidator
     implements ConstraintValidator<UsuarioUpdate, UsuarioUpdateAdminDTO> {
 
-  @Autowired private HttpServletRequest request;
+  @Autowired
+  private HttpServletRequest request;
 
-  @Autowired private UsuarioRepository repo;
+  @Autowired
+  private UsuarioRepository repo;
 
   @Override
   public void initialize(UsuarioUpdate ann) {}

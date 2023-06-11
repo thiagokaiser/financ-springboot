@@ -5,7 +5,11 @@ import com.kaiser.financ.domain.Usuario;
 import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CategoriaDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -28,35 +32,4 @@ public class CategoriaDTO implements Serializable {
     this.usuario = obj.getUsuario();
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
-
-  public String getCor() {
-    return cor;
-  }
-
-  public void setCor(String cor) {
-    this.cor = cor;
-  }
-
-  public Usuario getUsuario() {
-    return usuario;
-  }
-
-  public void setUsuario(Usuario usuario) {
-    this.usuario = usuario;
-  }
 }

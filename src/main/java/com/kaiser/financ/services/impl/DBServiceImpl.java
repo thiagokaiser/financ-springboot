@@ -16,13 +16,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class DBServiceImpl implements DBService {
 
-  @Autowired private BCryptPasswordEncoder pe;
+  @Autowired
+  private BCryptPasswordEncoder pe;
 
-  @Autowired private CategoriaRepository categoriaRepo;
+  @Autowired
+  private CategoriaRepository categoriaRepo;
 
-  @Autowired private ContaRepository contaRepo;
+  @Autowired
+  private ContaRepository contaRepo;
 
-  @Autowired private UsuarioRepository usuarioRepo;
+  @Autowired
+  private UsuarioRepository usuarioRepo;
 
   @Override
   public void instantiateTestDatabase() {

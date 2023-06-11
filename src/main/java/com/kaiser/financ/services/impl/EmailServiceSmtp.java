@@ -11,8 +11,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 public class EmailServiceSmtp extends EmailServiceAbstract {
 
   private static final Logger LOG = LoggerFactory.getLogger(EmailServiceSmtp.class);
-  @Autowired private MailSender mailSender;
-  @Autowired private JavaMailSender javaMailSender;
+  @Autowired
+  private MailSender mailSender;
+  @Autowired
+  private JavaMailSender javaMailSender;
 
   @Override
   public void sendEmail(SimpleMailMessage msg) {

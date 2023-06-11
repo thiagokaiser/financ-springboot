@@ -15,13 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-  @Autowired private JWTUtil jwtUtil;
+  @Autowired
+  private JWTUtil jwtUtil;
 
-  @Autowired private BCryptPasswordEncoder pe;
+  @Autowired
+  private BCryptPasswordEncoder pe;
 
-  @Autowired private UsuarioRepository usuarioRepository;
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
-  @Autowired private EmailService emailService;
+  @Autowired
+  private EmailService emailService;
 
   @Override
   public void sendResetPassword(String email) {

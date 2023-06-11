@@ -20,7 +20,8 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
   private final Logger logger = LoggerFactory.getLogger(AmazonS3ServiceImpl.class);
 
-  @Autowired private AmazonS3 s3client;
+  @Autowired
+  private AmazonS3 s3client;
 
   @Value("${s3.bucket}")
   private String bucketName;

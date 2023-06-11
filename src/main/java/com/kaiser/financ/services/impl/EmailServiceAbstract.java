@@ -20,9 +20,11 @@ public abstract class EmailServiceAbstract implements EmailService {
   @Value("${default.frontend_url}")
   private String frontEndUrl;
 
-  @Autowired private TemplateEngine templateEngine;
+  @Autowired
+  private TemplateEngine templateEngine;
 
-  @Autowired private JavaMailSender javaMailSender;
+  @Autowired
+  private JavaMailSender javaMailSender;
 
   public void sendResetPasswordEmail(Usuario usuario, String linkResetPassword) {
     try {

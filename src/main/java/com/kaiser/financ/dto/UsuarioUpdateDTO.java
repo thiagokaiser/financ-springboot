@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UsuarioUpdateDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -26,70 +30,5 @@ public class UsuarioUpdateDTO implements Serializable {
 
   @Size(max = 80, message = "Campo deve ter no máximo 80 caracteres")
   private String descricao;
-
-  public UsuarioUpdateDTO() {}
-
-  public UsuarioUpdateDTO(
-      String nome,
-      String sobrenome,
-      Date dtNascimento,
-      String cidade,
-      String estado,
-      String descricao) {
-    super();
-    this.nome = nome;
-    this.sobrenome = sobrenome;
-    this.dtNascimento = dtNascimento;
-    this.cidade = cidade;
-    this.estado = estado;
-    this.descricao = descricao;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public String getSobrenome() {
-    return sobrenome;
-  }
-
-  public void setSobrenome(String sobrenome) {
-    this.sobrenome = sobrenome;
-  }
-
-  public Date getDtNascimento() {
-    return dtNascimento;
-  }
-
-  public void setDtNascimento(Date dtNascimento) {
-    this.dtNascimento = dtNascimento;
-  }
-
-  public String getCidade() {
-    return cidade;
-  }
-
-  public void setCidade(String cidade) {
-    this.cidade = cidade;
-  }
-
-  public String getEstado() {
-    return estado;
-  }
-
-  public void setEstado(String estado) {
-    this.estado = estado;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
+  
 }

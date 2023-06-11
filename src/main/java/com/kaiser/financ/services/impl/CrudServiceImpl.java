@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository, T>
     implements CrudService<D, T> {
 
-  @Autowired protected R repo;
-  @Autowired protected UsuarioService usuarioService;
+  @Autowired
+  protected R repo;
+  @Autowired
+  protected UsuarioService usuarioService;
 
   @Override
   public D find(Integer id) {

@@ -8,7 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class Domain implements Serializable {
   protected static final long serialVersionUID = 1L;
@@ -26,22 +30,6 @@ public abstract class Domain implements Serializable {
 
   public Domain(Integer id, Usuario usuario) {
     this.id = id;
-    this.usuario = usuario;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public Usuario getUsuario() {
-    return usuario;
-  }
-
-  public void setUsuario(Usuario usuario) {
     this.usuario = usuario;
   }
 

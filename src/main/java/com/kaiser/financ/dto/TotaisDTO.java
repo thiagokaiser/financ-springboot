@@ -2,7 +2,11 @@ package com.kaiser.financ.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class TotaisDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -22,44 +26,5 @@ public class TotaisDTO implements Serializable {
     this.totalPago = totalPago;
     this.totalPendente = totalPendente;
   }
-
-  public Date getDtInicial() {
-    return dtInicial;
-  }
-
-  public void setDtInicial(Date dtInicial) {
-    this.dtInicial = dtInicial;
-  }
-
-  public Date getDtFinal() {
-    return dtFinal;
-  }
-
-  public void setDtFinal(Date dtFinal) {
-    this.dtFinal = dtFinal;
-  }
-
-  public Double getTotal() {
-    return total;
-  }
-
-  public void setTotal(Double total) {
-    this.total = total;
-  }
-
-  public Double getTotalPago() {
-    return totalPago;
-  }
-
-  public void setTotalPago(Double totalPago) {
-    this.totalPago = totalPago;
-  }
-
-  public Double getTotalPendente() {
-    return totalPendente;
-  }
-
-  public void setTotalPendente(Double totalPendente) {
-    this.totalPendente = totalPendente;
-  }
+  
 }

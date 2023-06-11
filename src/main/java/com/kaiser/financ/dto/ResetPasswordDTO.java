@@ -3,7 +3,13 @@ package com.kaiser.financ.dto;
 import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ResetPasswordDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -13,21 +19,4 @@ public class ResetPasswordDTO implements Serializable {
 
   private String token;
 
-  public ResetPasswordDTO() {}
-
-  public String getNewPassword() {
-    return newPassword;
-  }
-
-  public void setNewPassword(String newPassword) {
-    this.newPassword = newPassword;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
 }

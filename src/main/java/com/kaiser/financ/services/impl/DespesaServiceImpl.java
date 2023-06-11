@@ -33,8 +33,10 @@ import org.springframework.stereotype.Service;
 public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaRepository, DespesaDTO>
     implements DespesaService {
 
-  @Autowired private CategoriaService categoriaService;
-  @Autowired private ContaService contaService;
+  @Autowired
+  private CategoriaService categoriaService;
+  @Autowired
+  private ContaService contaService;
 
   @Override
   public Despesa insert(Despesa obj) {

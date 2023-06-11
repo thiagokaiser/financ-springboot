@@ -6,8 +6,16 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @UsuarioUpdate
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsuarioUpdateAdminDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -36,89 +44,4 @@ public class UsuarioUpdateAdminDTO implements Serializable {
 
   private String imagemPerfil;
 
-  public UsuarioUpdateAdminDTO() {}
-
-  public UsuarioUpdateAdminDTO(
-      String email,
-      String nome,
-      String sobrenome,
-      Date dtNascimento,
-      String cidade,
-      String estado,
-      String descricao,
-      String imagemPerfil) {
-    super();
-    this.email = email;
-    this.nome = nome;
-    this.sobrenome = sobrenome;
-    this.dtNascimento = dtNascimento;
-    this.cidade = cidade;
-    this.estado = estado;
-    this.descricao = descricao;
-    this.imagemPerfil = imagemPerfil;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public String getSobrenome() {
-    return sobrenome;
-  }
-
-  public void setSobrenome(String sobrenome) {
-    this.sobrenome = sobrenome;
-  }
-
-  public Date getDtNascimento() {
-    return dtNascimento;
-  }
-
-  public void setDtNascimento(Date dtNascimento) {
-    this.dtNascimento = dtNascimento;
-  }
-
-  public String getCidade() {
-    return cidade;
-  }
-
-  public void setCidade(String cidade) {
-    this.cidade = cidade;
-  }
-
-  public String getEstado() {
-    return estado;
-  }
-
-  public void setEstado(String estado) {
-    this.estado = estado;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
-
-  public String getImagemPerfil() {
-    return imagemPerfil;
-  }
-
-  public void setImagemPerfil(String imagemPerfil) {
-    this.imagemPerfil = imagemPerfil;
-  }
 }

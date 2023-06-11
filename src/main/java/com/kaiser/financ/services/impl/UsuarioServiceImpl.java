@@ -36,13 +36,17 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
-  @Autowired private BCryptPasswordEncoder pe;
+  @Autowired
+  private BCryptPasswordEncoder pe;
 
-  @Autowired private UsuarioRepository repo;
+  @Autowired
+  private UsuarioRepository repo;
 
-  @Autowired private AmazonS3Service s3Service;
+  @Autowired
+  private AmazonS3Service s3Service;
 
-  @Autowired private ImageService imageService;
+  @Autowired
+  private ImageService imageService;
 
   @Value("${img.prefix.client.profile}")
   private String prefix;
