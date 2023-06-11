@@ -1,8 +1,12 @@
 package com.kaiser.financ.domain;
 
 import javax.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Conta extends Domain {
   private String descricao;
 
@@ -15,11 +19,4 @@ public class Conta extends Domain {
     this.descricao = descricao;
   }
 
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
 }

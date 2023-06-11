@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth")
 public class AuthResource {
 
-  @Autowired private JWTUtil jwtUtil;
+  @Autowired
+  private JWTUtil jwtUtil;
 
-  @Autowired private AuthService service;
+  @Autowired
+  private AuthService service;
 
   @PostMapping(value = "/refresh_token")
   public ResponseEntity<String> refreshToken(HttpServletResponse response) {

@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewDTO> {
 
-  @Autowired private UsuarioRepository repo;
+  @Autowired private
+  UsuarioRepository repo;
 
   @Override
   public void initialize(UsuarioInsert ann) {}

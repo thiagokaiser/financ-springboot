@@ -31,7 +31,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping(value = "/usuarios")
 public class UsuarioResource {
 
-  @Autowired private UsuarioService service;
+  @Autowired
+  private UsuarioService service;
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<UsuarioDTO> find(@PathVariable Integer id) {

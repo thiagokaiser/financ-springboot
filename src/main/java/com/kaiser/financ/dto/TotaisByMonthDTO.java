@@ -3,7 +3,11 @@ package com.kaiser.financ.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class TotaisByMonthDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -18,26 +22,6 @@ public class TotaisByMonthDTO implements Serializable {
     this.mes = mes;
     this.ano = ano;
     this.setTotal(total);
-  }
-
-  public Integer getMes() {
-    return mes;
-  }
-
-  public void setMes(Integer mes) {
-    this.mes = mes;
-  }
-
-  public Integer getAno() {
-    return ano;
-  }
-
-  public void setAno(Integer ano) {
-    this.ano = ano;
-  }
-
-  public Double getTotal() {
-    return total;
   }
 
   public void setTotal(Double total) {
