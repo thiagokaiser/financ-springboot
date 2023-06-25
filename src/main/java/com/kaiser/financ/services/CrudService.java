@@ -1,9 +1,9 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.domain.Domain;
+import com.kaiser.financ.entities.BaseEntity;
 import java.util.List;
 
-public interface CrudService<T extends Domain, D> {
+public interface CrudService<T extends BaseEntity, D> {
 
   T find(Integer id);
 

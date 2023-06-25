@@ -1,13 +1,13 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Categoria;
-import com.kaiser.financ.domain.Conta;
-import com.kaiser.financ.domain.Despesa;
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.DespesaDTO;
-import com.kaiser.financ.dto.TotaisByCategDTO;
-import com.kaiser.financ.dto.TotaisByMonthDTO;
-import com.kaiser.financ.dto.TotaisDTO;
+import com.kaiser.financ.dtos.DespesaDTO;
+import com.kaiser.financ.dtos.TotaisByCategDTO;
+import com.kaiser.financ.dtos.TotaisByMonthDTO;
+import com.kaiser.financ.dtos.TotaisDTO;
+import com.kaiser.financ.entities.CategoriaEntity;
+import com.kaiser.financ.entities.ContaEntity;
+import com.kaiser.financ.entities.DespesaEntity;
+import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.ContaService;
@@ -30,7 +30,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaRepository, DespesaDTO>
+public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRepository, DespesaDTO>
     implements DespesaService {
 
   @Autowired
@@ -39,7 +39,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   private ContaService contaService;
 
   @Override
-  public Despesa insert(Despesa obj) {
+  public DespesaEntity insert(DespesaEntity obj) {
     obj.setId(null);
     obj.setCategoria(categoriaService.find(obj.getCategoria().getId()));
     if (obj.getConta() != null) {
@@ -60,11 +60,11 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
       obj.setIdParcela(obj.getId());
       obj = repo.save(obj);
 
-      List<Despesa> listDespesas = new ArrayList<Despesa>();
+      List<DespesaEntity> listDespesas = new ArrayList<DespesaEntity>();
       do {
         parcela += 1;
         mes += 1;
-        Despesa despesa = new Despesa();
+        DespesaEntity despesa = new DespesaEntity();
         updateData(despesa, obj);
         despesa.setIdParcela(obj.getId());
         despesa.setParcelaAtual(parcela);
@@ -88,16 +88,16 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   }
 
   @Override
-  public void updateUnpaidByIdParcela(Despesa despesa) {
+  public void updateUnpaidByIdParcela(DespesaEntity despesa) {
     if (isNullorZero(despesa.getIdParcela())) {
       throw new DataIntegrityException("IdParcela inválido");
     }
 
-    Usuario usuario = usuarioService.userLoggedIn();
-    List<Despesa> despesas =
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    List<DespesaEntity> despesas =
         repo.findByUsuarioAndIdParcelaAndPago(usuario, despesa.getIdParcela(), false);
 
-    for (Despesa newDespesa : despesas) {
+    for (DespesaEntity newDespesa : despesas) {
       newDespesa.setDescricao(despesa.getDescricao());
       newDespesa.setValor(despesa.getValor());
       newDespesa.setCategoria(despesa.getCategoria());
@@ -107,15 +107,15 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   }
 
   @Override
-  public void updateAllByIdParcela(Despesa despesa) {
+  public void updateAllByIdParcela(DespesaEntity despesa) {
     if (isNullorZero(despesa.getIdParcela())) {
       throw new DataIntegrityException("IdParcela inválido");
     }
 
-    Usuario usuario = usuarioService.userLoggedIn();
-    List<Despesa> despesas = repo.findByUsuarioAndIdParcela(usuario, despesa.getIdParcela());
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    List<DespesaEntity> despesas = repo.findByUsuarioAndIdParcela(usuario, despesa.getIdParcela());
 
-    for (Despesa newDespesa : despesas) {
+    for (DespesaEntity newDespesa : despesas) {
       newDespesa.setDescricao(despesa.getDescricao());
       newDespesa.setCategoria(despesa.getCategoria());
     }
@@ -129,8 +129,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
       throw new DataIntegrityException("IdParcela inválido");
     }
 
-    Usuario usuario = usuarioService.userLoggedIn();
-    List<Despesa> despesas = repo.findByUsuarioAndIdParcelaAndPago(usuario, idParcela, false);
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    List<DespesaEntity> despesas = repo.findByUsuarioAndIdParcelaAndPago(usuario, idParcela, false);
 
     try {
       repo.deleteAll(despesas);
@@ -140,7 +140,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   }
 
   @Override
-  public Page<Despesa> findPage(
+  public Page<DespesaEntity> findPage(
       Integer page,
       Integer linesPerPage,
       String orderBy,
@@ -149,7 +149,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
       String stringDtInicial,
       String stringDtFinal,
       Boolean pago) {
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     PageRequest pageRequest =
         PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
@@ -173,17 +173,17 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
     Double totalPago = 0.0;
     Double totalPendente = 0.0;
 
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
 
     Date dtInicial = stringToDate(stringDtInicial);
     Date dtFinal = stringToDate(stringDtFinal);
 
-    List<Despesa> list =
+    List<DespesaEntity> list =
         repo
             .findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
                 usuario, search, dtInicial, dtFinal);
 
-    for (Despesa despesa : list) {
+    for (DespesaEntity despesa : list) {
       total += despesa.getValor();
       if (despesa.getPago()) {
         totalPago += despesa.getValor();
@@ -199,7 +199,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   public List<TotaisByCategDTO> totalsByPeriodByCategoria(
       String stringDtInicial, String stringDtFinal, String search) {
 
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     Date dtInicial = stringToDate(stringDtInicial);
     Date dtFinal = stringToDate(stringDtFinal);
 
@@ -212,7 +212,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   public List<TotaisByMonthDTO> totalsByPeriodByMonth(
       String stringDtInicial, String stringDtFinal, String search) {
 
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     Date dtInicial = stringToDate(stringDtInicial + "-01");
     Date dtFinal = stringToDate(stringDtFinal + "-" + lastDayOfMonth(stringDtFinal));
 
@@ -232,18 +232,18 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   }
 
   @Override
-  public Despesa fromDTO(DespesaDTO objDto) {
-    Usuario usuario = usuarioService.userLoggedIn();
-    Categoria categ = new Categoria();
+  public DespesaEntity fromDTO(DespesaDTO objDto) {
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    CategoriaEntity categ = new CategoriaEntity();
     categ.setId(objDto.getCategoriaId());
-    Conta conta = new Conta();
+    ContaEntity conta = new ContaEntity();
     if (objDto.getContaId() == null) {
       conta = null;
     } else {
       conta.setId(objDto.getContaId());
     }
 
-    return new Despesa(
+    return new DespesaEntity(
         objDto.getId(),
         objDto.getDescricao(),
         objDto.getValor(),
@@ -258,12 +258,12 @@ public class DespesaServiceImpl extends CrudServiceImpl<Despesa, DespesaReposito
   }
 
   @Override
-  public DespesaDTO toDTO(Despesa obj) {
+  public DespesaDTO toDTO(DespesaEntity obj) {
     return new DespesaDTO(obj);
   }
 
   @Override
-  protected void updateData(Despesa newObj, Despesa obj) {
+  protected void updateData(DespesaEntity newObj, DespesaEntity obj) {
     newObj.setDescricao(obj.getDescricao());
     newObj.setCategoria(obj.getCategoria());
     newObj.setConta(obj.getConta());

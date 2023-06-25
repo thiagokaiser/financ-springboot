@@ -1,45 +1,45 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.UsuarioDTO;
-import com.kaiser.financ.dto.UsuarioNewDTO;
-import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
-import com.kaiser.financ.dto.UsuarioUpdateDTO;
+import com.kaiser.financ.dtos.UsuarioDTO;
+import com.kaiser.financ.dtos.UsuarioNewDTO;
+import com.kaiser.financ.dtos.UsuarioUpdateAdminDTO;
+import com.kaiser.financ.dtos.UsuarioUpdateDTO;
+import com.kaiser.financ.entities.UsuarioEntity;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UsuarioService {
 
-  Usuario userLoggedIn();
+  UsuarioEntity userLoggedIn();
 
-  Usuario find(Integer id);
+  UsuarioEntity find(Integer id);
 
-  Usuario insert(Usuario obj);
+  UsuarioEntity insert(UsuarioEntity obj);
 
-  Usuario update(Usuario obj);
+  UsuarioEntity update(UsuarioEntity obj);
 
-  Usuario updateAdmin(Usuario obj);
+  UsuarioEntity updateAdmin(UsuarioEntity obj);
 
   void delete(Integer id);
 
   void removePerfil(Integer usuarioId, String perfil);
 
-  Usuario updateImagemPerfil(Integer id, String imagemPerfil);
+  UsuarioEntity updateImagemPerfil(Integer id, String imagemPerfil);
 
   void addPerfil(Integer usuarioId, String perfil);
 
-  List<Usuario> findAll();
+  List<UsuarioEntity> findAll();
 
-  Usuario findByEmail(String email);
+  UsuarioEntity findByEmail(String email);
 
-  Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
+  Page<UsuarioEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
 
-  Usuario fromDTO(UsuarioUpdateDTO objDto);
+  UsuarioEntity fromDTO(UsuarioUpdateDTO objDto);
 
-  Usuario fromDTO(UsuarioUpdateAdminDTO objDto);
+  UsuarioEntity fromDTO(UsuarioUpdateAdminDTO objDto);
 
-  Usuario fromDTO(UsuarioNewDTO objDto);
+  UsuarioEntity fromDTO(UsuarioNewDTO objDto);
 
   UsuarioDTO uploadProfilePicture(MultipartFile multipartFile);
 }

@@ -1,6 +1,6 @@
 package com.kaiser.financ.security;
 
-import com.kaiser.financ.domain.enums.Perfil;
+import com.kaiser.financ.entities.enums.PerfilEnum;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class UserSS implements UserDetails {
   public UserSS() {}
 
   public UserSS(
-      Integer id, String email, String senha, Set<Perfil> perfis, String nome, String sobrenome) {
+      Integer id, String email, String senha, Set<PerfilEnum> perfis, String nome, String sobrenome) {
     super();
     this.id = id;
     this.email = email;
@@ -81,7 +81,7 @@ public class UserSS implements UserDetails {
     return true;
   }
 
-  public boolean hasRole(Perfil perfil) {
+  public boolean hasRole(PerfilEnum perfil) {
     return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
   }
 }

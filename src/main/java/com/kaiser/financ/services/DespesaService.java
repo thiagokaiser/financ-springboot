@@ -1,22 +1,22 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.domain.Despesa;
-import com.kaiser.financ.dto.DespesaDTO;
-import com.kaiser.financ.dto.TotaisByCategDTO;
-import com.kaiser.financ.dto.TotaisByMonthDTO;
-import com.kaiser.financ.dto.TotaisDTO;
+import com.kaiser.financ.dtos.DespesaDTO;
+import com.kaiser.financ.dtos.TotaisByCategDTO;
+import com.kaiser.financ.dtos.TotaisByMonthDTO;
+import com.kaiser.financ.dtos.TotaisDTO;
+import com.kaiser.financ.entities.DespesaEntity;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public interface DespesaService extends CrudService<Despesa, DespesaDTO> {
+public interface DespesaService extends CrudService<DespesaEntity, DespesaDTO> {
 
-  void updateUnpaidByIdParcela(Despesa despesa);
+  void updateUnpaidByIdParcela(DespesaEntity despesa);
 
-  void updateAllByIdParcela(Despesa despesa);
+  void updateAllByIdParcela(DespesaEntity despesa);
 
   void deleteByIdParcela(Integer idParcela);
 
-  Page<Despesa> findPage(
+  Page<DespesaEntity> findPage(
       Integer page,
       Integer linesPerPage,
       String orderBy,

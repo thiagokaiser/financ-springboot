@@ -1,6 +1,6 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.services.EmailService;
 import java.util.Date;
 import javax.mail.MessagingException;
@@ -26,7 +26,7 @@ public abstract class EmailServiceAbstract implements EmailService {
   @Autowired
   private JavaMailSender javaMailSender;
 
-  public void sendResetPasswordEmail(Usuario usuario, String linkResetPassword) {
+  public void sendResetPasswordEmail(UsuarioEntity usuario, String linkResetPassword) {
     try {
       MimeMessage mm = prepareResetPasswordEmail(usuario, linkResetPassword);
       sendHtmlEmail(mm);
@@ -35,7 +35,7 @@ public abstract class EmailServiceAbstract implements EmailService {
     }
   }
 
-  protected MimeMessage prepareResetPasswordEmail(Usuario usuario, String linkResetPassword)
+  protected MimeMessage prepareResetPasswordEmail(UsuarioEntity usuario, String linkResetPassword)
       throws MessagingException {
     String link = frontEndUrl + "security/resetPassword/" + linkResetPassword;
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();

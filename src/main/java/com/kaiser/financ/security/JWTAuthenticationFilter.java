@@ -1,7 +1,7 @@
 package com.kaiser.financ.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kaiser.financ.dto.CredenciaisDTO;
+import com.kaiser.financ.dtos.CredenciaisDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
