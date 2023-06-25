@@ -3,6 +3,7 @@ package com.kaiser.financ.configs;
 import com.kaiser.financ.security.JWTAuthenticationFilter;
 import com.kaiser.financ.security.JWTAuthorizationFilter;
 import com.kaiser.financ.security.JWTUtil;
+import com.kaiser.financ.services.UsuarioService;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final String[] PUBLIC_MATCHERS_POST = {
     "/usuarios/", "/auth/forgot/**", "/auth/reset_password/**"
   };
-  @Autowired private UserDetailsService userDetailsService;
-  @Autowired private Environment env;
-  @Autowired private JWTUtil jwtUtil;
+  @Autowired
+  private UserDetailsService userDetailsService;
+  @Autowired
+  private Environment env;
+  @Autowired
+  private JWTUtil jwtUtil;
+  @Autowired
+  private UsuarioService usuarioService;
 
   @Override
   public void configure(WebSecurity web) throws Exception {
@@ -67,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .hasRole("USER")
         .anyRequest()
         .authenticated();
-    http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+    http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil, usuarioService));
     http.addFilter(
         new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -16,6 +16,7 @@ import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
 import java.awt.image.BufferedImage;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,6 +241,11 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     UsuarioDTO objDto = new UsuarioDTO(updateImagemPerfil(user.getId(), uri.toString()));
 
     return objDto;
+  }
+
+  @Override
+  public void updateLastLogin(Integer usuarioId, LocalDateTime lastLogin) {
+    repo.updateLastLogin(usuarioId, lastLogin);
   }
 
   private void updateData(UsuarioEntity newObj, UsuarioEntity obj) {

@@ -26,6 +26,7 @@ public class UsuarioDTO implements Serializable {
   private String imagemPerfil;
   private String email;
   private Set<PerfilEnum> perfis = new HashSet<>();
+  private Date lastLogin;
 
   public UsuarioDTO(UsuarioEntity obj) {
     this.id = obj.getId();
@@ -38,6 +39,7 @@ public class UsuarioDTO implements Serializable {
     this.imagemPerfil = obj.getImagemPerfil();
     this.email = obj.getEmail();
     this.perfis = obj.getPerfis();
+    this.lastLogin = obj.getLastLogin();
   }
 
 }

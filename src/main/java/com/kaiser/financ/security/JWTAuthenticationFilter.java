@@ -2,7 +2,9 @@ package com.kaiser.financ.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaiser.financ.dtos.CredenciaisDTO;
+import com.kaiser.financ.services.UsuarioService;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.FilterChain;
@@ -19,13 +21,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
-
   private final JWTUtil jwtUtil;
+  private final UsuarioService usuarioService;
 
-  public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+  public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UsuarioService usuarioService) {
     setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
+    this.usuarioService = usuarioService;
   }
 
   @Override
@@ -62,6 +65,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     res.setContentType("application/json");
     res.setCharacterEncoding("UTF-8");
     res.getWriter().write(body);
+
+    usuarioService.updateLastLogin(user.getId(), LocalDateTime.now());
   }
 
   private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

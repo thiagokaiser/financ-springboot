@@ -37,6 +37,7 @@ public class UsuarioEntity implements Serializable {
   private String estado;
   private String descricao;
   private String imagemPerfil;
+  private Date lastLogin;
 
   @Column(unique = true)
   private String email;
