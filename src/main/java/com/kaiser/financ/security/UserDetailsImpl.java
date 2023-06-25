@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserSS implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   private Integer id;
@@ -18,9 +18,9 @@ public class UserSS implements UserDetails {
   private String sobrenome;
   private Collection<? extends GrantedAuthority> authorities;
 
-  public UserSS() {}
+  public UserDetailsImpl() {}
 
-  public UserSS(
+  public UserDetailsImpl(
       Integer id, String email, String senha, Set<PerfilEnum> perfis, String nome, String sobrenome) {
     super();
     this.id = id;

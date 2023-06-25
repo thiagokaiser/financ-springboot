@@ -3,7 +3,7 @@ package com.kaiser.financ.controllers;
 import com.kaiser.financ.dtos.EmailDTO;
 import com.kaiser.financ.dtos.ResetPasswordDTO;
 import com.kaiser.financ.security.JWTUtil;
-import com.kaiser.financ.security.UserSS;
+import com.kaiser.financ.security.UserDetailsImpl;
 import com.kaiser.financ.services.AuthService;
 import com.kaiser.financ.services.impl.UsuarioServiceImpl;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,7 @@ public class AuthController {
 
   @PostMapping(value = "/refresh_token")
   public ResponseEntity<String> refreshToken(HttpServletResponse response) {
-    UserSS user = UsuarioServiceImpl.authenticated();
+    UserDetailsImpl user = UsuarioServiceImpl.authenticated();
     String token = jwtUtil.generateToken(user);
     response.addHeader("Authorization", "Bearer " + token);
     response.addHeader("access-control-expose-headers", "Authorization");
