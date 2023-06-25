@@ -1,6 +1,6 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.entities.UsuarioEntity;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -10,5 +10,5 @@ public interface EmailService {
 
   void sendHtmlEmail(MimeMessage msg);
 
-  void sendResetPasswordEmail(Usuario usuario, String newPass);
+  void sendResetPasswordEmail(UsuarioEntity usuario, String newPass);
 }

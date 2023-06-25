@@ -1,7 +1,7 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Domain;
-import com.kaiser.financ.domain.Usuario;
+import com.kaiser.financ.entities.BaseEntity;
+import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.CrudRepository;
 import com.kaiser.financ.services.CrudService;
 import com.kaiser.financ.services.UsuarioService;
@@ -14,7 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository, T>
+public abstract class CrudServiceImpl<D extends BaseEntity, R extends CrudRepository, T>
     implements CrudService<D, T> {
 
   @Autowired
@@ -24,7 +24,7 @@ public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository
 
   @Override
   public D find(Integer id) {
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     Optional<D> obj = (Optional<D>) repo.findByIdAndUsuario(id, usuario);
     return obj.orElseThrow(
         () ->
@@ -57,7 +57,7 @@ public abstract class CrudServiceImpl<D extends Domain, R extends CrudRepository
 
   @Override
   public List<D> findAll() {
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     return (List<D>) repo.findByUsuario(usuario);
   }
 

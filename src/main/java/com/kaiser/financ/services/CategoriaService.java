@@ -1,11 +1,11 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.domain.Categoria;
-import com.kaiser.financ.dto.CategoriaDTO;
+import com.kaiser.financ.dtos.CategoriaDTO;
+import com.kaiser.financ.entities.CategoriaEntity;
 import org.springframework.data.domain.Page;
 
-public interface CategoriaService extends CrudService<Categoria, CategoriaDTO> {
+public interface CategoriaService extends CrudService<CategoriaEntity, CategoriaDTO> {
 
-  Page<Categoria> findPage(
+  Page<CategoriaEntity> findPage(
       Integer page, Integer linesPerPage, String orderBy, String direction, String search);
 }

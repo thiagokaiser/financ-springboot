@@ -1,9 +1,9 @@
 package com.kaiser.financ.repositories;
 
-import com.kaiser.financ.domain.Despesa;
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.TotaisByCategDTO;
-import com.kaiser.financ.dto.TotaisByMonthDTO;
+import com.kaiser.financ.dtos.TotaisByCategDTO;
+import com.kaiser.financ.dtos.TotaisByMonthDTO;
+import com.kaiser.financ.entities.DespesaEntity;
+import com.kaiser.financ.entities.UsuarioEntity;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface DespesaRepository extends CrudRepository<Despesa> {
+public interface DespesaRepository extends CrudRepository<DespesaEntity> {
 
   @Transactional(readOnly = true)
-  Page<Despesa>
+  Page<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
-          Usuario usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
+          UsuarioEntity usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
 
   @Transactional(readOnly = true)
-  Page<Despesa>
+  Page<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqualAndPago(
-          Usuario usuario,
+          UsuarioEntity usuario,
           String search,
           Date dtInicial,
           Date dtFinal,
@@ -31,32 +31,32 @@ public interface DespesaRepository extends CrudRepository<Despesa> {
           Boolean pago);
 
   @Transactional(readOnly = true)
-  List<Despesa>
+  List<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
-          Usuario usuario, String search, Date dtInicial, Date dtFinal);
+          UsuarioEntity usuario, String search, Date dtInicial, Date dtFinal);
 
   @Transactional(readOnly = true)
-  List<Despesa> findByUsuarioAndIdParcelaAndPago(Usuario usuario, Integer idParcela, Boolean pago);
+  List<DespesaEntity> findByUsuarioAndIdParcelaAndPago(UsuarioEntity usuario, Integer idParcela, Boolean pago);
 
   @Transactional(readOnly = true)
-  List<Despesa> findByUsuarioAndIdParcela(Usuario usuario, Integer idParcela);
+  List<DespesaEntity> findByUsuarioAndIdParcela(UsuarioEntity usuario, Integer idParcela);
 
   @Transactional(readOnly = true)
   @Query(
       value =
-          "SELECT new com.kaiser.financ.dto.TotaisByCategDTO(categ.descricao, categ.cor, SUM(desp.valor)) FROM Despesa desp"
+          "SELECT new com.kaiser.financ.dtos.TotaisByCategDTO(categ.descricao, categ.cor, SUM(desp.valor)) FROM Despesa desp"
               + " INNER JOIN desp.categoria categ"
               + " WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3"
               + " GROUP BY categ.descricao, categ.cor")
-  List<TotaisByCategDTO> totalsByPeriodByCategoria(Usuario usuario, Date dtInicial, Date dtFinal);
+  List<TotaisByCategDTO> totalsByPeriodByCategoria(UsuarioEntity usuario, Date dtInicial, Date dtFinal);
 
   @Transactional(readOnly = true)
   @Query(
       value =
-          "SELECT new com.kaiser.financ.dto.TotaisByMonthDTO(month(desp.dtVencimento), year(desp.dtVencimento), sum(desp.valor)) FROM Despesa desp"
+          "SELECT new com.kaiser.financ.dtos.TotaisByMonthDTO(month(desp.dtVencimento), year(desp.dtVencimento), sum(desp.valor)) FROM Despesa desp"
               + " INNER JOIN desp.categoria categ"
               + " WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3 AND desp.pago = true"
               + " GROUP BY month(desp.dtVencimento), year(desp.dtVencimento)"
               + " ORDER BY year(desp.dtVencimento) DESC, month(desp.dtVencimento) DESC")
-  List<TotaisByMonthDTO> totalsByPeriodByMonth(Usuario usuario, Date dtInicial, Date dtFinal);
+  List<TotaisByMonthDTO> totalsByPeriodByMonth(UsuarioEntity usuario, Date dtInicial, Date dtFinal);
 }

@@ -1,6 +1,6 @@
 package com.kaiser.financ.services;
 
-import com.kaiser.financ.dto.ResetPasswordDTO;
+import com.kaiser.financ.dtos.ResetPasswordDTO;
 
 public interface AuthService {
 

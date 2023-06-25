@@ -1,11 +1,11 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.domain.enums.Perfil;
-import com.kaiser.financ.dto.UsuarioDTO;
-import com.kaiser.financ.dto.UsuarioNewDTO;
-import com.kaiser.financ.dto.UsuarioUpdateAdminDTO;
-import com.kaiser.financ.dto.UsuarioUpdateDTO;
+import com.kaiser.financ.dtos.UsuarioDTO;
+import com.kaiser.financ.dtos.UsuarioNewDTO;
+import com.kaiser.financ.dtos.UsuarioUpdateAdminDTO;
+import com.kaiser.financ.dtos.UsuarioUpdateDTO;
+import com.kaiser.financ.entities.UsuarioEntity;
+import com.kaiser.financ.entities.enums.PerfilEnum;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.security.UserSS;
 import com.kaiser.financ.services.AmazonS3Service;
@@ -64,7 +64,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Usuario usuario = repo.findByEmail(email);
+    UsuarioEntity usuario = repo.findByEmail(email);
     if (usuario == null) {
       throw new UsernameNotFoundException(email);
     }
@@ -78,63 +78,63 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
   }
 
   @Override
-  public Usuario userLoggedIn() {
+  public UsuarioEntity userLoggedIn() {
     try {
       UserSS userSS =
           (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      Optional<Usuario> obj = repo.findById(userSS.getId());
+      Optional<UsuarioEntity> obj = repo.findById(userSS.getId());
       return obj.orElseThrow(
           () ->
               new ObjectNotFoundException(
                   "Objeto não encontrado! Id: "
                       + userSS.getId()
                       + ", Tipo: "
-                      + Usuario.class.getName()));
+                      + UsuarioEntity.class.getName()));
     } catch (Exception e) {
       return null;
     }
   }
 
   @Override
-  public Usuario find(Integer id) {
+  public UsuarioEntity find(Integer id) {
 
     UserSS user = UsuarioServiceImpl.authenticated();
-    if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+    if (user == null || !user.hasRole(PerfilEnum.ADMIN) && !id.equals(user.getId())) {
       throw new AuthorizationException("Acesso negado");
     }
 
-    Optional<Usuario> obj = repo.findById(id);
+    Optional<UsuarioEntity> obj = repo.findById(id);
     return obj.orElseThrow(
         () ->
             new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + UsuarioEntity.class.getName()));
   }
 
   @Override
   @Transactional
-  public Usuario insert(Usuario obj) {
+  public UsuarioEntity insert(UsuarioEntity obj) {
     obj.setId(null);
     obj = repo.save(obj);
     return obj;
   }
 
   @Override
-  public Usuario update(Usuario obj) {
-    Usuario newObj = find(obj.getId());
+  public UsuarioEntity update(UsuarioEntity obj) {
+    UsuarioEntity newObj = find(obj.getId());
     updateData(newObj, obj);
     return repo.save(newObj);
   }
 
   @Override
-  public Usuario updateAdmin(Usuario obj) {
-    Usuario newObj = find(obj.getId());
+  public UsuarioEntity updateAdmin(UsuarioEntity obj) {
+    UsuarioEntity newObj = find(obj.getId());
     updateDataAdmin(newObj, obj);
     return repo.save(newObj);
   }
 
   @Override
-  public Usuario updateImagemPerfil(Integer id, String imagemPerfil) {
-    Usuario obj = find(id);
+  public UsuarioEntity updateImagemPerfil(Integer id, String imagemPerfil) {
+    UsuarioEntity obj = find(id);
     obj.setImagemPerfil(imagemPerfil);
     return repo.save(obj);
   }
@@ -151,42 +151,42 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
   @Override
   public void removePerfil(Integer usuarioId, String perfil) {
-    Usuario obj = find(usuarioId);
-    Perfil perfilAux = Perfil.valueOf(perfil);
+    UsuarioEntity obj = find(usuarioId);
+    PerfilEnum perfilAux = PerfilEnum.valueOf(perfil);
     obj.removePerfil(perfilAux);
     repo.save(obj);
   }
 
   @Override
   public void addPerfil(Integer usuarioId, String perfil) {
-    Usuario obj = find(usuarioId);
-    Perfil perfilAux = Perfil.valueOf(perfil);
+    UsuarioEntity obj = find(usuarioId);
+    PerfilEnum perfilAux = PerfilEnum.valueOf(perfil);
     obj.addPerfil(perfilAux);
     repo.save(obj);
   }
 
   @Override
-  public List<Usuario> findAll() {
+  public List<UsuarioEntity> findAll() {
     return repo.findAll();
   }
 
   @Override
-  public Usuario findByEmail(String email) {
+  public UsuarioEntity findByEmail(String email) {
     UserSS user = UsuarioServiceImpl.authenticated();
-    if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+    if (user == null || !user.hasRole(PerfilEnum.ADMIN) && !email.equals(user.getUsername())) {
       throw new AuthorizationException("Acesso negado");
     }
 
-    Usuario obj = repo.findByEmail(email);
+    UsuarioEntity obj = repo.findByEmail(email);
     if (obj == null) {
       throw new ObjectNotFoundException(
-          "Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Usuario.class.getName());
+          "Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + UsuarioEntity.class.getName());
     }
     return obj;
   }
 
   @Override
-  public Page<Usuario> findPage(
+  public Page<UsuarioEntity> findPage(
       Integer page, Integer linesPerPage, String orderBy, String direction) {
     PageRequest pageRequest =
         PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
@@ -194,19 +194,19 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
   }
 
   @Override
-  public Usuario fromDTO(UsuarioUpdateDTO objDto) {
-    return new Usuario(objDto);
+  public UsuarioEntity fromDTO(UsuarioUpdateDTO objDto) {
+    return new UsuarioEntity(objDto);
   }
 
   @Override
-  public Usuario fromDTO(UsuarioUpdateAdminDTO objDto) {
-    return new Usuario(objDto);
+  public UsuarioEntity fromDTO(UsuarioUpdateAdminDTO objDto) {
+    return new UsuarioEntity(objDto);
   }
 
   @Override
-  public Usuario fromDTO(UsuarioNewDTO objDto) {
-    Usuario cli =
-        new Usuario(
+  public UsuarioEntity fromDTO(UsuarioNewDTO objDto) {
+    UsuarioEntity cli =
+        new UsuarioEntity(
             null,
             objDto.getNome(),
             objDto.getSobrenome(),
@@ -242,7 +242,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     return objDto;
   }
 
-  private void updateData(Usuario newObj, Usuario obj) {
+  private void updateData(UsuarioEntity newObj, UsuarioEntity obj) {
     newObj.setNome(obj.getNome());
     newObj.setSobrenome(obj.getSobrenome());
     newObj.setCidade(obj.getCidade());
@@ -251,7 +251,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     newObj.setDescricao(obj.getDescricao());
   }
 
-  private void updateDataAdmin(Usuario newObj, Usuario obj) {
+  private void updateDataAdmin(UsuarioEntity newObj, UsuarioEntity obj) {
     newObj.setEmail(obj.getEmail());
     newObj.setNome(obj.getNome());
     newObj.setSobrenome(obj.getSobrenome());

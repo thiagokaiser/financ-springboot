@@ -1,8 +1,8 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Categoria;
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.CategoriaDTO;
+import com.kaiser.financ.dtos.CategoriaDTO;
+import com.kaiser.financ.entities.CategoriaEntity;
+import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.services.CategoriaService;
 import org.springframework.data.domain.Page;
@@ -12,31 +12,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaServiceImpl
-    extends CrudServiceImpl<Categoria, CategoriaRepository, CategoriaDTO>
+    extends CrudServiceImpl<CategoriaEntity, CategoriaRepository, CategoriaDTO>
     implements CategoriaService {
 
   @Override
-  public Page<Categoria> findPage(
+  public Page<CategoriaEntity> findPage(
       Integer page, Integer linesPerPage, String orderBy, String direction, String search) {
-    Usuario usuario = usuarioService.userLoggedIn();
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
     PageRequest pageRequest =
         PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
     return repo.findByUsuarioAndDescricaoContaining(usuario, search, pageRequest);
   }
 
   @Override
-  public Categoria fromDTO(CategoriaDTO objDto) {
-    Usuario usuario = usuarioService.userLoggedIn();
-    return new Categoria(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
+  public CategoriaEntity fromDTO(CategoriaDTO objDto) {
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    return new CategoriaEntity(objDto.getId(), objDto.getDescricao(), objDto.getCor(), usuario);
   }
 
   @Override
-  public CategoriaDTO toDTO(Categoria obj) {
+  public CategoriaDTO toDTO(CategoriaEntity obj) {
     return new CategoriaDTO(obj);
   }
 
   @Override
-  protected void updateData(Categoria newObj, Categoria obj) {
+  protected void updateData(CategoriaEntity newObj, CategoriaEntity obj) {
     newObj.setDescricao(obj.getDescricao());
     newObj.setCor(obj.getCor());
   }

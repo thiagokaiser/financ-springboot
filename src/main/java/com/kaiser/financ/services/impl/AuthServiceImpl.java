@@ -1,7 +1,7 @@
 package com.kaiser.financ.services.impl;
 
-import com.kaiser.financ.domain.Usuario;
-import com.kaiser.financ.dto.ResetPasswordDTO;
+import com.kaiser.financ.dtos.ResetPasswordDTO;
+import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.security.JWTUtil;
 import com.kaiser.financ.services.AuthService;
@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public void sendResetPassword(String email) {
-    Usuario usuario = usuarioRepository.findByEmail(email);
+    UsuarioEntity usuario = usuarioRepository.findByEmail(email);
     if (usuario == null) {
       throw new ObjectNotFoundException("Email nao encontrado");
     }
@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
   public void changePassword(ResetPasswordDTO objDto) {
     if (jwtUtil.tokenValido(objDto.getToken())) {
       String email = jwtUtil.getUsername(objDto.getToken());
-      Usuario usuario = usuarioRepository.findByEmail(email);
+      UsuarioEntity usuario = usuarioRepository.findByEmail(email);
       if (usuario == null) {
         throw new ObjectNotFoundException("Email nao encontrado");
       }
