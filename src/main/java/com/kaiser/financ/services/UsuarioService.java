@@ -5,6 +5,7 @@ import com.kaiser.financ.dtos.UsuarioNewDTO;
 import com.kaiser.financ.dtos.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.dtos.UsuarioUpdateDTO;
 import com.kaiser.financ.entities.UsuarioEntity;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,4 +43,6 @@ public interface UsuarioService {
   UsuarioEntity fromDTO(UsuarioNewDTO objDto);
 
   UsuarioDTO uploadProfilePicture(MultipartFile multipartFile);
+
+  void updateLastLogin(Integer usuarioId, LocalDateTime lastLogin);
 }

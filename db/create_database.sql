@@ -54,6 +54,7 @@ CREATE TABLE public.usuario (
 	nome varchar(255) NULL,
 	senha varchar(255) NULL,
 	sobrenome varchar(255) NULL,
+	last_login timestamp NULL,
 	CONSTRAINT uk_5171l57faosmj8myawaucatdw UNIQUE (email),
 	CONSTRAINT usuario_pkey PRIMARY KEY (id)
 );

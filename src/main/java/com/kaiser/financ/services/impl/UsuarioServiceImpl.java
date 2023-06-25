@@ -7,7 +7,7 @@ import com.kaiser.financ.dtos.UsuarioUpdateDTO;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.entities.enums.PerfilEnum;
 import com.kaiser.financ.repositories.UsuarioRepository;
-import com.kaiser.financ.security.UserSS;
+import com.kaiser.financ.security.UserDetailsImpl;
 import com.kaiser.financ.services.AmazonS3Service;
 import com.kaiser.financ.services.ImageService;
 import com.kaiser.financ.services.UsuarioService;
@@ -16,6 +16,7 @@ import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
 import java.awt.image.BufferedImage;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +55,9 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
   @Value("${img.profile.size}")
   private Integer size;
 
-  public static UserSS authenticated() {
+  public static UserDetailsImpl authenticated() {
     try {
-      return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     } catch (Exception e) {
       return null;
     }
@@ -68,7 +69,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     if (usuario == null) {
       throw new UsernameNotFoundException(email);
     }
-    return new UserSS(
+    return new UserDetailsImpl(
         usuario.getId(),
         usuario.getEmail(),
         usuario.getSenha(),
@@ -80,14 +81,14 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
   @Override
   public UsuarioEntity userLoggedIn() {
     try {
-      UserSS userSS =
-          (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      Optional<UsuarioEntity> obj = repo.findById(userSS.getId());
+      UserDetailsImpl userDetailsImpl =
+          (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      Optional<UsuarioEntity> obj = repo.findById(userDetailsImpl.getId());
       return obj.orElseThrow(
           () ->
               new ObjectNotFoundException(
                   "Objeto não encontrado! Id: "
-                      + userSS.getId()
+                      + userDetailsImpl.getId()
                       + ", Tipo: "
                       + UsuarioEntity.class.getName()));
     } catch (Exception e) {
@@ -98,7 +99,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
   @Override
   public UsuarioEntity find(Integer id) {
 
-    UserSS user = UsuarioServiceImpl.authenticated();
+    UserDetailsImpl user = UsuarioServiceImpl.authenticated();
     if (user == null || !user.hasRole(PerfilEnum.ADMIN) && !id.equals(user.getId())) {
       throw new AuthorizationException("Acesso negado");
     }
@@ -172,7 +173,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
   @Override
   public UsuarioEntity findByEmail(String email) {
-    UserSS user = UsuarioServiceImpl.authenticated();
+    UserDetailsImpl user = UsuarioServiceImpl.authenticated();
     if (user == null || !user.hasRole(PerfilEnum.ADMIN) && !email.equals(user.getUsername())) {
       throw new AuthorizationException("Acesso negado");
     }
@@ -225,7 +226,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
   @Override
   public UsuarioDTO uploadProfilePicture(MultipartFile multipartFile) {
-    UserSS user = UsuarioServiceImpl.authenticated();
+    UserDetailsImpl user = UsuarioServiceImpl.authenticated();
     if (user == null) {
       throw new AuthorizationException("Acesso negado");
     }
@@ -240,6 +241,11 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     UsuarioDTO objDto = new UsuarioDTO(updateImagemPerfil(user.getId(), uri.toString()));
 
     return objDto;
+  }
+
+  @Override
+  public void updateLastLogin(Integer usuarioId, LocalDateTime lastLogin) {
+    repo.updateLastLogin(usuarioId, lastLogin);
   }
 
   private void updateData(UsuarioEntity newObj, UsuarioEntity obj) {
