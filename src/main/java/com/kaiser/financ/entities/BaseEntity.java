@@ -32,6 +32,7 @@ public abstract class BaseEntity implements Serializable {
     this.id = id;
     this.usuario = usuario;
   }
+  
 
   @Override
   public int hashCode() {

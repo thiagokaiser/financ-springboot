@@ -15,6 +15,8 @@ import com.kaiser.financ.services.DespesaService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -22,7 +24,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,13 +32,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRepository, DespesaDTO>
     implements DespesaService {
-
-  @Autowired
-  private CategoriaService categoriaService;
-  @Autowired
-  private ContaService contaService;
+  
+  private final CategoriaService categoriaService;
+  private final ContaService contaService;
 
   @Override
   public DespesaEntity insert(DespesaEntity obj) {
@@ -46,64 +47,71 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
       obj.setConta(contaService.find(obj.getConta().getId()));
     }
 
-    Integer parcela = 1;
-    obj.setParcelaAtual(parcela);
+    obj.setParcelaAtual(1);
     obj = repo.save(obj);
 
     if (obj.getNumParcelas() > 1) {
-      Integer mes = 0;
-
-      if (obj.getNumParcelas() > 99) {
-        obj.setNumParcelas(99);
-      }
-
-      obj.setIdParcela(obj.getId());
-      obj = repo.save(obj);
-
-      List<DespesaEntity> listDespesas = new ArrayList<DespesaEntity>();
-      do {
-        parcela += 1;
-        mes += 1;
-        DespesaEntity despesa = new DespesaEntity();
-        updateData(despesa, obj);
-        despesa.setIdParcela(obj.getId());
-        despesa.setParcelaAtual(parcela);
-        despesa.setNumParcelas(obj.getNumParcelas());
-        despesa.setUsuario(obj.getUsuario());
-        despesa.setPago(false);
-
-        Date dtVencimento = obj.getDtVencimento();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dtVencimento);
-        cal.add(Calendar.MONTH, mes);
-        dtVencimento = cal.getTime();
-
-        despesa.setDtVencimento(dtVencimento);
-        listDespesas.add(despesa);
-      } while (parcela < obj.getNumParcelas());
-
-      repo.saveAll(listDespesas);
+      generateAllParcelas(obj);
     }
     return null;
   }
 
+  private void generateAllParcelas(DespesaEntity obj) {
+    int parcela = 1;
+    int mes = 0;
+
+    if (obj.getNumParcelas() > 99) {
+      obj.setNumParcelas(99);
+    }
+
+    obj.setIdParcela(obj.getId());
+    obj = repo.save(obj);
+
+    List<DespesaEntity> listDespesas = new ArrayList<>();
+    do {
+      parcela += 1;
+      mes += 1;
+      DespesaEntity despesa = new DespesaEntity();
+      updateData(despesa, obj);
+      despesa.setIdParcela(obj.getId());
+      despesa.setParcelaAtual(parcela);
+      despesa.setNumParcelas(obj.getNumParcelas());
+      despesa.setUsuario(obj.getUsuario());
+      despesa.setPago(false);
+      despesa.setDtVencimento(obj.getDtVencimento().plusMonths(mes));
+
+      listDespesas.add(despesa);
+    } while (parcela < obj.getNumParcelas());
+
+    repo.saveAll(listDespesas);
+  }
+
   @Override
-  public void updateUnpaidByIdParcela(DespesaEntity despesa) {
-    if (isNullorZero(despesa.getIdParcela())) {
+  public void updateUnpaidByIdParcela(DespesaEntity oldDespesa) {
+    if (isNullorZero(oldDespesa.getIdParcela())) {
       throw new DataIntegrityException("IdParcela inválido");
     }
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
     List<DespesaEntity> despesas =
-        repo.findByUsuarioAndIdParcelaAndPago(usuario, despesa.getIdParcela(), false);
+        repo.findByUsuarioAndIdParcelaAndPago(usuario, oldDespesa.getIdParcela(), false);
 
     for (DespesaEntity newDespesa : despesas) {
-      newDespesa.setDescricao(despesa.getDescricao());
-      newDespesa.setValor(despesa.getValor());
-      newDespesa.setCategoria(despesa.getCategoria());
-      newDespesa.setConta(despesa.getConta());
+      newDespesa.setDescricao(oldDespesa.getDescricao());
+      newDespesa.setValor(oldDespesa.getValor());
+      newDespesa.setCategoria(oldDespesa.getCategoria());
+      newDespesa.setConta(oldDespesa.getConta());
+      newDespesa.setDtVencimento(updateDayOfVencimento(newDespesa.getDtVencimento(), oldDespesa.getDtVencimento()));
     }
     repo.saveAll(despesas);
+  }
+
+  private LocalDate updateDayOfVencimento(LocalDate newDtVencimento, LocalDate oldDtVencimento) {
+    try {
+      return LocalDate.of(oldDtVencimento.getYear(), oldDtVencimento.getMonth(), newDtVencimento.getDayOfMonth());
+    } catch (DateTimeException e) {
+      return oldDtVencimento.withDayOfMonth(oldDtVencimento.lengthOfMonth());
+    }
   }
 
   @Override
