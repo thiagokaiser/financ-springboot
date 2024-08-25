@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,12 +32,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRepository, DespesaDTO>
     implements DespesaService {
-  
-  private final CategoriaService categoriaService;
-  private final ContaService contaService;
+
+  @Autowired
+  private CategoriaService categoriaService;
+  @Autowired
+  private ContaService contaService;
 
   @Override
   public DespesaEntity insert(DespesaEntity obj) {
@@ -56,7 +57,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
     return null;
   }
 
-  private void generateAllParcelas(DespesaEntity obj) {
+  protected void generateAllParcelas(DespesaEntity obj) {
     int parcela = 1;
     int mes = 0;
 
@@ -106,7 +107,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
     repo.saveAll(despesas);
   }
 
-  private LocalDate updateDayOfVencimento(LocalDate newDtVencimento, LocalDate oldDtVencimento) {
+  protected LocalDate updateDayOfVencimento(LocalDate newDtVencimento, LocalDate oldDtVencimento) {
     try {
       return LocalDate.of(oldDtVencimento.getYear(), oldDtVencimento.getMonth(), newDtVencimento.getDayOfMonth());
     } catch (DateTimeException e) {
