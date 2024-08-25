@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -88,30 +89,30 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
   }
 
   @Override
-  public void updateUnpaidByIdParcela(DespesaEntity oldDespesa) {
-    if (isNullorZero(oldDespesa.getIdParcela())) {
+  public void updateUnpaidByIdParcela(DespesaEntity newDespesa) {
+    if (isNullorZero(newDespesa.getIdParcela())) {
       throw new DataIntegrityException("IdParcela inválido");
     }
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
     List<DespesaEntity> despesas =
-        repo.findByUsuarioAndIdParcelaAndPago(usuario, oldDespesa.getIdParcela(), false);
+        repo.findByUsuarioAndIdParcelaAndPago(usuario, newDespesa.getIdParcela(), false);
 
-    for (DespesaEntity newDespesa : despesas) {
-      newDespesa.setDescricao(oldDespesa.getDescricao());
-      newDespesa.setValor(oldDespesa.getValor());
-      newDespesa.setCategoria(oldDespesa.getCategoria());
-      newDespesa.setConta(oldDespesa.getConta());
-      newDespesa.setDtVencimento(updateDayOfVencimento(newDespesa.getDtVencimento(), oldDespesa.getDtVencimento()));
+    for (DespesaEntity despesa : despesas) {
+      despesa.setDescricao(newDespesa.getDescricao());
+      despesa.setValor(newDespesa.getValor());
+      despesa.setCategoria(newDespesa.getCategoria());
+      despesa.setConta(newDespesa.getConta());
+      despesa.setDtVencimento(updateDayOfVencimento(newDespesa.getDtVencimento(), despesa.getDtVencimento()));
     }
     repo.saveAll(despesas);
   }
 
-  protected LocalDate updateDayOfVencimento(LocalDate newDtVencimento, LocalDate oldDtVencimento) {
+  protected LocalDate updateDayOfVencimento(LocalDate newDate, LocalDate oldDate) {
     try {
-      return LocalDate.of(oldDtVencimento.getYear(), oldDtVencimento.getMonth(), newDtVencimento.getDayOfMonth());
+      return LocalDate.of(oldDate.getYear(), oldDate.getMonth(), newDate.getDayOfMonth());
     } catch (DateTimeException e) {
-      return oldDtVencimento.withDayOfMonth(oldDtVencimento.lengthOfMonth());
+      return oldDate.withDayOfMonth(oldDate.lengthOfMonth());
     }
   }
 
@@ -257,7 +258,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
         objDto.getDescricao(),
         objDto.getValor(),
         objDto.getDtVencimento(),
-        objDto.getPago(),
+        Objects.nonNull(objDto.getPago()) && objDto.getPago(),
         !this.isNullorZero(objDto.getNumParcelas()) ? objDto.getNumParcelas() : 1,
         objDto.getParcelaAtual(),
         objDto.getIdParcela(),
