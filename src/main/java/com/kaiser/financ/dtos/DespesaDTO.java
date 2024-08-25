@@ -6,7 +6,7 @@ import com.kaiser.financ.entities.CategoriaEntity;
 import com.kaiser.financ.entities.ContaEntity;
 import com.kaiser.financ.entities.DespesaEntity;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class DespesaDTO implements Serializable {
   private String descricao;
 
   private Double valor;
-  private Date dtVencimento;
+  private LocalDate dtVencimento;
   private Boolean pago;
   private Integer numParcelas;
   private Integer parcelaAtual;

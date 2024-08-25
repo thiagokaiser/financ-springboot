@@ -15,12 +15,15 @@ import com.kaiser.financ.services.DespesaService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,64 +49,71 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
       obj.setConta(contaService.find(obj.getConta().getId()));
     }
 
-    Integer parcela = 1;
-    obj.setParcelaAtual(parcela);
+    obj.setParcelaAtual(1);
     obj = repo.save(obj);
 
     if (obj.getNumParcelas() > 1) {
-      Integer mes = 0;
-
-      if (obj.getNumParcelas() > 99) {
-        obj.setNumParcelas(99);
-      }
-
-      obj.setIdParcela(obj.getId());
-      obj = repo.save(obj);
-
-      List<DespesaEntity> listDespesas = new ArrayList<DespesaEntity>();
-      do {
-        parcela += 1;
-        mes += 1;
-        DespesaEntity despesa = new DespesaEntity();
-        updateData(despesa, obj);
-        despesa.setIdParcela(obj.getId());
-        despesa.setParcelaAtual(parcela);
-        despesa.setNumParcelas(obj.getNumParcelas());
-        despesa.setUsuario(obj.getUsuario());
-        despesa.setPago(false);
-
-        Date dtVencimento = obj.getDtVencimento();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dtVencimento);
-        cal.add(Calendar.MONTH, mes);
-        dtVencimento = cal.getTime();
-
-        despesa.setDtVencimento(dtVencimento);
-        listDespesas.add(despesa);
-      } while (parcela < obj.getNumParcelas());
-
-      repo.saveAll(listDespesas);
+      generateAllParcelas(obj);
     }
     return null;
   }
 
+  protected void generateAllParcelas(DespesaEntity obj) {
+    int parcela = 1;
+    int mes = 0;
+
+    if (obj.getNumParcelas() > 99) {
+      obj.setNumParcelas(99);
+    }
+
+    obj.setIdParcela(obj.getId());
+    obj = repo.save(obj);
+
+    List<DespesaEntity> listDespesas = new ArrayList<>();
+    do {
+      parcela += 1;
+      mes += 1;
+      DespesaEntity despesa = new DespesaEntity();
+      updateData(despesa, obj);
+      despesa.setIdParcela(obj.getId());
+      despesa.setParcelaAtual(parcela);
+      despesa.setNumParcelas(obj.getNumParcelas());
+      despesa.setUsuario(obj.getUsuario());
+      despesa.setPago(false);
+      despesa.setDtVencimento(obj.getDtVencimento().plusMonths(mes));
+
+      listDespesas.add(despesa);
+    } while (parcela < obj.getNumParcelas());
+
+    repo.saveAll(listDespesas);
+  }
+
   @Override
-  public void updateUnpaidByIdParcela(DespesaEntity despesa) {
-    if (isNullorZero(despesa.getIdParcela())) {
+  public void updateUnpaidByIdParcela(DespesaEntity newDespesa) {
+    if (isNullorZero(newDespesa.getIdParcela())) {
       throw new DataIntegrityException("IdParcela inválido");
     }
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
     List<DespesaEntity> despesas =
-        repo.findByUsuarioAndIdParcelaAndPago(usuario, despesa.getIdParcela(), false);
+        repo.findByUsuarioAndIdParcelaAndPago(usuario, newDespesa.getIdParcela(), false);
 
-    for (DespesaEntity newDespesa : despesas) {
-      newDespesa.setDescricao(despesa.getDescricao());
-      newDespesa.setValor(despesa.getValor());
-      newDespesa.setCategoria(despesa.getCategoria());
-      newDespesa.setConta(despesa.getConta());
+    for (DespesaEntity despesa : despesas) {
+      despesa.setDescricao(newDespesa.getDescricao());
+      despesa.setValor(newDespesa.getValor());
+      despesa.setCategoria(newDespesa.getCategoria());
+      despesa.setConta(newDespesa.getConta());
+      despesa.setDtVencimento(updateDayOfVencimento(newDespesa.getDtVencimento(), despesa.getDtVencimento()));
     }
     repo.saveAll(despesas);
+  }
+
+  protected LocalDate updateDayOfVencimento(LocalDate newDate, LocalDate oldDate) {
+    try {
+      return LocalDate.of(oldDate.getYear(), oldDate.getMonth(), newDate.getDayOfMonth());
+    } catch (DateTimeException e) {
+      return oldDate.withDayOfMonth(oldDate.lengthOfMonth());
+    }
   }
 
   @Override
@@ -248,7 +258,7 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
         objDto.getDescricao(),
         objDto.getValor(),
         objDto.getDtVencimento(),
-        objDto.getPago(),
+        Objects.nonNull(objDto.getPago()) && objDto.getPago(),
         !this.isNullorZero(objDto.getNumParcelas()) ? objDto.getNumParcelas() : 1,
         objDto.getParcelaAtual(),
         objDto.getIdParcela(),

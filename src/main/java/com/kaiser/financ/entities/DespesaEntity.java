@@ -1,6 +1,6 @@
 package com.kaiser.financ.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,7 +19,7 @@ public class DespesaEntity extends BaseEntity {
   private Double valor;
 
   @NotNull(message = "Campo Obrigatário")
-  private Date dtVencimento;
+  private LocalDate dtVencimento;
 
   private Boolean pago;
 
@@ -43,7 +43,7 @@ public class DespesaEntity extends BaseEntity {
       Integer id,
       String descricao,
       Double valor,
-      Date dtVencimento,
+      LocalDate dtVencimento,
       Boolean pago,
       Integer numParcelas,
       Integer parcelaAtual,
