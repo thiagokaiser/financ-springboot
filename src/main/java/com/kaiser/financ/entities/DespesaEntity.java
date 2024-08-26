@@ -1,5 +1,6 @@
 package com.kaiser.financ.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,10 +20,12 @@ public class DespesaEntity extends BaseEntity {
   private Double valor;
 
   @NotNull(message = "Campo Obrigatário")
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDate dtVencimento;
 
   private Boolean pago;
 
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDate dtPagamento;
 
   private Integer numParcelas;
