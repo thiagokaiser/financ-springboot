@@ -39,10 +39,10 @@ public abstract class CrudServiceImpl<D extends BaseEntity, R extends CrudReposi
   }
 
   @Override
-  public D update(D obj) {
-    D newObj = find(obj.getId());
-    updateData(newObj, obj);
-    return (D) repo.save(newObj);
+  public D update(D newObj) {
+    D savedObj = find(newObj.getId());
+    updateData(savedObj, newObj);
+    return (D) repo.save(savedObj);
   }
 
   @Override

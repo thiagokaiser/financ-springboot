@@ -26,6 +26,7 @@ public class DespesaDTO implements Serializable {
   private Double valor;
   private LocalDate dtVencimento;
   private Boolean pago;
+  private LocalDate dtPagamento;
   private Integer numParcelas;
   private Integer parcelaAtual;
   private Integer idParcela;
@@ -42,6 +43,7 @@ public class DespesaDTO implements Serializable {
     this.valor = obj.getValor();
     this.dtVencimento = obj.getDtVencimento();
     this.pago = obj.getPago();
+    this.dtPagamento = obj.getDtPagamento();
     this.numParcelas = obj.getNumParcelas();
     this.parcelaAtual = obj.getParcelaAtual();
     this.idParcela = obj.getIdParcela();
