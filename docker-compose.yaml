@@ -1,3 +1,4 @@
+version: "3.3"
 services:
   db:
     image: postgres:15.2
@@ -12,22 +13,22 @@ services:
       - db_data:/var/lib/postgresql/data
 
   backend:
-    image: tgkaiser/financ:1.0.1
+    image: tgkaiser/financ:1.2.0
     restart: always
     env_file:
       - ./config/backend.env
     ports:
-      - "8080:8080"
+      - "8443:8080"
     networks:
       - financ
     depends_on:
       - db
 
   frontend:
-    image: tgkaiser/financ-angular:1.0.0
+    image: tgkaiser/financ-angular:1.1.0
     restart: always
     ports:
-      - "80:80"
+      - "3000:80"
     networks:
       - financ
     depends_on:
