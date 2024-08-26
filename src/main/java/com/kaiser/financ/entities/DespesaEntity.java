@@ -23,6 +23,8 @@ public class DespesaEntity extends BaseEntity {
 
   private Boolean pago;
 
+  private LocalDate dtPagamento;
+
   private Integer numParcelas;
 
   private Integer parcelaAtual;
@@ -45,6 +47,7 @@ public class DespesaEntity extends BaseEntity {
       Double valor,
       LocalDate dtVencimento,
       Boolean pago,
+      LocalDate dtPagamento,
       Integer numParcelas,
       Integer parcelaAtual,
       Integer idParcela,
@@ -56,6 +59,7 @@ public class DespesaEntity extends BaseEntity {
     this.valor = valor;
     this.dtVencimento = dtVencimento;
     this.pago = pago;
+    this.dtPagamento = dtPagamento;
     this.numParcelas = numParcelas;
     this.parcelaAtual = parcelaAtual;
     this.idParcela = idParcela;

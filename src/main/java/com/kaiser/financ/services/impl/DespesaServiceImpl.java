@@ -1,5 +1,10 @@
 package com.kaiser.financ.services.impl;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 import com.kaiser.financ.dtos.DespesaDTO;
 import com.kaiser.financ.dtos.TotaisByCategDTO;
 import com.kaiser.financ.dtos.TotaisByMonthDTO;
@@ -23,7 +28,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -74,12 +78,16 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
       parcela += 1;
       mes += 1;
       DespesaEntity despesa = new DespesaEntity();
-      updateData(despesa, obj);
+      despesa.setDescricao(obj.getDescricao());
+      despesa.setCategoria(obj.getCategoria());
+      despesa.setConta(obj.getConta());
+      despesa.setValor(obj.getValor());
       despesa.setIdParcela(obj.getId());
       despesa.setParcelaAtual(parcela);
       despesa.setNumParcelas(obj.getNumParcelas());
       despesa.setUsuario(obj.getUsuario());
       despesa.setPago(false);
+      despesa.setDtPagamento(null);
       despesa.setDtVencimento(obj.getDtVencimento().plusMonths(mes));
 
       listDespesas.add(despesa);
@@ -258,7 +266,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
         objDto.getDescricao(),
         objDto.getValor(),
         objDto.getDtVencimento(),
-        Objects.nonNull(objDto.getPago()) && objDto.getPago(),
+        nonNull(objDto.getPago()) && objDto.getPago(),
+        objDto.getDtPagamento(),
         !this.isNullorZero(objDto.getNumParcelas()) ? objDto.getNumParcelas() : 1,
         objDto.getParcelaAtual(),
         objDto.getIdParcela(),
@@ -273,13 +282,18 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
   }
 
   @Override
-  protected void updateData(DespesaEntity newObj, DespesaEntity obj) {
-    newObj.setDescricao(obj.getDescricao());
-    newObj.setCategoria(obj.getCategoria());
-    newObj.setConta(obj.getConta());
-    newObj.setDtVencimento(obj.getDtVencimento());
-    newObj.setPago(obj.getPago());
-    newObj.setValor(obj.getValor());
+  protected void updateData(DespesaEntity savedObj, DespesaEntity newObj) {
+    savedObj.setDtPagamento(isPagtoAndNullDate(savedObj, newObj) ? LocalDate.now() : newObj.getDtPagamento());
+    savedObj.setDescricao(newObj.getDescricao());
+    savedObj.setCategoria(newObj.getCategoria());
+    savedObj.setConta(newObj.getConta());
+    savedObj.setDtVencimento(newObj.getDtVencimento());
+    savedObj.setPago(newObj.getPago());
+    savedObj.setValor(newObj.getValor());
+  }
+
+  private static boolean isPagtoAndNullDate(DespesaEntity savedObj, DespesaEntity newObj) {
+    return FALSE.equals(savedObj.getPago()) && TRUE.equals(newObj.getPago()) && isNull(newObj.getDtPagamento());
   }
 
   private boolean isNullorZero(Integer i) {
