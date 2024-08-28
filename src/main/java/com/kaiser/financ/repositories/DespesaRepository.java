@@ -4,7 +4,7 @@ import com.kaiser.financ.dtos.TotaisByCategDTO;
 import com.kaiser.financ.dtos.TotaisByMonthDTO;
 import com.kaiser.financ.entities.DespesaEntity;
 import com.kaiser.financ.entities.UsuarioEntity;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,22 +18,22 @@ public interface DespesaRepository extends CrudRepository<DespesaEntity> {
   @Transactional(readOnly = true)
   Page<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
-          UsuarioEntity usuario, String search, Date dtInicial, Date dtFinal, Pageable pageRequest);
+          UsuarioEntity usuario, String search, LocalDate dtInicial, LocalDate dtFinal, Pageable pageRequest);
 
   @Transactional(readOnly = true)
   Page<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqualAndPago(
           UsuarioEntity usuario,
           String search,
-          Date dtInicial,
-          Date dtFinal,
+          LocalDate dtInicial,
+          LocalDate dtFinal,
           Pageable pageRequest,
           Boolean pago);
 
   @Transactional(readOnly = true)
   List<DespesaEntity>
       findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
-          UsuarioEntity usuario, String search, Date dtInicial, Date dtFinal);
+          UsuarioEntity usuario, String search, LocalDate dtInicial, LocalDate dtFinal);
 
   @Transactional(readOnly = true)
   List<DespesaEntity> findByUsuarioAndIdParcelaAndPago(UsuarioEntity usuario, Integer idParcela, Boolean pago);
@@ -48,7 +48,7 @@ public interface DespesaRepository extends CrudRepository<DespesaEntity> {
               + " INNER JOIN desp.categoria categ"
               + " WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3"
               + " GROUP BY categ.descricao, categ.cor")
-  List<TotaisByCategDTO> totalsByPeriodByCategoria(UsuarioEntity usuario, Date dtInicial, Date dtFinal);
+  List<TotaisByCategDTO> totalsByPeriodByCategoria(UsuarioEntity usuario, LocalDate dtInicial, LocalDate dtFinal);
 
   @Transactional(readOnly = true)
   @Query(
@@ -58,5 +58,5 @@ public interface DespesaRepository extends CrudRepository<DespesaEntity> {
               + " WHERE desp.usuario = ?1 AND desp.dtVencimento >= ?2 AND desp.dtVencimento <= ?3 AND desp.pago = true"
               + " GROUP BY month(desp.dtVencimento), year(desp.dtVencimento)"
               + " ORDER BY year(desp.dtVencimento) DESC, month(desp.dtVencimento) DESC")
-  List<TotaisByMonthDTO> totalsByPeriodByMonth(UsuarioEntity usuario, Date dtInicial, Date dtFinal);
+  List<TotaisByMonthDTO> totalsByPeriodByMonth(UsuarioEntity usuario, LocalDate dtInicial, LocalDate dtFinal);
 }
