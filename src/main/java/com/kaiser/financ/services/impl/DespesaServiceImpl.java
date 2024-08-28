@@ -18,17 +18,16 @@ import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.ContaService;
 import com.kaiser.financ.services.DespesaService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -171,8 +170,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
     PageRequest pageRequest =
         PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-    Date dtInicial = stringToDate(stringDtInicial);
-    Date dtFinal = stringToDate(stringDtFinal);
+    LocalDate dtInicial = stringToDate(stringDtInicial);
+    LocalDate dtFinal = stringToDate(stringDtFinal);
 
     if (pago != null) {
       return repo
@@ -193,8 +192,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
 
-    Date dtInicial = stringToDate(stringDtInicial);
-    Date dtFinal = stringToDate(stringDtFinal);
+    LocalDate dtInicial = stringToDate(stringDtInicial);
+    LocalDate dtFinal = stringToDate(stringDtFinal);
 
     List<DespesaEntity> list =
         repo
@@ -218,8 +217,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
       String stringDtInicial, String stringDtFinal, String search) {
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
-    Date dtInicial = stringToDate(stringDtInicial);
-    Date dtFinal = stringToDate(stringDtFinal);
+    LocalDate dtInicial = stringToDate(stringDtInicial);
+    LocalDate dtFinal = stringToDate(stringDtFinal);
 
     List<TotaisByCategDTO> list = repo.totalsByPeriodByCategoria(usuario, dtInicial, dtFinal);
 
@@ -231,8 +230,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
       String stringDtInicial, String stringDtFinal, String search) {
 
     UsuarioEntity usuario = usuarioService.userLoggedIn();
-    Date dtInicial = stringToDate(stringDtInicial + "-01");
-    Date dtFinal = stringToDate(stringDtFinal + "-" + lastDayOfMonth(stringDtFinal));
+    LocalDate dtInicial = stringToDate(stringDtInicial + "-01");
+    LocalDate dtFinal = stringToDate(stringDtFinal + "-" + lastDayOfMonth(stringDtFinal));
 
     if (monthsBetween(dtInicial, dtFinal) > 12) {
       throw new DataIntegrityException("Filtro deve ter no máximo 12 meses de intervalo");
@@ -300,35 +299,25 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
     return 0 == (i == null ? 0 : i);
   }
 
-  private Date stringToDate(String stringDate) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-    Date date;
+  private LocalDate stringToDate(String stringDate) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate date;
     try {
-      date = sdf.parse(stringDate);
-    } catch (ParseException e) {
+      date = LocalDate.parse(stringDate, formatter);
+    } catch (Exception e) {
       throw new DataIntegrityException("Data inválida");
     }
-
     return date;
   }
 
-  private Integer monthsBetween(Date dtInicial, Date dtFinal) {
-    Calendar dtInicialCalendar = Calendar.getInstance();
-    dtInicialCalendar.setTime(dtInicial);
-    Calendar dtFinalCalendar = Calendar.getInstance();
-    dtFinalCalendar.setTime(dtFinal);
-
-    return (dtFinalCalendar.get(Calendar.YEAR) * 12 + dtFinalCalendar.get(Calendar.MONTH))
-        - (dtInicialCalendar.get(Calendar.YEAR) * 12 + dtInicialCalendar.get(Calendar.MONTH));
+  private Integer monthsBetween(LocalDate dtInicial, LocalDate dtFinal) {
+    Period period = Period.between(dtInicial, dtFinal);
+    return period.getYears() * 12 + period.getMonths();
   }
 
   private Integer lastDayOfMonth(String month) {
-    Date data = stringToDate(month + "-01");
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(data);
-    return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    LocalDate data = stringToDate(month + "-01");
+    return data.lengthOfMonth();
   }
 
   private void fixListByMonth(
