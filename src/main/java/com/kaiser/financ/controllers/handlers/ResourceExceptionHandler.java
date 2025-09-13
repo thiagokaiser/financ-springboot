@@ -10,6 +10,7 @@ import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.FileException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@Slf4j
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
@@ -135,4 +137,20 @@ public class ResourceExceptionHandler {
             request.getRequestURI());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
   }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<StandardError> general(Exception e, HttpServletRequest request) {
+
+    log.error("Internal server error: ", e);
+
+    StandardError err =
+        new StandardError(
+            System.currentTimeMillis(),
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "Internal Server Error",
+            e.getMessage(),
+            request.getRequestURI());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+  }
+
 }

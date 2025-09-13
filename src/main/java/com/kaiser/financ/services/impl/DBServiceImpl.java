@@ -35,6 +35,7 @@ public class DBServiceImpl implements DBService {
     user.addPerfil(PerfilEnum.USER);
     UsuarioEntity user2 = new UsuarioEntity(null, "admin", "sobrenome", "admin@teste.com", pe.encode("123"));
     user2.addPerfil(PerfilEnum.ADMIN);
+    user2.addPerfil(PerfilEnum.USER);
     usuarioRepo.saveAll(Arrays.asList(user, user2));
 
     CategoriaEntity cat1 = new CategoriaEntity(null, "Categ 01", "#5eaeff", user);
