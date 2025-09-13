@@ -22,8 +22,6 @@ public interface UsuarioService {
 
   UsuarioEntity updateAdmin(UsuarioEntity obj);
 
-  void delete(Integer id);
-
   void removePerfil(Integer usuarioId, String perfil);
 
   UsuarioEntity updateImagemPerfil(Integer id, String imagemPerfil);
@@ -45,4 +43,5 @@ public interface UsuarioService {
   UsuarioDTO uploadProfilePicture(MultipartFile multipartFile);
 
   void updateLastLogin(Integer usuarioId, LocalDateTime lastLogin);
+
 }

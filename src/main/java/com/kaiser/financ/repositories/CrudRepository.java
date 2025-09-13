@@ -15,4 +15,7 @@ public interface CrudRepository<D> extends JpaRepository<D, Integer> {
 
   @Transactional(readOnly = true)
   Optional<D> findByIdAndUsuario(Integer id, UsuarioEntity usuario);
+
+  @Transactional
+  void deleteByUsuario(UsuarioEntity usuario);
 }

@@ -6,12 +6,13 @@ import com.kaiser.financ.dtos.UsuarioNewDTO;
 import com.kaiser.financ.dtos.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.dtos.UsuarioUpdateDTO;
 import com.kaiser.financ.entities.UsuarioEntity;
+import com.kaiser.financ.services.DeleteUsuarioService;
 import com.kaiser.financ.services.UsuarioService;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +30,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-  @Autowired
-  private UsuarioService service;
+  private final UsuarioService service;
+  private final DeleteUsuarioService deleteUsuarioService;
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<UsuarioDTO> find(@PathVariable Integer id) {
@@ -80,7 +82,15 @@ public class UsuarioController {
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
 
-    service.delete(id);
+    deleteUsuarioService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @DeleteMapping(value = "/{id}/data")
+  public ResponseEntity<Void> deleteUserData(@PathVariable Integer id) {
+
+    deleteUsuarioService.deleteUserData(id);
     return ResponseEntity.noContent().build();
   }
 

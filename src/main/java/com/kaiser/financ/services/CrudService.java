@@ -18,4 +18,6 @@ public interface CrudService<T extends BaseEntity, D> {
   T fromDTO(D objDto);
 
   D toDTO(T obj);
+
+  void deleteByUsuario(Integer id);
 }

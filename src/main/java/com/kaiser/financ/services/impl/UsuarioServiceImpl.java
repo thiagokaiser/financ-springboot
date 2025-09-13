@@ -12,16 +12,14 @@ import com.kaiser.financ.services.AmazonS3Service;
 import com.kaiser.financ.services.ImageService;
 import com.kaiser.financ.services.UsuarioService;
 import com.kaiser.financ.services.exceptions.AuthorizationException;
-import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -35,19 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
-  @Autowired
-  private BCryptPasswordEncoder pe;
+  private final BCryptPasswordEncoder pe;
+  private final UsuarioRepository repo;
+  private final AmazonS3Service s3Service;
+  private final ImageService imageService;
 
-  @Autowired
-  private UsuarioRepository repo;
-
-  @Autowired
-  private AmazonS3Service s3Service;
-
-  @Autowired
-  private ImageService imageService;
 
   @Value("${img.prefix.client.profile}")
   private String prefix;
@@ -140,15 +133,7 @@ public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     return repo.save(obj);
   }
 
-  @Override
-  public void delete(Integer id) {
-    find(id);
-    try {
-      repo.deleteById(id);
-    } catch (DataIntegrityViolationException e) {
-      throw new DataIntegrityException("Não é possivel excluir um cliente que possui Pedidos.");
-    }
-  }
+
 
   @Override
   public void removePerfil(Integer usuarioId, String perfil) {

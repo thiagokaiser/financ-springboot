@@ -56,6 +56,16 @@ public abstract class CrudServiceImpl<D extends BaseEntity, R extends CrudReposi
   }
 
   @Override
+  public void deleteByUsuario(Integer id) {
+    try {
+      UsuarioEntity usuarioEntity = usuarioService.find(id);
+      repo.deleteByUsuario(usuarioEntity);
+    } catch (Exception e) {
+      throw new DataIntegrityException("Não é possivel excluir.");
+    }
+  }
+
+  @Override
   public List<D> findAll() {
     UsuarioEntity usuario = usuarioService.userLoggedIn();
     return (List<D>) repo.findByUsuario(usuario);
