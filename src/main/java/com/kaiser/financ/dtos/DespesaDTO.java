@@ -5,10 +5,10 @@ import static java.util.Objects.nonNull;
 import com.kaiser.financ.entities.CategoriaEntity;
 import com.kaiser.financ.entities.ContaEntity;
 import com.kaiser.financ.entities.DespesaEntity;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 

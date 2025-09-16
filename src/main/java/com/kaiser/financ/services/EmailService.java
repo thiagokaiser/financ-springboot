@@ -1,7 +1,7 @@
 package com.kaiser.financ.services;
 
 import com.kaiser.financ.entities.UsuarioEntity;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
 
 public interface EmailService {

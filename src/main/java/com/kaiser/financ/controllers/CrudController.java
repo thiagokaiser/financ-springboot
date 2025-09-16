@@ -2,13 +2,10 @@ package com.kaiser.financ.controllers;
 
 import com.kaiser.financ.entities.BaseEntity;
 import com.kaiser.financ.services.CrudService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +21,6 @@ public abstract class CrudController<S extends CrudService, D extends BaseEntity
   @Autowired
   protected S service;
 
-  @ApiOperation(value = "Find by id")
   @GetMapping(value = "/{id}")
   public ResponseEntity<D> find(@PathVariable Integer id) {
 
@@ -32,7 +28,6 @@ public abstract class CrudController<S extends CrudService, D extends BaseEntity
     return ResponseEntity.ok().body(obj);
   }
 
-  @ApiOperation(value = "Insert")
   @PostMapping
   public ResponseEntity<Void> insert(@Valid @RequestBody DTO objDto) {
     D obj = (D) service.fromDTO(objDto);
@@ -46,7 +41,6 @@ public abstract class CrudController<S extends CrudService, D extends BaseEntity
     return ResponseEntity.created(uri).build();
   }
 
-  @ApiOperation(value = "Update")
   @PutMapping(value = "/{id}")
   public ResponseEntity<Void> update(@Valid @RequestBody DTO objDto, @PathVariable Integer id) {
     D obj = (D) service.fromDTO(objDto);
@@ -55,12 +49,6 @@ public abstract class CrudController<S extends CrudService, D extends BaseEntity
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Remove")
-  @ApiResponses(
-      value = {
-        @ApiResponse(code = 400, message = "Não é possível excluir"),
-        @ApiResponse(code = 404, message = "Código inexistente")
-      })
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
 
@@ -68,7 +56,6 @@ public abstract class CrudController<S extends CrudService, D extends BaseEntity
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Find all")
   @GetMapping
   public ResponseEntity<List<DTO>> findAll() {
 
