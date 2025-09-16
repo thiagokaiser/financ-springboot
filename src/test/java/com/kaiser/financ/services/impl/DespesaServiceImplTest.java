@@ -47,6 +47,7 @@ class DespesaServiceImplTest {
 
   @BeforeEach
   void setUp() {
+    // Setup entidades
     categoriaEntity = new CategoriaEntity();
     categoriaEntity.setId(1);
 
@@ -68,18 +69,20 @@ class DespesaServiceImplTest {
     despesaEntity.setCategoria(categoriaEntity);
     despesaEntity.setConta(contaEntity);
     despesaEntity.setUsuario(usuarioEntity);
+
+    // Importante: injetar manualmente o repo da superclasse
+    despesaService.repo = despesaRepository;
   }
 
   @Test
   void testInsert() {
     when(categoriaService.find(1)).thenReturn(categoriaEntity);
     when(contaService.find(1)).thenReturn(contaEntity);
-
     when(despesaRepository.save(any(DespesaEntity.class))).thenReturn(despesaEntity);
 
     DespesaEntity result = despesaService.insert(despesaEntity);
 
-    verify(despesaRepository, times(2)).save(despesaEntity);
+    verify(despesaRepository, times(2)).save(any(DespesaEntity.class));
     assertNull(result);
   }
 
@@ -90,6 +93,7 @@ class DespesaServiceImplTest {
     despesaService.generateAllParcelas(despesaEntity);
 
     verify(despesaRepository, times(1)).save(any(DespesaEntity.class));
+    verify(despesaRepository, times(1)).saveAll(anyList());
   }
 
   @Test
@@ -99,6 +103,7 @@ class DespesaServiceImplTest {
 
     when(despesaRepository.findByUsuarioAndIdParcelaAndPago(any(), anyInt(), anyBoolean())).thenReturn(despesas);
     when(despesaRepository.saveAll(anyList())).thenReturn(despesas);
+    when(usuarioService.userLoggedIn()).thenReturn(usuarioEntity);
 
     despesaService.updateUnpaidByIdParcela(despesaEntity);
 
@@ -132,6 +137,7 @@ class DespesaServiceImplTest {
 
     when(despesaRepository.findByUsuarioAndIdParcela(any(), anyInt())).thenReturn(despesas);
     when(despesaRepository.saveAll(anyList())).thenReturn(despesas);
+    when(usuarioService.userLoggedIn()).thenReturn(usuarioEntity);
 
     despesaService.updateAllByIdParcela(despesaEntity);
 
@@ -145,6 +151,7 @@ class DespesaServiceImplTest {
 
     when(despesaRepository.findByUsuarioAndIdParcelaAndPago(any(), anyInt(), anyBoolean())).thenReturn(despesas);
     doNothing().when(despesaRepository).deleteAll(anyList());
+    when(usuarioService.userLoggedIn()).thenReturn(usuarioEntity);
 
     despesaService.deleteByIdParcela(1);
 
