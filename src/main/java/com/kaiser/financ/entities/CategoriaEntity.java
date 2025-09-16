@@ -1,6 +1,6 @@
 package com.kaiser.financ.entities;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 

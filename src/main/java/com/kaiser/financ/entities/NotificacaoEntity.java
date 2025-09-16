@@ -1,8 +1,8 @@
 package com.kaiser.financ.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 

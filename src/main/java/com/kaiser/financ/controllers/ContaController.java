@@ -3,7 +3,6 @@ package com.kaiser.financ.controllers;
 import com.kaiser.financ.dtos.ContaDTO;
 import com.kaiser.financ.entities.ContaEntity;
 import com.kaiser.financ.services.ContaService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/contas")
 public class ContaController extends CrudController<ContaService, ContaEntity, ContaDTO> {
 
-  @ApiOperation(value = "Find all paginated")
   @GetMapping(value = "/page")
   public ResponseEntity<Page<ContaDTO>> findPage(
       @RequestParam(value = "page", defaultValue = "0") Integer page,

@@ -9,7 +9,7 @@ import com.kaiser.financ.services.exceptions.AuthorizationException;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.FileException;
 import com.kaiser.financ.services.exceptions.ObjectNotFoundException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

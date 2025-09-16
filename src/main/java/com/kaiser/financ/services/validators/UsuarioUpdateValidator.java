@@ -4,12 +4,12 @@ import com.kaiser.financ.controllers.exceptions.FieldMessage;
 import com.kaiser.financ.dtos.UsuarioUpdateAdminDTO;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 

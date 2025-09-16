@@ -4,10 +4,10 @@ import com.kaiser.financ.controllers.exceptions.FieldMessage;
 import com.kaiser.financ.dtos.UsuarioNewDTO;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.UsuarioRepository;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewDTO> {

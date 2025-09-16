@@ -6,11 +6,8 @@ import com.kaiser.financ.dtos.TotaisByMonthDTO;
 import com.kaiser.financ.dtos.TotaisDTO;
 import com.kaiser.financ.entities.DespesaEntity;
 import com.kaiser.financ.services.DespesaService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/despesas")
 public class DespesaController extends CrudController<DespesaService, DespesaEntity, DespesaDTO> {
 
-  @ApiOperation(value = "Insere Despesa")
   @PostMapping
   @Override
   public ResponseEntity<Void> insert(@Valid @RequestBody DespesaDTO objDto) {
@@ -38,7 +34,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Atualiza todas despesas pelo idParcela")
   @PutMapping(value = "/all/{idParcela}")
   public ResponseEntity<Void> updateAllByIdParcela(
       @Valid @RequestBody DespesaDTO objDto, @PathVariable Integer idParcela) {
@@ -48,7 +43,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Atualiza todas despesas nao pagas pelo idParcela")
   @PutMapping(value = "/unpaid/{idParcela}")
   public ResponseEntity<Void> updateUnpaidByIdParcela(
       @Valid @RequestBody DespesaDTO objDto, @PathVariable Integer idParcela) {
@@ -58,8 +52,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Remove todas despesas pelo idParcela")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Código inexistente")})
   @DeleteMapping(value = "/idParcela/{idParcela}")
   public ResponseEntity<Void> deleteByIdParcela(@PathVariable Integer idParcela) {
 
@@ -67,7 +59,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation(value = "Retorna todas despesas com paginação")
   @GetMapping(value = "/page")
   public ResponseEntity<Page<DespesaDTO>> findPage(
       @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -85,7 +76,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.ok().body(listDto);
   }
 
-  @ApiOperation(value = "Retorna totais por periodo")
   @GetMapping(value = "/totals")
   public ResponseEntity<TotaisDTO> totalsByPeriod(
       @RequestParam(value = "search") String search,
@@ -96,7 +86,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.ok().body(totais);
   }
 
-  @ApiOperation(value = "Retorna totais por categoria")
   @GetMapping(value = "/totalsByCateg")
   public ResponseEntity<List<TotaisByCategDTO>> totalsByPeriodByCategoria(
       @RequestParam(value = "search") String search,
@@ -107,7 +96,6 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.ok().body(totais);
   }
 
-  @ApiOperation(value = "Retorna totais por mes")
   @GetMapping(value = "/totalsByMonth")
   public ResponseEntity<List<TotaisByMonthDTO>> totalsByPeriodByMonth(
       @RequestParam(value = "search") String search,

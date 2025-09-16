@@ -1,9 +1,9 @@
 package com.kaiser.financ.dtos;
 
 import com.kaiser.financ.entities.ContaEntity;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
