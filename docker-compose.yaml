@@ -12,7 +12,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   backend:
-    image: tgkaiser/financ:1.3.0
+    image: tgkaiser/financ:1.4.0
     restart: always
     env_file:
       - ./config/backend.env
@@ -24,7 +24,7 @@ services:
       - db
 
   frontend:
-    image: tgkaiser/financ-angular:1.3.6
+    image: tgkaiser/financ-angular:1.3.3
     restart: always
     ports:
       - "3000:80"
