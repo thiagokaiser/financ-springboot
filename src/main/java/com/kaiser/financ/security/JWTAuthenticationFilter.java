@@ -1,6 +1,6 @@
 package com.kaiser.financ.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.kaiser.financ.dtos.CredenciaisDTO;
 import com.kaiser.financ.services.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tools.jackson.databind.ObjectMapper;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
