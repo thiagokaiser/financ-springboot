@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:remove="all">Lembrete de despesas</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <div>
+    <p>Olá, <span th:text="${usuario.nome}">Usuário</span>!</p>
+    <p>As despesas abaixo estão próximas do vencimento. Não esqueça de realizar os pagamentos em dia.</p>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Vencimento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="despesa : ${despesas}">
+          <td th:text="${despesa.descricao}">Descrição</td>
+          <td th:text="${'R$ ' + #numbers.formatDecimal(despesa.valor, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</td>
+          <td th:text="${#temporals.format(despesa.dtVencimento, 'dd/MM/yyyy')}">00/00/0000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Atenciosamente,</p>
+    <p>Financ</p>
+  </div>
+</body>
+</html>
