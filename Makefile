@@ -1,5 +1,5 @@
 IMAGE=tgkaiser/financ
-VERSION=1.5.5
+VERSION=1.6.0
 
 build:
 	docker buildx build --platform linux/amd64 -t $(IMAGE):$(VERSION) .

@@ -42,7 +42,7 @@ public interface DespesaRepository extends CrudRepository<DespesaEntity> {
   List<DespesaEntity> findByUsuarioAndIdParcela(UsuarioEntity usuario, Integer idParcela);
 
   @Transactional(readOnly = true)
-  List<DespesaEntity> findByPagoFalseAndDtVencimentoLessThanEqual(LocalDate limite);
+  List<DespesaEntity> findByPagoFalseAndDtVencimentoBetween(LocalDate dtInicial, LocalDate limite);
 
   @Transactional(readOnly = true)
   @Query(
