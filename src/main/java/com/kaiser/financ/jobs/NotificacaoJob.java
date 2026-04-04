@@ -39,9 +39,10 @@ public class NotificacaoJob {
   public void verificarDespesasPendentes() {
     LOG.info("Iniciando job de notificação de despesas...");
 
+    LocalDate dtInicial = LocalDate.now().minusMonths(2);
     LocalDate limite = LocalDate.now().plusDays(diasAntecedencia);
 
-    List<DespesaEntity> despesas = despesaRepository.findByPagoFalseAndDtVencimentoLessThanEqual(limite);
+    List<DespesaEntity> despesas = despesaRepository.findByPagoFalseAndDtVencimentoBetween(dtInicial, limite);
 
     if (despesas.isEmpty()) {
       LOG.info("Nenhuma despesa pendente encontrada até {} dias à frente.", diasAntecedencia);
