@@ -42,6 +42,9 @@ public interface DespesaRepository extends CrudRepository<DespesaEntity> {
   List<DespesaEntity> findByUsuarioAndIdParcela(UsuarioEntity usuario, Integer idParcela);
 
   @Transactional(readOnly = true)
+  List<DespesaEntity> findByPagoFalseAndDtVencimentoLessThanEqual(LocalDate limite);
+
+  @Transactional(readOnly = true)
   @Query(
       value =
           "SELECT new com.kaiser.financ.dtos.TotaisByCategDTO(categ.descricao, categ.cor, SUM(desp.valor)) FROM Despesa desp"
