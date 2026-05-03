@@ -3,6 +3,7 @@ package com.kaiser.financ.services.impl;
 import com.kaiser.financ.entities.DespesaEntity;
 import com.kaiser.financ.entities.UsuarioEntity;
 import jakarta.mail.internet.MimeMessage;
+import java.time.LocalDate;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,5 +33,13 @@ public class EmailServiceMock extends EmailServiceAbstract {
     LOG.info("Despesas pendentes: {}", despesas.size());
     despesas.forEach(d -> LOG.info("  - {} | R$ {} | Venc: {}", d.getDescricao(), d.getValor(), d.getDtVencimento()));
     LOG.info("Email de notificação enviado");
+  }
+
+  @Override
+  public void sendRelatorioCsvEmail(UsuarioEntity usuario, String csvUrl, LocalDate dtInicial, LocalDate dtFinal) {
+    LOG.info("Simulando envio de email de relatório CSV para: {}", usuario.getEmail());
+    LOG.info("Período: {} a {}", dtInicial, dtFinal);
+    LOG.info("URL do CSV: {}", csvUrl);
+    LOG.info("Email de relatório CSV enviado");
   }
 }

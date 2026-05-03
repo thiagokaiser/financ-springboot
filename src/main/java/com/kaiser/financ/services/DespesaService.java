@@ -39,4 +39,6 @@ public interface DespesaService extends CrudService<DespesaEntity, DespesaDTO> {
   URI uploadComprovante(Integer id, MultipartFile file);
 
   void deleteComprovante(Integer id);
+
+  void exportarCsv(String stringDtInicial, String stringDtFinal);
 }

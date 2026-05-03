@@ -12,17 +12,21 @@ import com.kaiser.financ.dtos.TotaisDTO;
 import com.kaiser.financ.entities.CategoriaEntity;
 import com.kaiser.financ.entities.ContaEntity;
 import com.kaiser.financ.entities.DespesaEntity;
+import com.kaiser.financ.entities.NotificacaoEntity;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.DespesaRepository;
 import com.kaiser.financ.services.AmazonS3Service;
 import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.ContaService;
 import com.kaiser.financ.services.DespesaService;
+import com.kaiser.financ.services.EmailService;
+import com.kaiser.financ.services.NotificacaoService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
 import com.kaiser.financ.services.exceptions.FileException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -32,13 +36,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,12 +54,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRepository, DespesaDTO>
     implements DespesaService {
 
+  private static final Logger LOG = LoggerFactory.getLogger(DespesaServiceImpl.class);
+
   @Autowired
   private CategoriaService categoriaService;
   @Autowired
   private ContaService contaService;
   @Autowired
   private AmazonS3Service s3Service;
+  @Autowired
+  private NotificacaoService notificacaoService;
+  @Autowired
+  private EmailService emailService;
 
   @Override
   public DespesaEntity insert(DespesaEntity obj) {
@@ -334,6 +348,68 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
     s3Service.deleteFile(despesa.getComprovanteUrl());
     despesa.setComprovanteUrl(null);
     repo.save(despesa);
+  }
+
+  @Override
+  @Async("taskExecutor")
+  public void exportarCsv(String stringDtInicial, String stringDtFinal) {
+    UsuarioEntity usuario = usuarioService.userLoggedIn();
+    DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate dtInicial = stringToDate(stringDtInicial);
+    LocalDate dtFinal = stringToDate(stringDtFinal);
+
+    try {
+      List<DespesaEntity> despesas = repo
+          .findByUsuarioAndDescricaoContainingAndDtVencimentoGreaterThanEqualAndDtVencimentoLessThanEqual(
+              usuario, "", dtInicial, dtFinal);
+
+      StringBuilder csv = new StringBuilder("﻿");
+      csv.append("ID,Descrição,Valor,Data Vencimento,Pago,Data Pagamento,Categoria,Conta,Parcela Atual,Num Parcelas\n");
+      for (DespesaEntity d : despesas) {
+        csv.append(d.getId()).append(",");
+        csv.append(escapeCsv(d.getDescricao())).append(",");
+        csv.append(d.getValor()).append(",");
+        csv.append(d.getDtVencimento() != null ? d.getDtVencimento().format(displayFormatter) : "").append(",");
+        csv.append(Boolean.TRUE.equals(d.getPago()) ? "Sim" : "Não").append(",");
+        csv.append(d.getDtPagamento() != null ? d.getDtPagamento().format(displayFormatter) : "").append(",");
+        csv.append(d.getCategoria() != null ? escapeCsv(d.getCategoria().getDescricao()) : "").append(",");
+        csv.append(d.getConta() != null ? escapeCsv(d.getConta().getDescricao()) : "").append(",");
+        csv.append(d.getParcelaAtual() != null ? d.getParcelaAtual() : "").append(",");
+        csv.append(d.getNumParcelas() != null ? d.getNumParcelas() : "").append("\n");
+      }
+
+      byte[] csvBytes = csv.toString().getBytes(StandardCharsets.UTF_8);
+      String fileName = "relatorios/despesas-" + stringDtInicial + "-" + stringDtFinal + "-" + UUID.randomUUID() + ".csv";
+      URI uri = s3Service.uploadFile(new ByteArrayInputStream(csvBytes), fileName, "text/csv");
+
+      String descricao = "Relatório de despesas de " + dtInicial.format(displayFormatter)
+          + " a " + dtFinal.format(displayFormatter) + " disponível: " + uri;
+      criarNotificacao(usuario, descricao);
+      emailService.sendRelatorioCsvEmail(usuario, uri.toString(), dtInicial, dtFinal);
+
+    } catch (Exception e) {
+      LOG.error("Erro ao gerar relatório CSV de despesas para usuário {}", usuario.getEmail(), e);
+      String descricao = "Erro ao gerar relatório de despesas de " + dtInicial.format(displayFormatter)
+          + " a " + dtFinal.format(displayFormatter) + ". Por favor, tente novamente.";
+      criarNotificacao(usuario, descricao);
+    }
+  }
+
+  private void criarNotificacao(UsuarioEntity usuario, String descricao) {
+    NotificacaoEntity notificacao = new NotificacaoEntity();
+    notificacao.setDescricao(descricao);
+    notificacao.setDtCriacao(new Date());
+    notificacao.setLido(false);
+    notificacao.setUsuario(usuario);
+    notificacaoService.insertNotificacao(notificacao);
+  }
+
+  private String escapeCsv(String value) {
+    if (value == null) return "";
+    if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+      return "\"" + value.replace("\"", "\"\"") + "\"";
+    }
+    return value;
   }
 
   private String extensionFromContentType(String contentType) {

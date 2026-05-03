@@ -114,6 +114,14 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
     return ResponseEntity.noContent().build();
   }
 
+  @GetMapping(value = "/exportar-csv")
+  public ResponseEntity<Void> exportarCsv(
+      @RequestParam(value = "dtInicial") String dtInicial,
+      @RequestParam(value = "dtFinal") String dtFinal) {
+    service.exportarCsv(dtInicial, dtFinal);
+    return ResponseEntity.accepted().build();
+  }
+
   @GetMapping(value = "/totalsByMonth")
   public ResponseEntity<List<TotaisByMonthDTO>> totalsByPeriodByMonth(
       @RequestParam(value = "search") String search,

@@ -5,6 +5,8 @@ import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +87,38 @@ public abstract class EmailServiceAbstract implements EmailService {
     context.setVariable("usuario", usuario);
     context.setVariable("despesas", despesas);
     return templateEngine.process("email/notificacaoDespesas", context);
+  }
+
+  @Override
+  public void sendRelatorioCsvEmail(UsuarioEntity usuario, String csvUrl, LocalDate dtInicial, LocalDate dtFinal) {
+    try {
+      MimeMessage mm = prepareRelatorioCsvEmail(usuario, csvUrl, dtInicial, dtFinal);
+      sendHtmlEmail(mm);
+    } catch (MessagingException e) {
+      // TODO
+    }
+  }
+
+  protected MimeMessage prepareRelatorioCsvEmail(UsuarioEntity usuario, String csvUrl, LocalDate dtInicial, LocalDate dtFinal)
+      throws MessagingException {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
+
+    mmh.setTo(usuario.getEmail());
+    mmh.setFrom(sender);
+    mmh.setSubject("Relatório de despesas - Financ");
+    mmh.setSentDate(new Date(System.currentTimeMillis()));
+    mmh.setText(htmlFromTemplateRelatorioCsv(usuario, csvUrl, dtInicial.format(formatter), dtFinal.format(formatter)), true);
+    return mimeMessage;
+  }
+
+  protected String htmlFromTemplateRelatorioCsv(UsuarioEntity usuario, String csvUrl, String dtInicial, String dtFinal) {
+    Context context = new Context();
+    context.setVariable("usuario", usuario);
+    context.setVariable("csvUrl", csvUrl);
+    context.setVariable("dtInicial", dtInicial);
+    context.setVariable("dtFinal", dtFinal);
+    return templateEngine.process("email/relatorioCsv", context);
   }
 }
