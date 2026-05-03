@@ -14,10 +14,15 @@ import com.kaiser.financ.entities.ContaEntity;
 import com.kaiser.financ.entities.DespesaEntity;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.repositories.DespesaRepository;
+import com.kaiser.financ.services.AmazonS3Service;
 import com.kaiser.financ.services.CategoriaService;
 import com.kaiser.financ.services.ContaService;
 import com.kaiser.financ.services.DespesaService;
 import com.kaiser.financ.services.exceptions.DataIntegrityException;
+import com.kaiser.financ.services.exceptions.FileException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -28,12 +33,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRepository, DespesaDTO>
@@ -43,6 +50,8 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
   private CategoriaService categoriaService;
   @Autowired
   private ContaService contaService;
+  @Autowired
+  private AmazonS3Service s3Service;
 
   @Override
   public DespesaEntity insert(DespesaEntity obj) {
@@ -293,6 +302,47 @@ public class DespesaServiceImpl extends CrudServiceImpl<DespesaEntity, DespesaRe
 
   private static boolean isPagtoAndNullDate(DespesaEntity savedObj, DespesaEntity newObj) {
     return FALSE.equals(savedObj.getPago()) && TRUE.equals(newObj.getPago()) && isNull(newObj.getDtPagamento());
+  }
+
+  @Override
+  public URI uploadComprovante(Integer id, MultipartFile file) {
+    String ext = extensionFromContentType(file.getContentType());
+    DespesaEntity despesa = find(id);
+
+    if (despesa.getComprovanteUrl() != null) {
+      s3Service.deleteFile(despesa.getComprovanteUrl());
+    }
+
+    String fileName = "comprovantes/" + UUID.randomUUID() + "." + ext;
+    try {
+      byte[] bytes = file.getBytes();
+      URI uri = s3Service.uploadFile(new ByteArrayInputStream(bytes), fileName, file.getContentType());
+      despesa.setComprovanteUrl(uri.toString());
+      repo.save(despesa);
+      return uri;
+    } catch (IOException e) {
+      throw new FileException("Erro ao ler o arquivo: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteComprovante(Integer id) {
+    DespesaEntity despesa = find(id);
+    if (despesa.getComprovanteUrl() == null) {
+      return;
+    }
+    s3Service.deleteFile(despesa.getComprovanteUrl());
+    despesa.setComprovanteUrl(null);
+    repo.save(despesa);
+  }
+
+  private String extensionFromContentType(String contentType) {
+    return switch (contentType) {
+      case "image/jpeg", "image/jpg" -> "jpg";
+      case "image/png" -> "png";
+      case "application/pdf" -> "pdf";
+      default -> throw new FileException("Tipo de arquivo não permitido. Use JPEG, PNG ou PDF.");
+    };
   }
 
   private boolean isNullorZero(Integer i) {

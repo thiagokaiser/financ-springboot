@@ -34,6 +34,8 @@ public class DespesaEntity extends BaseEntity {
 
   private Integer idParcela;
 
+  private String comprovanteUrl;
+
   @ManyToOne
   @JoinColumn(name = "categoria_id")
   private CategoriaEntity categoria;

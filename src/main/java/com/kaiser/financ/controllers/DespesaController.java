@@ -1,17 +1,21 @@
 package com.kaiser.financ.controllers;
 
 import com.kaiser.financ.dtos.DespesaDTO;
+import com.kaiser.financ.dtos.FileUploadDTO;
 import com.kaiser.financ.dtos.TotaisByCategDTO;
 import com.kaiser.financ.dtos.TotaisByMonthDTO;
 import com.kaiser.financ.dtos.TotaisDTO;
 import com.kaiser.financ.entities.DespesaEntity;
 import com.kaiser.financ.services.DespesaService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -94,6 +98,20 @@ public class DespesaController extends CrudController<DespesaService, DespesaEnt
 
     List<TotaisByCategDTO> totais = service.totalsByPeriodByCategoria(dtInicial, dtFinal, search);
     return ResponseEntity.ok().body(totais);
+  }
+
+  @PostMapping(value = "/{id}/comprovante")
+  public ResponseEntity<Void> uploadComprovante(
+      @PathVariable Integer id,
+      @ModelAttribute FileUploadDTO objDto) {
+    URI uri = service.uploadComprovante(id, objDto.getFile());
+    return ResponseEntity.created(uri).build();
+  }
+
+  @DeleteMapping(value = "/{id}/comprovante")
+  public ResponseEntity<Void> deleteComprovante(@PathVariable Integer id) {
+    service.deleteComprovante(id);
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping(value = "/totalsByMonth")

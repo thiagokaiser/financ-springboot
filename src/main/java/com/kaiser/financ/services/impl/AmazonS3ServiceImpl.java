@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 
@@ -52,6 +53,18 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
       return uploadFile(is, fileName, contentType, contentLength);
     } catch (Exception e) {
       throw new FileException("Erro ao processar arquivo: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteFile(String fileUrl) {
+    try {
+      String key = new URI(fileUrl).getPath().substring(1);
+      logger.info("Removendo arquivo S3: {}", key);
+      s3client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(key).build());
+      logger.info("Arquivo removido: {}", key);
+    } catch (Exception e) {
+      throw new FileException("Erro ao remover arquivo do S3: " + e.getMessage());
     }
   }
 

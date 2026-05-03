@@ -34,6 +34,7 @@ public class DespesaDTO implements Serializable {
   private CategoriaEntity categoria;
   private Integer contaId;
   private ContaEntity conta;
+  private String comprovanteUrl;
 
   public DespesaDTO() {}
 
@@ -51,6 +52,7 @@ public class DespesaDTO implements Serializable {
     this.categoriaId = nonNull(obj.getCategoria()) ? obj.getCategoria().getId() : null;
     this.conta = obj.getConta();
     this.contaId = nonNull(obj.getConta()) ? obj.getConta().getId() : null;
+    this.comprovanteUrl = obj.getComprovanteUrl();
   }
   
 }

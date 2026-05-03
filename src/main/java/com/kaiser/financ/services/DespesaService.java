@@ -5,8 +5,10 @@ import com.kaiser.financ.dtos.TotaisByCategDTO;
 import com.kaiser.financ.dtos.TotaisByMonthDTO;
 import com.kaiser.financ.dtos.TotaisDTO;
 import com.kaiser.financ.entities.DespesaEntity;
+import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface DespesaService extends CrudService<DespesaEntity, DespesaDTO> {
 
@@ -33,4 +35,8 @@ public interface DespesaService extends CrudService<DespesaEntity, DespesaDTO> {
 
   List<TotaisByMonthDTO> totalsByPeriodByMonth(
       String stringDtInicial, String stringDtFinal, String search);
+
+  URI uploadComprovante(Integer id, MultipartFile file);
+
+  void deleteComprovante(Integer id);
 }

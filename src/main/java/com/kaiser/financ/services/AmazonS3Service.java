@@ -9,4 +9,6 @@ public interface AmazonS3Service {
   URI uploadFile(MultipartFile multipartFile);
 
   URI uploadFile(InputStream is, String fileName, String contentType);
+
+  void deleteFile(String fileUrl);
 }
