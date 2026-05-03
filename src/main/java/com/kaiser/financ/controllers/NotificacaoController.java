@@ -6,6 +6,7 @@ import com.kaiser.financ.jobs.NotificacaoJob;
 import com.kaiser.financ.services.NotificacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,11 @@ public class NotificacaoController
   public ResponseEntity<Void> marcarComoLido(@PathVariable Integer id) {
     notificacaoService.marcarComoLido(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/nao-lidas/count")
+  public ResponseEntity<Long> contarNaoLidas() {
+    return ResponseEntity.ok(notificacaoService.contarNaoLidas());
   }
 
   @PostMapping("/executar-job")

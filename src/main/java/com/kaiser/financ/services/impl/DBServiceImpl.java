@@ -2,13 +2,16 @@ package com.kaiser.financ.services.impl;
 
 import com.kaiser.financ.entities.CategoriaEntity;
 import com.kaiser.financ.entities.ContaEntity;
+import com.kaiser.financ.entities.NotificacaoEntity;
 import com.kaiser.financ.entities.UsuarioEntity;
 import com.kaiser.financ.entities.enums.PerfilEnum;
 import com.kaiser.financ.repositories.CategoriaRepository;
 import com.kaiser.financ.repositories.ContaRepository;
+import com.kaiser.financ.repositories.NotificacaoRepository;
 import com.kaiser.financ.repositories.UsuarioRepository;
 import com.kaiser.financ.services.DBService;
 import java.util.Arrays;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class DBServiceImpl implements DBService {
 
   @Autowired
   private UsuarioRepository usuarioRepo;
+
+  @Autowired
+  private NotificacaoRepository notificacaoRepo;
 
   @Override
   public void instantiateTestDatabase() {
@@ -51,5 +57,16 @@ public class DBServiceImpl implements DBService {
     ContaEntity conta4 = new ContaEntity(null, "Conta 04", user2);
 
     contaRepo.saveAll(Arrays.asList(conta1, conta2, conta3, conta4));
+
+    Date agora = new Date();
+    Date ontem = new Date(agora.getTime() - 86_400_000L);
+    Date doisDiasAtras = new Date(agora.getTime() - 2 * 86_400_000L);
+
+    NotificacaoEntity n1 = new NotificacaoEntity(null, "Despesa 'Aluguel' vence em 1 dia.", agora, null, user2, false);
+    NotificacaoEntity n2 = new NotificacaoEntity(null, "Despesa 'Internet' vence em 2 dias.", ontem, null, user2, false);
+    NotificacaoEntity n3 = new NotificacaoEntity(null, "Despesa 'Energia' vence em 3 dias.", doisDiasAtras, null, user2, false);
+    NotificacaoEntity n4 = new NotificacaoEntity(null, "Despesa 'Streaming' vencia em 1 dia.", doisDiasAtras, ontem, user2, true);
+
+    notificacaoRepo.saveAll(Arrays.asList(n1, n2, n3, n4));
   }
 }

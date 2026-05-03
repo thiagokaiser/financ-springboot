@@ -8,4 +8,6 @@ public interface NotificacaoService extends CrudService<NotificacaoEntity, Notif
   void marcarComoLido(Integer id);
 
   void insertNotificacao(NotificacaoEntity obj);
+
+  long contarNaoLidas();
 }

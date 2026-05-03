@@ -95,7 +95,7 @@ public class SecurityConfig {
         "https://financ.thiagokaiser.com.br", // Frontend em produção
         "http://localhost:4200"               // Frontend local (desenvolvimento)
     ));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setExposedHeaders(Arrays.asList("Authorization", "location"));
     configuration.setAllowCredentials(true);

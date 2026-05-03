@@ -47,4 +47,9 @@ public class NotificacaoServiceImpl
   public void insertNotificacao(NotificacaoEntity obj) {
     repo.save(obj);
   }
+
+  @Override
+  public long contarNaoLidas() {
+    return repo.countByUsuarioAndLidoFalse(usuarioService.userLoggedIn());
+  }
 }
