@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:remove="all">Relatório de despesas</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <div>
+    <p>Olá, <span th:text="${usuario.nome}">Usuário</span>!</p>
+    <p>
+      Seu relatório de despesas do período de
+      <strong th:text="${dtInicial}">00/00/0000</strong> a
+      <strong th:text="${dtFinal}">00/00/0000</strong>
+      está pronto para download.
+    </p>
+
+    <p>
+      <a th:href="${csvUrl}">Clique aqui para baixar o CSV</a>
+    </p>
+
+    <p>Atenciosamente,</p>
+    <p>Financ</p>
+  </div>
+</body>
+</html>
